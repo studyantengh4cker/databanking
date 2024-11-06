@@ -1,3 +1,5 @@
-export default function HomePage() {
-  return <div>HomePage</div>;
+import React from "react";
+
+export default function LandingPage() {
+  return <div>LandingPage</div>;
 }
