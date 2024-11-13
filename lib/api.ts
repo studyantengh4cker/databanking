@@ -1,5 +1,3 @@
-"use server";
-
 import axios from "axios";
 import { auth } from "./auth";
 
@@ -12,9 +10,8 @@ const api = axios.create({
 });
 
 api.interceptors.request.use(async (config) => {
-  const session = await auth();
-
-  if (session?.user.api_token) {
+  const session = await auth(); // Assume this is fetching session correctly
+  if (session) {
     config.headers["Authorization"] = `Bearer ${session.user.api_token}`;
   }
 

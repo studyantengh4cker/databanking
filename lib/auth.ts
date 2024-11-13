@@ -14,13 +14,12 @@ export const { signIn, signOut, auth, handlers } = NextAuth({
           email: credentials.email,
           password: credentials.password,
         });
-
         const token = response.data.token;
-
         if (token) {
           return {
-            id: "1",
-            email: "admin@gmail.com",
+            id: response.data.user.id,
+            email: response.data.user.email,
+            name: response.data.user.name,
             role: "admin",
             api_token: token,
           };
@@ -36,6 +35,8 @@ export const { signIn, signOut, auth, handlers } = NextAuth({
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
+        token.email = user.email;
+        token.name = user.name;
         token.role = user.role;
         token.api_token = user.api_token;
       }
@@ -43,6 +44,8 @@ export const { signIn, signOut, auth, handlers } = NextAuth({
     },
     async session({ session, token }) {
       session.user.id = token.id as string;
+      session.user.email = token.email as string;
+      session.user.name = token.name as string;
       session.user.role = token.role as string;
       session.user.api_token = token.api_token as string;
       return session;
