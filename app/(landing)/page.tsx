@@ -1,5 +1,12 @@
-import React from "react";
+import { SignOut } from "@/components/LogoutButton";
+import { auth } from "@/lib/auth";
 
-export default function LandingPage() {
-  return <div>LandingPage</div>;
+export default async function LandingPage() {
+  const session = await auth();
+  return (
+    <div>
+      <pre>{JSON.stringify(session, null, 2)}</pre>
+      <SignOut />
+    </div>
+  );
 }
