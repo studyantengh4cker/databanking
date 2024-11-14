@@ -3,5 +3,5 @@ export default async function LandingLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return <main className="h-screen flex">{children}</main>;
+  return <main className="h-screen">{children}</main>;
 }

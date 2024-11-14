@@ -1,4 +1,5 @@
 import { Sidebar } from "@/components/dashboard/Sidebar";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { auth } from "@/lib/auth";
 import { SessionProvider } from "next-auth/react";
 import { redirect } from "next/navigation";
@@ -18,7 +19,7 @@ export default async function DashboardLayout({
     <SessionProvider>
       <main className="h-screen flex">
         <Sidebar />
-        <section className="max-h-screen flex-1 p-10">{children}</section>
+        <ScrollArea className="h-screen flex-1 p-10">{children}</ScrollArea>
       </main>
     </SessionProvider>
   );
