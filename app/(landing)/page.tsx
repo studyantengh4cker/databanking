@@ -20,8 +20,7 @@ export default function LandingPage() {
           </div>
           <div className="flex items-center gap-12">
             <div className="flex gap-8 text-white/80">
-            {/*Ilisi ni nga LINE INIG HUMAN */}
-              <Link href="/dashboard">Home</Link>
+              <Link href="/">Home</Link>
               <Link href="/">About</Link>
               <Link href="/">Pricing</Link>
             </div>
