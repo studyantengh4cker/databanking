@@ -6,7 +6,7 @@ export default function CollegeBanner({
 }: {
   college: College | null;
 }) {
-  const color = college ? college.color : "#FF0000";
+  const color = college ? college.color : "#720000";
 
   return (
     <section className="relative h-[8rem] rounded-2xl overflow-hidden flex flex-col">

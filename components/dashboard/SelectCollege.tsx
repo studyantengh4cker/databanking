@@ -9,7 +9,7 @@ export default function SelectCollege({
   handleChange: (college: College | null) => void;
 }) {
   return (
-    <div className="w-full flex flex-wrap gap-4 items-center justify-center p-10">
+    <div className="w-full flex flex-wrap gap-4 items-center justify-center p-5">
       {colleges.map((college, i) => {
         const isActive = college === activeCollege;
         return (
