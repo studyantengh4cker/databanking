@@ -16,7 +16,7 @@ export default function SelectCollege({
           <div
             key={i}
             onClick={() => handleChange(college)}
-            className={`w-[20rem] transition-all flex items-center gap-2 drop-shadow-md hover:bg-primary/5 p-4 rounded-full cursor-pointer border-2`}
+            className={`md:w-[20rem] transition-all flex items-center gap-2 drop-shadow-md hover:bg-primary/5 md:p-4 p-2 rounded-full cursor-pointer border-2`}
             style={{
               borderColor: isActive ? college.color : "#e0e0e0",
               color: college.color,
@@ -27,8 +27,9 @@ export default function SelectCollege({
               alt={`${college.name} logo`}
               width={50}
               height={50}
+              className="md:w-[50px] md:h-[50px]"
             />
-            <div>
+            <div className="hidden md:block">
               <h1 className="font-black text-2xl">{college.shortname}</h1>
               <p className="opacity-75 max-w-[14rem] truncate">
                 College of <span className="font-bold">{college.name}</span>

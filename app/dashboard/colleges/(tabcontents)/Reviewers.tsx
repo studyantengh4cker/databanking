@@ -7,8 +7,6 @@ interface ReviewersProps {
   college: College | null;
 }
 
-
-
 export default function Reviewers({ college }: ReviewersProps) {
   const filteredData = useMemo(() => {
     if (college) {
@@ -45,9 +43,9 @@ export default function Reviewers({ college }: ReviewersProps) {
           <option value="CED">CED</option>
         </select>
       </header>
-      <main className="w-full flex flex-wrap gap-5 ">
+      <main className="flex flex-wrap gap-5 ">
         {filteredData.length !== 0
-          ? filteredData.map((data,index) => {
+          ? filteredData.map((data, index) => {
               return <ReviewerCard key={index} college={college} data={data} />;
             })
           : "No Reviewers for this College"}

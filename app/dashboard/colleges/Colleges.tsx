@@ -49,12 +49,9 @@ export const colleges: College[] = [
 import SelectCollege from "@/components/dashboard/SelectCollege";
 import { useState } from "react";
 import CollegeData from "./CollegeData";
-import Tabcontents from "@/components/dashboard/Tabcontents";
-
 
 export function Colleges() {
   const [college, setCollege] = useState<College | null>(null);
-  const [activeTabContent, setActiveTabContent] = useState<string | null>('deans')
 
   const handleChange = (selected: College | null) => {
     if (selected == college) {
@@ -67,8 +64,7 @@ export function Colleges() {
   return (
     <section className="p-5">
       <SelectCollege activeCollege={college} handleChange={handleChange} />
-      <CollegeData college={college} setActiveTabContent={setActiveTabContent} activeTabContent={activeTabContent} />
-      <Tabcontents activeTabContent={activeTabContent} college={college} />
+      <CollegeData college={college} />
     </section>
   );
 }

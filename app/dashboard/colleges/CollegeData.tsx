@@ -1,21 +1,22 @@
 import CollegeBanner from "@/components/dashboard/CollegeBanner";
 import { College } from "./Colleges";
 import { collegeLinks } from "@/lib/globals";
+import Tabcontents from "@/components/dashboard/Tabcontents";
+import { useState } from "react";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
 interface CollegeDataProps {
   college: College | null;
-  setActiveTabContent: React.Dispatch<React.SetStateAction<string | null>>;
-  activeTabContent: string | null;
 }
 
-export default function CollegeData({
-  college,
-  setActiveTabContent,
-  activeTabContent,
-}: CollegeDataProps) {
-
+export default function CollegeData({ college }: CollegeDataProps) {
+  const [activeTabContent, setActiveTabContent] = useState<string | null>(
+    "deans"
+  );
   const handleBackgroundChange = (link: { href: string }) => {
-    return activeTabContent && activeTabContent === link.href ? '1' : '0.6';
+    return activeTabContent && activeTabContent === link.href
+      ? "opacity-100"
+      : "opacity-60";
   };
 
   return (
@@ -26,14 +27,11 @@ export default function CollegeData({
           <button
             onClick={() => setActiveTabContent(link.href)}
             key={i}
-            className={`relative cursor-pointer bg-[#E3E3E3] flex items-center justify-between gap-2 border-solid border-2 rounded-2xl px-3 py-1 overflow-hidden max-w-[180px] min-w-[180px] min-h-[50px]   ${
+            className={`relative cursor-pointer transition-opacity bg-[#E3E3E3] flex items-center justify-between gap-2 border-solid border-2 rounded-2xl px-3 py-1 overflow-hidden max-w-[180px] min-w-[180px] min-h-[50px]   ${
               link.tag === "Dean/Program Head"
                 ? "text-[12px] text-wrap"
                 : " text-[20px]"
-            }`}
-            style={{
-              opacity: handleBackgroundChange(link),
-            }}
+            } ${handleBackgroundChange(link)}`}
           >
             <div
               className=" absolute z-10 w-1/6 h-full left-0"
@@ -60,6 +58,10 @@ export default function CollegeData({
           </button>
         ))}
       </nav>
+      <ScrollArea className="w-[12rem] md:w-full whitespace-nowrap rounded-md border">
+        <Tabcontents college={college} activeTabContent={activeTabContent} />
+        <ScrollBar orientation="horizontal" />
+      </ScrollArea>
     </section>
   );
 }

@@ -5,15 +5,17 @@ import Students from "@/app/dashboard/colleges/(tabcontents)/Students";
 import { College } from "@/app/dashboard/colleges/Colleges";
 import React from "react";
 
-
 interface TabcontentsProps {
   activeTabContent: string | null;
-  college: College | null
+  college: College | null;
 }
 
-export default function Tabcontents({ activeTabContent, college }: TabcontentsProps) {
+export default function Tabcontents({
+  activeTabContent,
+  college,
+}: TabcontentsProps) {
   return (
-    <div>
+    <div className="">
       {activeTabContent === "deans" ? (
         <Deans college={college} />
       ) : activeTabContent === "faculty" ? (
