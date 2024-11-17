@@ -33,7 +33,7 @@ export default function CollegeBanner({
         </h1>
       ) : (
         <h1 className="md:text-3xl text-lg text-white text-center relative z-20">
-          <span className="font-bold">ST. PETER'S COLLEGE</span>
+          <span className="font-bold">ST. PETER&amp;lsquo;S COLLEGE</span>
         </h1>
       )}
     </section>

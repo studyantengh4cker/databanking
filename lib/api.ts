@@ -2,7 +2,7 @@ import axios from "axios";
 import { auth } from "./auth";
 
 const api = axios.create({
-  baseURL: "https://mature-eminent-treefrog.ngrok-free.app/api",
+  baseURL: "http://202.2.60.149:8000/api",
   withCredentials: true,
   headers: {
     Accept: "application/json",
@@ -10,7 +10,7 @@ const api = axios.create({
 });
 
 api.interceptors.request.use(async (config) => {
-  const session = await auth(); // Assume this is fetching session correctly
+  const session = await auth();
   if (session) {
     config.headers["Authorization"] = `Bearer ${session.user.api_token}`;
   }
