@@ -20,7 +20,7 @@ export const { signIn, signOut, auth, handlers } = NextAuth({
             id: response.data.user.id,
             email: response.data.user.email,
             name: response.data.user.name,
-            role: "admin",
+            role: response.data.user.rol,
             api_token: token,
           };
         }
@@ -31,6 +31,7 @@ export const { signIn, signOut, auth, handlers } = NextAuth({
   pages: {
     signIn: "/login",
   },
+  secret: "12345",
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
@@ -50,5 +51,9 @@ export const { signIn, signOut, auth, handlers } = NextAuth({
       session.user.api_token = token.api_token as string;
       return session;
     },
+  },
+  session: {
+    strategy: "jwt",
+    maxAge: 24 * 60 * 60, // 1 Day
   },
 });
