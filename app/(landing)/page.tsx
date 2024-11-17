@@ -9,16 +9,16 @@ export default function LandingPage() {
       <section
         className="h-screen relative flex items-center justify-center bg-cover bg-center"
         style={{
-          background: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(255, 0, 0, 0.8)), url("/4.jpg") no-repeat center center / cover`,
+          background: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(128, 0, 0, 1)), url("/4.jpg") no-repeat center center / cover`,
         }}
       >
         <nav className="absolute top-0 w-full p-8 text-white flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Image src="/logo.png" width={50} height={50} alt="logo" />
-            <h1 className="font-bold text-xl">Data Bank</h1>
+            <h1 className="font-bold text-xl hidden md:block">Data Bank</h1>
           </div>
           <div className="flex items-center gap-12">
-            <div className="flex gap-8 text-white/80">
+            <div className="md:flex gap-8 text-white/80 hidden">
               <Link href="/">Home</Link>
               <Link href="/">About</Link>
               <Link href="/">Pricing</Link>
@@ -27,7 +27,7 @@ export default function LandingPage() {
               asChild
               size="lg"
               variant="link"
-              className="text-white border rounded-full"
+              className="text-white border border-white rounded-full"
             >
               <Link href="/login">Login</Link>
             </Button>
@@ -40,14 +40,17 @@ export default function LandingPage() {
           <p className="text-lg md:text-2xl opacity-80 mb-6">
             Join us today and unlock endless possibilities for your success.
           </p>
-          <Button size="lg" className="bg-white text-primary hover:bg-white">
+          <Button
+            size="lg"
+            className="bg-white text-[#800000] hover:bg-white hover:opacity-90"
+          >
             Get Started
           </Button>
         </div>
       </section>
       <section
         className="flex items-center justify-center gap-8 flex-wrap p-16"
-        style={{ backgroundColor: "rgba(255, 0, 0)" }}
+        style={{ backgroundColor: "#800000" }}
       >
         <div className="w-[30rem]">
           <h2 className="text-4xl font-bold text-white mb-4">About Us</h2>

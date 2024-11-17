@@ -14,7 +14,7 @@ export function NavLinks() {
         return (
           <Link
             href={link.href}
-            className={`py-4 text-primary-foreground  hover:bg-secondary transition-all flex gap-4 cursor-pointer ${
+            className={`p-4 rounded-lg text-primary-foreground  hover:bg-secondary transition-all flex gap-4 cursor-pointer ${
               isActive
                 ? "font-semibold"
                 : "hover:text-primary-foreground opacity-80"

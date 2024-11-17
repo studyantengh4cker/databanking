@@ -16,7 +16,7 @@ export default async function DashboardLayout({
 
   return (
     <main className="h-screen flex">
-      <Sidebar />
+      <Sidebar user={session.user} />
       <ScrollArea className="h-screen flex-1 p-10">{children}</ScrollArea>
     </main>
   );

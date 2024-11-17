@@ -16,12 +16,14 @@ export const { signIn, signOut, auth, handlers } = NextAuth({
           password: credentials.password,
         });
         const token = response.data.token;
+
         if (token) {
           return {
             id: response.data.user.id,
             email: response.data.user.email,
-            name: response.data.user.name,
-            role: response.data.user.rol,
+            firstName: response.data.user.first_name,
+            lastName: response.data.user.last_name,
+            role: response.data.user.role,
             api_token: token,
           };
         }
@@ -32,13 +34,13 @@ export const { signIn, signOut, auth, handlers } = NextAuth({
   pages: {
     signIn: "/login",
   },
-  secret: "12345",
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
         token.email = user.email;
-        token.name = user.name;
+        token.firstName = user.firstName;
+        token.lastName = user.lastName;
         token.role = user.role;
         token.api_token = user.api_token;
       }
@@ -47,7 +49,8 @@ export const { signIn, signOut, auth, handlers } = NextAuth({
     async session({ session, token }) {
       session.user.id = token.id as string;
       session.user.email = token.email as string;
-      session.user.name = token.name as string;
+      session.user.firstName = token.firstName as string;
+      session.user.lastName = token.lastName as string;
       session.user.role = token.role as string;
       session.user.api_token = token.api_token as string;
       return session;
