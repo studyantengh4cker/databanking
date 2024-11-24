@@ -12,6 +12,7 @@ export interface College {
 export interface Programs {
   id: string;
   name: string;
+  shortname: string
 }
 
 export const colleges: College[] = [
@@ -24,19 +25,23 @@ export const colleges: College[] = [
     programs: [
       {
         id: "1",
-        name: "Civil",
+        name: "Bachelor of Science in Civil Engineering",
+        shortname: "BSCE"
       },
       {
         id: "2",
-        name: "Mechanical",
+        name: "Bachelor of Science in Mechanical Engineering",
+        shortname: 'BSME'
       },
       {
         id: "3",
-        name: "Electrical",
+        name: "Bachelor of Science in Electrical Engineering",
+        shortname: 'BSEE'
       },
       {
         id: "4",
-        name: "Electronics",
+        name: "Bachelor of Science in Electronics Engineering",
+        shortname: "BSEE"
       },
     ],
   },
@@ -46,7 +51,28 @@ export const colleges: College[] = [
     shortname: "CED",
     color: "#808080",
     image: "/colleges/ced.png",
-    programs: [],
+    programs: [
+      {
+        id: "1",
+        name: "Bachelor in Elementary Education",
+        shortname: "BED"
+      },
+      {
+        id: "2",
+        name: "Bachelor in Secondary Education - Major in English",
+        shortname: "BME"
+      },
+      {
+        id: "3",
+        name: "Bachelor in Secondary Education - Major in Filipino",
+        shortname: "BMF"
+      },
+      {
+        id: "4",
+        name: "Bachelor in Secondary Education - Major in Math",
+        shortname: "BMM"
+      }
+    ],
   },
   {
     id: "3",
@@ -78,7 +104,13 @@ export const colleges: College[] = [
     shortname: "COC",
     color: "#751A3D",
     image: "/colleges/coc.png",
-    programs: [],
+    programs: [
+      {
+        id: '1',
+        name: 'Bachelor Of Science In Criminology',
+        shortname: "BSCRIM"
+      },
+    ],
   },
 ];
 

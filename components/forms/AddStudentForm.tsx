@@ -85,13 +85,13 @@ export default function addStudentForm() {
               <SelectValue placeholder="Program" />
             </SelectTrigger>
             <SelectContent>
-              {currentCollege && currentCollege.programs.length > 0 ? currentCollege.programs.map((program) => {
+              {currentCollege ? currentCollege.programs.length > 0 && currentCollege.programs.map((program) => {
                 return (
                   <SelectItem onClick={() => setProgram(program)} key={program.id} value={program.id}>
                     {program.name}
                   </SelectItem>
                 );
-              }) : <SelectItem value={'Empty'}>No Program</SelectItem>}
+              }) : <SelectItem value={'Empty'}>No Program</SelectItem> }
             </SelectContent>
           </Select>
         </div>
