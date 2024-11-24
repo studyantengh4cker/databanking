@@ -1,19 +1,16 @@
 import UserListTable from "@/components/dashboard/UserListTable";
-import React, { useMemo } from "react";
-import { FacultyData } from "@/lib/DummyData";
+// import React, { useEffect, useMemo, useState } from "react";
+// import { FacultyData } from "@/lib/DummyData";
 import { College } from "../Colleges";
+// import { getCollegeUsers, getUsersbyRole } from "@/actions/college.action";
+import { useGetCollegeUsers } from "@/app/(custom_hooks)/useGetCollegeUsers";
 
 interface FacultyProps {
   college: College | null;
 }
 
 export default function Faculty({ college }: FacultyProps) {
-  const filteredData = useMemo(() => {
-    if (college) {
-      return FacultyData.filter((data) => data.college === college.shortname);
-    }
-    return FacultyData;
-  }, [college]);
+  const { userData } = useGetCollegeUsers('faculty', college?.id, { role: 'faculty', college: college?.id  });
 
   return (
     <div className="h-auto w-full flex flex-col gap-5 shadow-md rounded-3xl min-h-[40vh] items-start py-10 px-14">
@@ -42,7 +39,7 @@ export default function Faculty({ college }: FacultyProps) {
         </select>
       </header>
       <main className="w-full">
-        <UserListTable datas={filteredData} />
+        <UserListTable datas={userData} />
       </main>
     </div>
   );
