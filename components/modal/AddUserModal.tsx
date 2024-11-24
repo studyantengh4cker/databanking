@@ -11,9 +11,12 @@ import {
 import AddDeanForm from "../forms/AddDeanForm";
 
 interface ModalProps {
+  title: string
+  buttonTitle: string
   college: College | null;
+  children: React.ReactNode;
 }
-export function AddDeanModal({ college }: ModalProps) {
+export function AddUserModal({ title, buttonTitle, college, children }: ModalProps) {
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -24,15 +27,15 @@ export function AddDeanModal({ college }: ModalProps) {
           }}
           variant="outline"
         >
-          Add Dean
+          {buttonTitle}
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px] min-w-[969px] min-h-[691px] !rounded-sm p-20 text-[#4f4f4f]">
         <DialogHeader className="flex flex-col gap-5">
-          <DialogTitle className="text-4xl ">Add a Dean/Program Head</DialogTitle>
+          <DialogTitle className="text-4xl ">{title}</DialogTitle>
           <div className="buttons flex gap-10  [&_button]:text-[#4f4f4f] [&_button]:bg-transparent "><Button className="hover:text-white">Manually</Button> <Button className="hover:text-white" >Import CSV</Button></div>
         </DialogHeader>
-        <AddDeanForm />
+        {children}
         <DialogFooter>
           <Button type="submit">Save changes</Button>
         </DialogFooter>

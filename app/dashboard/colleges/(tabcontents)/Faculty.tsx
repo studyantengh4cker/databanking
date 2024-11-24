@@ -2,6 +2,8 @@ import UserListTable from "@/components/dashboard/UserListTable";
 import { College } from "../Colleges";
 import { useGetCollegeUsers } from "@/app/(custom_hooks)/useGetCollegeUsers";
 import Loading from "@/components/dashboard/Loading/Loading";
+import { AddUserModal } from "@/components/modal/AddUserModal";
+import AddFacultyForm from "@/components/forms/AddFacultyForm";
 
 interface FacultyProps {
   college: College | null;
@@ -16,14 +18,7 @@ export default function Faculty({ college }: FacultyProps) {
   return (
     <div className="h-auto w-full flex flex-col gap-5 shadow-md rounded-3xl min-h-[40vh] items-start py-10 px-14">
       <header className="flex w-full gap-4 items-center">
-        <button
-          className="px-3 py-2 text-white rounded-md"
-          style={{
-            backgroundColor: college?.color || "#720000",
-          }}
-        >
-          Add Faculty
-        </button>
+        <AddUserModal title="Add Faculty Member" buttonTitle='Add Faculty' college={college} children={<AddFacultyForm/>} />
         <input
           type="text"
           name="search"
