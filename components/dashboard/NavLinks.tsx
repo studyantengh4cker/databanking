@@ -4,12 +4,13 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { links } from "@/lib/globals";
 
-export function NavLinks() {
+export function NavLinks({ role }: { role: string }) {
   const pathname = usePathname();
+  const filteredLinks = links.filter((link) => link.for.includes(role));
 
   return (
     <>
-      {links.map((link, i) => {
+      {filteredLinks.map((link, i) => {
         const isActive = pathname == link.href;
         return (
           <Link

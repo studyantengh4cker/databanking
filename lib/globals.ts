@@ -7,8 +7,24 @@ import {
 } from "lucide-react";
 
 export const links = [
-  { tag: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
-  { tag: "Colleges", href: "/dashboard/colleges", icon: SchoolIcon },
+  {
+    tag: "Dashboard",
+    href: "/dashboard",
+    icon: LayoutDashboard,
+    for: ["admin", "faculty", "student", "dean", "programhead"],
+  },
+  {
+    tag: "Colleges",
+    href: "/dashboard/colleges",
+    icon: SchoolIcon,
+    for: ["admin"],
+  },
+  {
+    tag: "My College",
+    href: "/dashboard/mycollege",
+    icon: SchoolIcon,
+    for: ["faculty", "dean", "programhead"],
+  },
 ];
 
 export const collegeLinks = [
@@ -17,4 +33,3 @@ export const collegeLinks = [
   { tag: "Students", icon: GraduationCap, href: "students" },
   { tag: "Reviewers", icon: File, href: "reviewers" },
 ];
-

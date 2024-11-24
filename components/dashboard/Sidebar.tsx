@@ -14,7 +14,7 @@ export function Sidebar({ user }: { user: User }) {
         <Separator className="opacity-50" />
       </div>
       <div className="px-10">
-        <NavLinks />
+        <NavLinks role={user.role} />
       </div>
       <div className="mt-auto w-full p-5 rounded-lg shadow-lg">
         <div className="flex items-center gap-4">
