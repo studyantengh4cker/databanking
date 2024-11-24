@@ -2,6 +2,8 @@ import React, { useMemo } from "react";
 import { College } from "../Colleges";
 import { ReviewerData } from "@/lib/DummyData";
 import ReviewerCard from "@/components/dashboard/ReviewerCard";
+import { AddUserModal } from "@/components/modal/AddUserModal";
+import AddReviewerForm from "@/components/forms/AddReviewerForm";
 
 interface ReviewersProps {
   college: College | null;
@@ -18,14 +20,7 @@ export default function Reviewers({ college }: ReviewersProps) {
   return (
     <div className="h-auto w-full flex flex-col gap-5 shadow-md rounded-3xl min-h-[40vh] items-start py-10 px-14">
       <header className="flex w-full gap-4 items-center">
-        <button
-          className="px-3 py-2 text-white rounded-md"
-          style={{
-            backgroundColor: college?.color || "#720000",
-          }}
-        >
-          Add Reviewer
-        </button>
+        <AddUserModal college={college} title="Add Reviewer" buttonTitle="Add Reveiwer" children={<AddReviewerForm/>} />
         <input
           type="text"
           name="search"
