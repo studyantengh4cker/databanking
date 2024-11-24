@@ -80,7 +80,18 @@ export const colleges: College[] = [
     shortname: "CCS",
     color: "#16a34a",
     image: "/colleges/ccs.png",
-    programs: [],
+    programs: [
+      {
+        id: '1',
+        name: 'Bachelor of Science in Information Technology',
+        shortname: 'BSIT'
+      },
+      {
+        id: '2',
+        name: 'Bachelor of Science in Computer Science',
+        shortname: 'BSCS'
+      }
+    ],
   },
   {
     id: "4",
