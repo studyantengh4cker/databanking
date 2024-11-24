@@ -1,16 +1,17 @@
 import UserListTable from "@/components/dashboard/UserListTable";
-// import React, { useEffect, useMemo, useState } from "react";
-// import { FacultyData } from "@/lib/DummyData";
 import { College } from "../Colleges";
-// import { getCollegeUsers, getUsersbyRole } from "@/actions/college.action";
 import { useGetCollegeUsers } from "@/app/(custom_hooks)/useGetCollegeUsers";
+import Loading from "@/components/dashboard/Loading/Loading";
 
 interface FacultyProps {
   college: College | null;
 }
 
 export default function Faculty({ college }: FacultyProps) {
-  const { userData } = useGetCollegeUsers('faculty', college?.id, { role: 'faculty', college: college?.id  });
+  const { users, isLoading, error } = useGetCollegeUsers("faculty", college?.id, {
+    role: "faculty",
+    college: college?.id,
+  });
 
   return (
     <div className="h-auto w-full flex flex-col gap-5 shadow-md rounded-3xl min-h-[40vh] items-start py-10 px-14">
@@ -39,7 +40,7 @@ export default function Faculty({ college }: FacultyProps) {
         </select>
       </header>
       <main className="w-full">
-        <UserListTable datas={userData} />
+      {!isLoading ? <UserListTable datas={users} /> : <Loading />}
       </main>
     </div>
   );

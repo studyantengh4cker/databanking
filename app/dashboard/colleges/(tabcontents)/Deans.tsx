@@ -1,15 +1,16 @@
 import UserListTable from "@/components/dashboard/UserListTable";
 import { College } from "../Colleges";
 import { useGetCollegeUsers } from "@/app/(custom_hooks)/useGetCollegeUsers";
-import PaginationComponent from "@/components/dashboard/Pagination";
+import Loading from "@/components/dashboard/Loading/Loading";
+// import PaginationComponent from "@/components/dashboard/Pagination";
 
 interface DeansProps {
   college: College | null;
 }
 
 export default function Deans({ college }: DeansProps) {
-  const { userData, pagination, setCurrentPage } = useGetCollegeUsers("admin", college?.id, {
-    role: "admin",
+  const { users, isLoading, error } = useGetCollegeUsers("dean", college?.id, {
+    role: "dean",
     college: college?.id,
   });
 
@@ -41,8 +42,8 @@ export default function Deans({ college }: DeansProps) {
         </select>
       </header>
       <main className="w-full">
-        <UserListTable datas={userData} />
-        <PaginationComponent pagination={pagination} setCurrentPage={setCurrentPage} />
+        {!isLoading ? <UserListTable datas={users} /> : <Loading />}
+        {/* <PaginationComponent pagination={pagination} setCurrentPage={setCurrentPage} /> */}
       </main>
     </div>
   );

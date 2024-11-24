@@ -1,25 +1,44 @@
 "use client";
 import { getCollegeUsers } from "@/actions/college.action";
 import { Pagination, User } from "@/lib/types";
-import { useEffect, useState } from "react";
-// import { College } from "../dashboard/colleges/Colleges";
+import { useQuery, UseQueryOptions } from '@tanstack/react-query';
+import { useState } from "react";
+
+interface GetCollegeUsersParams {
+  role: string;
+  college: string | undefined;
+}
+
+export interface CollegeUsersResponse {
+  users: User[];
+  pagination: Pagination;
+}
 
 export const useGetCollegeUsers = (
   p0: string,
   id: string | undefined,
-  { role, college }: { role: string; college: string | undefined }
+  { role, college }: GetCollegeUsersParams
 ) => {
-  const [userData, setUserData] = useState<User[]>([]);
-  const [pagination, setPagination] = useState<Pagination>()
-  const [page, setCurrentPage] = useState<number | undefined>()
-  useEffect(() => {
-    const fetchUsers = async () => {
-      const fetchedUsers = await getCollegeUsers(role, college && college, page);
-      setPagination(fetchedUsers.pagination)
-      setUserData(fetchedUsers.users);
-    };
+  const [page, setCurrentPage] = useState<number>(1);
 
-    fetchUsers();
-  }, [college, role]);
-  return { userData, pagination, setCurrentPage };
+  const { data, isLoading, error } = useQuery<CollegeUsersResponse, Error>({
+    queryKey: ["collegeUsers", role, college, page],
+    queryFn: async (): Promise<CollegeUsersResponse> => {
+      const response = await getCollegeUsers(role, college, page);
+      if (!response) {
+        throw new Error('Failed to fetch college users');
+      }
+      return response;
+    },
+    placeholderData: (previousData) => previousData,
+    staleTime: 60000,
+  });
+
+  return {
+    users: data?.users ?? [],
+    pagination: data?.pagination,
+    isLoading,
+    error,
+    setCurrentPage,
+  };
 };
