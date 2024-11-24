@@ -8,6 +8,7 @@ import {
   TableCell,
   Table,
 } from "@/components/ui/table";
+import { User } from "@/lib/types";
 
 interface UserListTable {
   datas: User[];
@@ -27,7 +28,7 @@ export default function UserListTable({ datas }: UserListTable) {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {datas && datas.length != 0 ? (
+        {datas && datas.length > 0 ? (
           datas.map((data, index) => (
             <TableRow key={index}>
               <TableCell className="font-medium">{data.idnum}</TableCell>
