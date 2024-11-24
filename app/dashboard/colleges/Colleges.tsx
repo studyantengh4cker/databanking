@@ -1,21 +1,44 @@
 "use client";
 
 export interface College {
-  id: string
+  id: string;
   name: string;
   shortname: string;
   color: string;
   image: string;
+  programs: Programs[];
+}
+
+export interface Programs {
+  id: string;
+  name: string;
 }
 
 export const colleges: College[] = [
   {
-    
     id: "1",
     name: "Engineering",
     shortname: "COE",
     color: "#5521B5",
     image: "/colleges/coe.png",
+    programs: [
+      {
+        id: "1",
+        name: "Civil",
+      },
+      {
+        id: "2",
+        name: "Mechanical",
+      },
+      {
+        id: "3",
+        name: "Electrical",
+      },
+      {
+        id: "4",
+        name: "Electronics",
+      },
+    ],
   },
   {
     id: "2",
@@ -23,6 +46,7 @@ export const colleges: College[] = [
     shortname: "CED",
     color: "#808080",
     image: "/colleges/ced.png",
+    programs: [],
   },
   {
     id: "3",
@@ -30,6 +54,7 @@ export const colleges: College[] = [
     shortname: "CCS",
     color: "#16a34a",
     image: "/colleges/ccs.png",
+    programs: [],
   },
   {
     id: "4",
@@ -37,6 +62,7 @@ export const colleges: College[] = [
     shortname: "CAS",
     color: "#E3A008",
     image: "/colleges/cas.png",
+    programs: [],
   },
   {
     id: "5",
@@ -44,6 +70,7 @@ export const colleges: College[] = [
     shortname: "CBA",
     color: "#723B13",
     image: "/colleges/cba.png",
+    programs: [],
   },
   {
     id: "6",
@@ -51,6 +78,7 @@ export const colleges: College[] = [
     shortname: "COC",
     color: "#751A3D",
     image: "/colleges/coc.png",
+    programs: [],
   },
 ];
 

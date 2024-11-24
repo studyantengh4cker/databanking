@@ -2,6 +2,7 @@ import UserListTable from "@/components/dashboard/UserListTable";
 import { College } from "../Colleges";
 import { useGetCollegeUsers } from "@/app/(custom_hooks)/useGetCollegeUsers";
 import Loading from "@/components/dashboard/Loading/Loading";
+import { AddDeanModal } from "@/components/modal/AddDeanModal";
 // import PaginationComponent from "@/components/dashboard/Pagination";
 
 interface DeansProps {
@@ -17,14 +18,7 @@ export default function Deans({ college }: DeansProps) {
   return (
     <div className="h-auto w-full flex flex-col gap-5 shadow-md rounded-3xl min-h-[40vh] items-start py-10 px-14">
       <header className="flex w-full gap-4 items-center">
-        <button
-          className="px-3 py-2 text-white rounded-md"
-          style={{
-            backgroundColor: college?.color || "#720000",
-          }}
-        >
-          Add Dean/Program Head
-        </button>
+        <AddDeanModal college={college} />
         <input
           type="text"
           name="search"
