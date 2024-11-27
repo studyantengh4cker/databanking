@@ -20,9 +20,14 @@ import {
 } from "../ui/form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { addDeanorProgramHead } from "@/actions/admin.action";
+import { error } from "console";
+import { toast } from "@/hooks/use-toast";
 
 export const addUserSchema = z
   .object({
+    idnum: z.string().nonempty("ID number is required"),
+
     first_name: z
       .string()
       .min(2, "First name must be at least 2 characters")
@@ -31,64 +36,83 @@ export const addUserSchema = z
       .string()
       .min(2, "Last name must be at least 2 characters")
       .max(255),
-    idnum: z.string().nonempty("ID number is required"),
     email: z.string().email("Invalid email address"),
+    role: z.string().nonempty("Role is required"),
+    year_level: z.string().max(4).nullable(),
+    college_id: z.string().nonempty("College is required"),
+
+    program_id: z.string().nonempty("Program is required"),
+
+    password: z.string().min(8, "Password must be at least 8 characters"),
+    password_confirmation: z
+      .string()
+      .min(8, "Password must be at least 8 characters"),
     phone_number: z
       .string()
       .min(10, "Phone number must be at least 10 digits")
       .max(15),
-    year_level: z.string().max(4).nullable(),
-    role: z.string().nonempty("Role is required"),
-    college_id: z.string().nonempty("College is required"),
-    program_id: z.string().nonempty("Program is required"),
-    password: z.string().min(8, "Password must be at least 8 characters"),
-    confirm_password: z
-      .string()
-      .min(8, "Password must be at least 8 characters"),
   })
-  .superRefine(({ password, confirm_password }, ctx) => {
-    if (password !== confirm_password) {
+  .superRefine(({ password, password_confirmation }, ctx) => {
+    if (password !== password_confirmation) {
       ctx.addIssue({
         code: "custom",
         message: "Passwords must match",
-        path: ["confirm_password"],
+        path: ["password_confirmation"],
       });
     }
   });
 
-type FormData = z.infer<typeof addUserSchema>;
+export type AddDeanFormData = z.infer<typeof addUserSchema>;
 
 export default function AddDeanForm() {
   const [currentCollege, setCollege] = useState<College>();
   const [currentProgram, setProgram] = useState<Programs>();
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
 
-  const form = useForm<FormData>({
+  const form = useForm<AddDeanFormData>({
     resolver: zodResolver(addUserSchema),
     defaultValues: {
+      idnum: "",
       first_name: "",
       last_name: "",
-      idnum: "",
       email: "",
-      phone_number: "",
-      year_level: null,
       role: "",
+      year_level: null,
       college_id: "",
       program_id: "",
       password: "",
-      confirm_password: "",
+      password_confirmation: "",
+      phone_number: "",
     },
   });
 
-  async function onSubmit(values: FormData) {
+  async function onSubmit(values: AddDeanFormData) {
     try {
       setLoading(true);
-
+      const res = await addDeanorProgramHead(values);
+      if (res && res?.status !== "success") {
+        console.log("RES: ", res);
+        setError(true);
+      }
       console.log(values);
     } catch (error) {
-      console.error(error);
       alert(error);
+      setError(true);
     } finally {
+      if (!error) {
+        toast({
+          title: `Add ${values.role} Account`,
+          description: "Successfuly added account!",
+        });
+        // router.push("/dashboard");
+      } else {
+        toast({
+          title: `Add ${values.role} Account`,
+          description: "Failed adding account!",
+        });
+      }
+      setError(false);
       setLoading(false);
     }
   }
@@ -96,6 +120,7 @@ export default function AddDeanForm() {
   const handleCollegeChange = (value: string) => {
     const selected = colleges.find((c) => c.id === value);
     setCollege(selected);
+
     form.setValue("college_id", value);
 
     form.setValue("program_id", "");
@@ -138,7 +163,11 @@ export default function AddDeanForm() {
               <FormItem>
                 <FormLabel>ID Number</FormLabel>
                 <FormControl>
-                  <Input placeholder="Enter ID number" {...field} />
+                  <Input
+                    type="number"
+                    placeholder="Enter ID number"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -194,8 +223,8 @@ export default function AddDeanForm() {
                     <SelectValue placeholder="Select role" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="Dean">Dean</SelectItem>
-                    <SelectItem value="Program Head">Program Head</SelectItem>
+                    <SelectItem value="dean">Dean</SelectItem>
+                    <SelectItem value="programhead">Program Head</SelectItem>
                   </SelectContent>
                 </Select>
                 <FormMessage />
@@ -213,14 +242,17 @@ export default function AddDeanForm() {
                 <FormLabel>College</FormLabel>
                 <Select
                   onValueChange={(value) => handleCollegeChange(value)}
-                  defaultValue={field.value}
+                  defaultValue={field.value?.toString()}
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Select college" />
                   </SelectTrigger>
                   <SelectContent>
                     {colleges.map((college) => (
-                      <SelectItem key={college.id} value={college.id}>
+                      <SelectItem
+                        key={college.id}
+                        value={college.id.toString()}
+                      >
                         {college.name}
                       </SelectItem>
                     ))}
@@ -238,7 +270,7 @@ export default function AddDeanForm() {
                 <FormLabel>Program</FormLabel>
                 <Select
                   onValueChange={field.onChange}
-                  defaultValue={field.value}
+                  defaultValue={field.value?.toString()}
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Select program" />
@@ -284,7 +316,7 @@ export default function AddDeanForm() {
           />
           <FormField
             control={form.control}
-            name="confirm_password"
+            name="password_confirmation"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Confirm Password</FormLabel>
