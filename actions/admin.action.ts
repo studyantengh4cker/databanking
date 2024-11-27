@@ -1,9 +1,10 @@
 "use server";
 
-import { AddDeanFormData } from "@/components/forms/AddDeanForm";
+
+import { AddUserFormData } from "@/components/forms/AddDeanForm";
 import api from "@/lib/api";
 
-export async function addDeanorProgramHead(formvalue: AddDeanFormData) {
+export async function addDeanorProgramHead(formvalue: AddUserFormData) {
   try {
     const transformedFormValue = {
       ...formvalue,

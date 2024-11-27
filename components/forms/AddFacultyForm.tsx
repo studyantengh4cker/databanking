@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -8,98 +7,230 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { College, colleges, Programs } from "@/app/dashboard/colleges/Colleges";
+import { College, colleges } from "@/app/dashboard/colleges/Colleges";
+import { useSubmitAddUserForm } from "@/app/(custom_hooks)/useSubmitAddUserForm";
+import { useHandleCollegeChange } from "@/app/(custom_hooks)/useCollegeChange";
+import { addUserSchema } from "@/lib/AddUserZodSchema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { FormProvider, useForm } from "react-hook-form";
+import { Button } from "../ui/button";
+import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "../ui/form";
+import { AddUserFormData } from "./AddDeanForm";
 
 export default function addFacultyForm() {
-  
-  const [currentCollege, setCollege] = useState<College>()
-  const [currentProgram, setProgram] = useState<Programs>()
-  const [loading, setLoading] = useState(false);
-  const handleAddFaculty = async () => {
-    try {
-    } catch (error) {
-      alert(error);
-    } finally {
-    }
+  const [currentCollege, setCollege] = useState<College>();
+  const { onSubmit, error, loading } = useSubmitAddUserForm();
+
+  const form = useForm<AddUserFormData>({
+    resolver: zodResolver(addUserSchema),
+    defaultValues: {
+      idnum: "",
+      first_name: "",
+      last_name: "",
+      email: "",
+      role: "faculty",
+      year_level: null,
+      college_id: "",
+      program_id: "",
+      password: "",
+      password_confirmation: "",
+      phone_number: "",
+    },
+  });
+
+  const handleCollegeChange = (value: string) => {
+    useHandleCollegeChange(form, setCollege, colleges, value);
   };
+
   return (
-    <form>
-      <div className="input-group flex gap-4">
-        <div className="group mb-4 w-1/3">
-          <Label htmlFor="first_name">First Name</Label>
-          <Input type="text" id="first_name" name="first_name" />
+    <FormProvider {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        <div className="input-group flex gap-5">
+          <FormField
+            control={form.control}
+            name="first_name"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>First Name</FormLabel>
+                <FormControl>
+                  <Input placeholder="Enter first name" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="last_name"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Last Name</FormLabel>
+                <FormControl>
+                  <Input placeholder="Enter last name" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="idnum"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>ID Number</FormLabel>
+                <FormControl>
+                  <Input
+                    type="number"
+                    placeholder="Enter ID number"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
         </div>
-        <div className="group mb-4 w-1/3">
-          <Label htmlFor="last_name">Last Name</Label>
-          <Input type="text" id="last_name" name="last_name" />
+        <div className="input-group flex gap-5">
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Email Address</FormLabel>
+                <FormControl>
+                  <Input
+                    type="email"
+                    placeholder="Enter email address"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="phone_number"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Phone Number</FormLabel>
+                <FormControl>
+                  <Input
+                    type="tel"
+                    placeholder="Enter phone number"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
         </div>
-        <div className="group mb-4 w-1/3">
-          <Label htmlFor="idnum">ID Number</Label>
-          <Input type="text" id="idnum" name="idnum" />
+        <div className="input-group flex gap-5">
+          {" "}
+          <FormField
+            control={form.control}
+            name="college_id"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>College</FormLabel>
+                <Select
+                  onValueChange={(value) => handleCollegeChange(value)}
+                  defaultValue={field.value?.toString()}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select college" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {colleges.map((college) => (
+                      <SelectItem
+                        key={college.id}
+                        value={college.id.toString()}
+                      >
+                        {college.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="program_id"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Program</FormLabel>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value?.toString()}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select program" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {currentCollege ? (
+                      currentCollege.programs.length > 0 ? (
+                        currentCollege.programs.map((program) => (
+                          <SelectItem key={program.id} value={program.id}>
+                            {program.name}
+                          </SelectItem>
+                        ))
+                      ) : (
+                        <SelectItem value="1">No programs</SelectItem>
+                      )
+                    ) : (
+                      <SelectItem value="empty">No College</SelectItem>
+                    )}
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
         </div>
-      </div>
-      <div className="input-group flex gap-5">
-        <div className="group mb-4 w-1/3">
-          <Label htmlFor="email">Email Address</Label>
-          <Input type="email" id="email" name="email" />
+        <div className="input-group flex gap-5">
+          <FormField
+            control={form.control}
+            name="password"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Password</FormLabel>
+                <FormControl>
+                  <Input
+                    type="password"
+                    placeholder="Enter password"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="password_confirmation"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Confirm Password</FormLabel>
+                <FormControl>
+                  <Input
+                    type="password"
+                    placeholder="Confirm password"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
         </div>
-        <div className="group mb-4 w-1/3">
-          <Label htmlFor="phone_number">Phone Number</Label>
-          <Input type="tel" id="phone_number" name="phone_number" />
-        </div>
-        <div className="group mb-4">
-          <Label htmlFor="Role">Role</Label>
-          <Select>
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Role" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="Faculty">Faculty</SelectItem>
-              
-            </SelectContent>
-          </Select>
-        </div>
-      </div>
-      <div className="input-group flex gap-5">
-        <div className="group">
-          <Label htmlFor="College">College</Label>
-          <Select>
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="College" />
-            </SelectTrigger>
-            <SelectContent>
-              {colleges.map((college) => {
-                return (
-                  <SelectItem onClick={() => setCollege(college)} key={college.id} value={college.id}>
-                    {college.name}
-                  </SelectItem>
-                );
-              })}
-            </SelectContent>
-          </Select>
-        </div>
-        <div className="group">
-          <Label htmlFor="Program">Program</Label>
-          <Select>
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Program" />
-            </SelectTrigger>
-            <SelectContent>
-              {currentCollege ? currentCollege.programs.length > 0 && currentCollege.programs.map((program) => {
-                return (
-                  <SelectItem onClick={() => setProgram(program)} key={program.id} value={program.id}>
-                    {program.name}
-                  </SelectItem>
-                );
-              }) : <SelectItem value={'Empty'}>No Program</SelectItem> }
-            </SelectContent>
-          </Select>
-        </div>
-      </div>
-      <div className="group w-1/3">
-        <Label htmlFor="password">Password</Label>
-        <Input type="password" id="password" name="password" />
-      </div>
-    </form>
+        <Button type="submit" disabled={loading}>
+          {loading ? "Submitting..." : "Submit"}
+        </Button>
+      </form>
+    </FormProvider>
   );
 }

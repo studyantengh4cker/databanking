@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -8,7 +7,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { College, colleges, Programs } from "@/app/dashboard/colleges/Colleges";
+import { College, colleges } from "@/app/dashboard/colleges/Colleges";
 import { Button } from "../ui/button";
 import { useForm, FormProvider } from "react-hook-form";
 import {
@@ -20,57 +19,17 @@ import {
 } from "../ui/form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { addDeanorProgramHead } from "@/actions/admin.action";
-import { error } from "console";
-import { toast } from "@/hooks/use-toast";
+import { useHandleCollegeChange } from "@/app/(custom_hooks)/useCollegeChange";
+import { useSubmitAddUserForm } from "@/app/(custom_hooks)/useSubmitAddUserForm";
+import { addUserSchema } from "@/lib/AddUserZodSchema";
 
-export const addUserSchema = z
-  .object({
-    idnum: z.string().nonempty("ID number is required"),
-
-    first_name: z
-      .string()
-      .min(2, "First name must be at least 2 characters")
-      .max(255),
-    last_name: z
-      .string()
-      .min(2, "Last name must be at least 2 characters")
-      .max(255),
-    email: z.string().email("Invalid email address"),
-    role: z.string().nonempty("Role is required"),
-    year_level: z.string().max(4).nullable(),
-    college_id: z.string().nonempty("College is required"),
-
-    program_id: z.string().nonempty("Program is required"),
-
-    password: z.string().min(8, "Password must be at least 8 characters"),
-    password_confirmation: z
-      .string()
-      .min(8, "Password must be at least 8 characters"),
-    phone_number: z
-      .string()
-      .min(10, "Phone number must be at least 10 digits")
-      .max(15),
-  })
-  .superRefine(({ password, password_confirmation }, ctx) => {
-    if (password !== password_confirmation) {
-      ctx.addIssue({
-        code: "custom",
-        message: "Passwords must match",
-        path: ["password_confirmation"],
-      });
-    }
-  });
-
-export type AddDeanFormData = z.infer<typeof addUserSchema>;
+export type AddUserFormData = z.infer<typeof addUserSchema>;
 
 export default function AddDeanForm() {
   const [currentCollege, setCollege] = useState<College>();
-  const [currentProgram, setProgram] = useState<Programs>();
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
+  const {onSubmit, error, loading} = useSubmitAddUserForm()
 
-  const form = useForm<AddDeanFormData>({
+  const form = useForm<AddUserFormData>({
     resolver: zodResolver(addUserSchema),
     defaultValues: {
       idnum: "",
@@ -87,45 +46,10 @@ export default function AddDeanForm() {
     },
   });
 
-  async function onSubmit(values: AddDeanFormData) {
-    try {
-      setLoading(true);
-      const res = await addDeanorProgramHead(values);
-      if (res && res?.status !== "success") {
-        console.log("RES: ", res);
-        setError(true);
-      }
-      console.log(values);
-    } catch (error) {
-      alert(error);
-      setError(true);
-    } finally {
-      if (!error) {
-        toast({
-          title: `Add ${values.role} Account`,
-          description: "Successfuly added account!",
-        });
-        // router.push("/dashboard");
-      } else {
-        toast({
-          title: `Add ${values.role} Account`,
-          description: "Failed adding account!",
-        });
-      }
-      setError(false);
-      setLoading(false);
-    }
-  }
-
   const handleCollegeChange = (value: string) => {
-    const selected = colleges.find((c) => c.id === value);
-    setCollege(selected);
-
-    form.setValue("college_id", value);
-
-    form.setValue("program_id", "");
-  };
-
+    useHandleCollegeChange(form, setCollege, colleges, value)
+  }
+  
   return (
     <FormProvider {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
