@@ -23,6 +23,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, FormProvider } from "react-hook-form";
 import { Button } from "../ui/button";
 import { AddUserFormData } from "./AddDeanForm";
+import CollegeID from "../formfields/CollegeID";
+import ProgramID from "../formfields/ProgramID";
 
 export default function addStudentForm() {
   const [currentCollege, setCollege] = useState<College>();
@@ -132,70 +134,12 @@ export default function addStudentForm() {
               </FormItem>
             )}
           />
+          
         </div>
         <div className="input-group flex gap-5">
           {" "}
-          <FormField
-            control={form.control}
-            name="college_id"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>College</FormLabel>
-                <Select
-                  onValueChange={(value) => handleCollegeChange(value)}
-                  defaultValue={field.value?.toString()}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select college" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {colleges.map((college) => (
-                      <SelectItem
-                        key={college.id}
-                        value={college.id.toString()}
-                      >
-                        {college.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="program_id"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Program</FormLabel>
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value?.toString()}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select program" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {currentCollege ? (
-                      currentCollege.programs.length > 0 ? (
-                        currentCollege.programs.map((program) => (
-                          <SelectItem key={program.id} value={program.id}>
-                            {program.name}
-                          </SelectItem>
-                        ))
-                      ) : (
-                        <SelectItem value="1">No programs</SelectItem>
-                      )
-                    ) : (
-                      <SelectItem value="empty">No College</SelectItem>
-                    )}
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          <CollegeID form={form} handleCollegeChange={handleCollegeChange} />
+          <ProgramID form={form} currentCollege={currentCollege} />
         </div>
         <div className="input-group flex gap-5">
           <FormField

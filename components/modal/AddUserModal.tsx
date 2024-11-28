@@ -35,7 +35,7 @@ export function AddUserModal({
           {buttonTitle}
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px] min-w-[969px] min-h-[691px] !rounded-sm p-20 text-[#4f4f4f]">
+      <DialogContent className="sm:max-w-[425px] min-w-[969px] min-h-[691px] !rounded-sm p-20 text-[#4f4f4f] flex flex-col justify-start">
         <DialogHeader className="flex flex-col gap-5">
           <DialogTitle className="text-4xl ">{title}</DialogTitle>
           <div className="buttons flex gap-10  [&_button]:text-[#4f4f4f] [&_button]:bg-transparent ">

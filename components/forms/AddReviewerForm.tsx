@@ -1,95 +1,99 @@
 import { useState } from "react";
-import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { College, colleges, Programs } from "@/app/dashboard/colleges/Colleges";
 
+import { zodResolver } from "@hookform/resolvers/zod";
+import { FormProvider, useForm } from "react-hook-form";
+import { z } from "zod";
+import { addReviewerSchema } from "@/lib/AddReviewerZodSchema";
+import CollegeID from "../formfields/CollegeID";
+import { useHandleCollegeChange } from "@/app/(custom_hooks)/useCollegeChange";
+import ProgramID from "../formfields/ProgramID";
+import { Button } from "../ui/button";
+import {
+  FormField,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormMessage,
+} from "../ui/form";
+
+export type AddReviewerFormData = z.infer<typeof addReviewerSchema>;
+
 export default function addReviewerForm() {
-  
-  const [currentCollege, setCollege] = useState<College>()
-  const [currentProgram, setProgram] = useState<Programs>()
+  const form = useForm<AddReviewerFormData>({
+    resolver: zodResolver(addReviewerSchema),
+    defaultValues: {
+      reviewer_name: "",
+      reviewer_description: "",
+      school_year: "",
+      college_id: "",
+      program_id: "",
+    },
+  });
+  const [currentCollege, setCollege] = useState<College>();
   const [loading, setLoading] = useState(false);
-  const handleAddReviewer = async () => {
-    try {
-    } catch (error) {
-      alert(error);
-    } finally {
-    }
+  const handleCollegeChange = (value: string) => {
+    useHandleCollegeChange(form, setCollege, colleges, value);
   };
+  const onSubmit = () => {};
   return (
-    <form>
-      <div className="input-group flex gap-4">
-        <div className="group mb-4 w-1/3">
-          <Label htmlFor="Title">Title</Label>
-          <Input type="text" id="Title" name="Title" />
+    <FormProvider {...form}>
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="space-y-4 flex flex-col h-full w-full items-start justify-start"
+      >
+        <div className="reviewer-info flex gap-4">
+          <FormField
+            control={form.control}
+            name="reviewer_name"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Reviewer Name</FormLabel>
+                <FormControl>
+                  <Input placeholder="Enter reviewer name" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="reviewer_description"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Reviewer Description</FormLabel>
+                <FormControl>
+                  <Input placeholder="Enter reviewer description" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="school_year"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>School Year</FormLabel>
+                <FormControl>
+                  <Input placeholder="Enter school year" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
         </div>
-        <div className="group mb-4 w-1/3">
-          <Label htmlFor="Description">Description</Label>
-          <Input type="text" id="Description" name="Description" />
+        <div className="college w-full flex gap-5">
+          <CollegeID form={form} handleCollegeChange={handleCollegeChange} />
+          <ProgramID form={form} currentCollege={currentCollege} />
         </div>
-        <div className="group mb-4 w-1/3">
-          <Label htmlFor="School-Year">School Year</Label>
-          <Input type="text" id="School-Year" name="School-Year" />
+        <div className="button w-full h-1/4 flex items-end">
+          <Button className="w-[30%]" type="submit" disabled={loading}>
+            {loading ? "Submitting..." : "Submit"}
+          </Button>
         </div>
-      </div>
-      <div className="input-group flex gap-5">
-        <div className="group">
-          <Label htmlFor="College">College</Label>
-          <Select>
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="College" />
-            </SelectTrigger>
-            <SelectContent>
-              {colleges.map((college) => {
-                return (
-                  <SelectItem onClick={() => setCollege(college)} key={college.id} value={college.id}>
-                    {college.name}
-                  </SelectItem>
-                );
-              })}
-            </SelectContent>
-          </Select>
-        </div>
-        <div className="group">
-          <Label htmlFor="Program">Program</Label>
-          <Select>
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Program" />
-            </SelectTrigger>
-            <SelectContent>
-              {currentCollege ? currentCollege.programs.length > 0 && currentCollege.programs.map((program) => {
-                return (
-                  <SelectItem onClick={() => setProgram(program)} key={program.id} value={program.id}>
-                    {program.name}
-                  </SelectItem>
-                );
-              }) : <SelectItem value={'Empty'}>No Program</SelectItem> }
-            </SelectContent>
-          </Select>
-        </div>
-      </div>
-      <div className="input-group flex gap-5">
-        <div className="group mb-4 w-1/3">
-          <Label htmlFor="time-limit">Time Limit {"(*Optional*)"}</Label>
-          <Input type="text" id="time-limit" name="time-limit" />
-        </div>
-        <div className="group mb-4 w-1/3">
-          <Label htmlFor="from">From</Label>
-          <Input type="text" id="from" name="from" />
-        </div>
-        <div className="group mb-4 w-1/3">
-          <Label htmlFor="To">To</Label>
-          <Input type="text" id="To" name="To" />
-        </div>
-        
-      </div>
-    
-    </form>
+      </form>
+    </FormProvider>
   );
 }
