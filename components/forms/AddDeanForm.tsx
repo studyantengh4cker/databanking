@@ -256,7 +256,7 @@ export default function AddDeanForm() {
             )}
           />
         </div>
-        <Button type="submit" disabled={loading}>
+        <Button  className="w-[30%]" type="submit" disabled={loading}>
           {loading ? "Submitting..." : "Submit"}
         </Button>
       </form>

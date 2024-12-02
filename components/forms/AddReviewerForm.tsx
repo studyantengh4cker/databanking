@@ -17,6 +17,7 @@ import {
   FormControl,
   FormMessage,
 } from "../ui/form";
+import { useSubmitAddReviewerForm } from "@/app/(custom_hooks)/useSubmitAddReviewer";
 
 export type AddReviewerFormData = z.infer<typeof addReviewerSchema>;
 
@@ -32,11 +33,12 @@ export default function addReviewerForm() {
     },
   });
   const [currentCollege, setCollege] = useState<College>();
-  const [loading, setLoading] = useState(false);
+  const { onSubmit, error, loading } = useSubmitAddReviewerForm();
+
   const handleCollegeChange = (value: string) => {
     useHandleCollegeChange(form, setCollege, colleges, value);
   };
-  const onSubmit = () => {};
+  
   return (
     <FormProvider {...form}>
       <form

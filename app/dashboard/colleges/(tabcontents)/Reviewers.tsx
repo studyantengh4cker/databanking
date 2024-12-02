@@ -1,21 +1,18 @@
-import React, { useMemo } from "react";
 import { College } from "../Colleges";
-import { ReviewerData } from "@/lib/DummyData";
 import ReviewerCard from "@/components/dashboard/ReviewerCard";
 import { AddUserModal } from "@/components/modal/AddUserModal";
 import AddReviewerForm from "@/components/forms/AddReviewerForm";
+import { useGetCollegeReviewers } from "@/app/(custom_hooks)/useGetCollegeReviewers";
+import { Reviewer } from "@/lib/types";
 
 interface ReviewersProps {
   college: College | null;
 }
 
 export default function Reviewers({ college }: ReviewersProps) {
-  const filteredData = useMemo(() => {
-    if (college) {
-      return ReviewerData.filter((data) => data.college === college.shortname);
-    }
-    return ReviewerData;
-  }, [college]);
+  const { reviewers, isLoading, error } = useGetCollegeReviewers(college?.id, {
+    college: college?.id,
+  });
 
   return (
     <div className="h-auto w-full flex flex-col gap-5 shadow-md rounded-3xl min-h-[40vh] items-start py-10 px-14">
@@ -33,15 +30,18 @@ export default function Reviewers({ college }: ReviewersProps) {
           className="border rounded px-3 py-2"
         >
           <option value="">Add Filter</option>
-          <option value="COC">COC</option>
           <option value="COE">COE</option>
           <option value="CED">CED</option>
+          <option value="CCS">CCS</option>
+          <option value="CBA">CBA</option>
+          <option value="CAS">CAS</option>
+          <option value="COC">COC</option>
         </select>
       </header>
       <main className="flex flex-wrap gap-5 ">
-        {filteredData.length !== 0
-          ? filteredData.map((data, index) => {
-              return <ReviewerCard key={index} college={college} data={data} />;
+        {reviewers && reviewers.length !== 0
+          ? reviewers.map((reviewer) => {
+              return <ReviewerCard key={reviewer.id} college={college} data={reviewer} />;
             })
           : "No Reviewers for this College"}
       </main>

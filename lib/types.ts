@@ -15,6 +15,18 @@ export interface User {
     updated_at: Date;
   }
 
+  export interface Reviewer {
+    id: number;
+    reviewer_name: string;
+    reviewer_description: string;
+    topic_id: number | undefined;
+    subtopic_id: number | undefined;
+    updated_at: string;
+    school_year: number;
+    college_id: number;
+    program_id: number;
+  }
+
   export interface Pagination {
     current_page: number;
     total_pages: number;

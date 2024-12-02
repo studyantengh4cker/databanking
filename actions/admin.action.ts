@@ -1,6 +1,7 @@
 "use server";
 
 import { AddUserFormData } from "@/components/forms/AddDeanForm";
+import { AddReviewerFormData } from "@/components/forms/AddReviewerForm";
 import api from "@/lib/api";
 
 export async function addDeanorProgramHead(formvalue: AddUserFormData) {
@@ -23,15 +24,15 @@ export async function addDeanorProgramHead(formvalue: AddUserFormData) {
   }
 }
 
-export async function addReviewer(formvalue: AddUserFormData) {
+export async function addReviewer(formvalue: AddReviewerFormData) {
   try {
     const transformedFormValue = {
       ...formvalue,
       college_id: Number(formvalue.college_id),
       program_id: Number(formvalue.program_id),
+      school_year: Number(formvalue.school_year),
     };
-
-    const res = await api.post(`/user`, transformedFormValue);
+    const res = await api.post(`/reviewer`, transformedFormValue);
 
     if (res.data.status === "success") {
       return res.data;

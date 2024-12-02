@@ -1,13 +1,5 @@
 import { useState } from "react";
-import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { College, colleges } from "@/app/dashboard/colleges/Colleges";
 import {
   FormControl,
@@ -177,7 +169,7 @@ export default function addStudentForm() {
             )}
           />
         </div>
-        <Button type="submit" disabled={loading}>
+        <Button  className="w-[30%]" type="submit" disabled={loading}>
           {loading ? "Submitting..." : "Submit"}
         </Button>
       </form>

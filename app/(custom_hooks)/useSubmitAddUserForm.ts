@@ -13,8 +13,7 @@ export function useSubmitAddUserForm() {
       setLoading(true);
       const res = await addDeanorProgramHead(values);
 
-      if (res && res?.status !== "success") {
-        console.log("RES: ", res);
+      if (!res || res?.status !== "success") {
         setError(true);
       } else {
         toast({
