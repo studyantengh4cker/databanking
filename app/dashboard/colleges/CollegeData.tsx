@@ -1,7 +1,7 @@
-import CollegeBanner from "@/components/dashboard/CollegeBanner";
+import CollegeBanner from "@/components/dashboard/colleges/CollegeBanner";
 import { College } from "./Colleges";
 import { collegeLinks } from "@/lib/globals";
-import Tabcontents from "@/components/dashboard/Tabcontents";
+import Tabcontents from "@/components/dashboard/colleges/Tabcontents";
 import { useState } from "react";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 

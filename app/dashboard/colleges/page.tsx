@@ -1,4 +1,4 @@
-import Header from "@/components/dashboard/Header";
+import Header from "@/components/dashboard/colleges/Header";
 import { Colleges } from "./Colleges";
 
 export default function CollegesPage() {

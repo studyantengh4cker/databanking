@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Separator } from "../ui/separator";
+import { Separator } from "../../ui/separator";
 import { NavLinks } from "./NavLinks";
 import { User } from "next-auth";
 

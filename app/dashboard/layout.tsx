@@ -1,4 +1,4 @@
-import { Sidebar } from "@/components/dashboard/Sidebar";
+import { Sidebar } from "@/components/dashboard/colleges/Sidebar";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";

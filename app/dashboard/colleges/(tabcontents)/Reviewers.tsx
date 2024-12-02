@@ -1,5 +1,5 @@
 import { College } from "../Colleges";
-import ReviewerCard from "@/components/dashboard/ReviewerCard";
+import ReviewerCard from "@/components/dashboard/colleges/ReviewerCard";
 import { AddUserModal } from "@/components/modal/AddUserModal";
 import AddReviewerForm from "@/components/forms/AddReviewerForm";
 import { useGetCollegeReviewers } from "@/app/(custom_hooks)/useGetCollegeReviewers";
@@ -38,7 +38,7 @@ export default function Reviewers({ college }: ReviewersProps) {
           <option value="COC">COC</option>
         </select>
       </header>
-      <main className="flex flex-wrap gap-5 ">
+      <main className="flex flex-wrap gap-5">
         {reviewers && reviewers.length !== 0
           ? reviewers.map((reviewer) => {
               return <ReviewerCard key={reviewer.id} college={college} data={reviewer} />;

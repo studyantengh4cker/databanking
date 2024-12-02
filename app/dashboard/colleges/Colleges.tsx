@@ -125,7 +125,7 @@ export const colleges: College[] = [
   },
 ];
 
-import SelectCollege from "@/components/dashboard/SelectCollege";
+import SelectCollege from "@/components/dashboard/colleges/SelectCollege";
 import { useState } from "react";
 import CollegeData from "./CollegeData";
 

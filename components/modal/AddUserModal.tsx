@@ -1,4 +1,4 @@
-import { College } from "@/app/dashboard/colleges/Colleges";
+import { College, Programs } from "@/app/dashboard/colleges/Colleges";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -13,7 +13,15 @@ import AddDeanForm from "../forms/AddDeanForm";
 interface ModalProps {
   title: string;
   buttonTitle: string;
-  college: College | null;
+  college: College | null | {
+    currentProgram: Programs | undefined;
+    id?: string | undefined;
+    name?: string | undefined;
+    shortname?: string | undefined;
+    color?: string | undefined;
+    image?: string | undefined;
+    programs?: Programs[] | undefined;
+};
   children: React.ReactNode;
 }
 export function AddUserModal({

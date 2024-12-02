@@ -1,19 +1,3 @@
-import {
-  UseFormWatch,
-  UseFormGetValues,
-  UseFormGetFieldState,
-  UseFormSetError,
-  UseFormClearErrors,
-  UseFormTrigger,
-  FormState,
-  UseFormResetField,
-  UseFormReset,
-  UseFormHandleSubmit,
-  UseFormUnregister,
-  Control,
-  UseFormRegister,
-  UseFormSetFocus,
-} from "react-hook-form";
 import { College } from "../dashboard/colleges/Colleges";
 
 export const useHandleCollegeChange = (

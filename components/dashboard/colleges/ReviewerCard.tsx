@@ -1,6 +1,8 @@
+import { useChooseCollege } from "@/app/(custom_hooks)/useChooseCollege";
 import { College, colleges, Programs } from "@/app/dashboard/colleges/Colleges";
 import { Reviewer } from "@/lib/types";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import React from "react";
 
 interface ReviewerCardProps {
@@ -10,26 +12,20 @@ interface ReviewerCardProps {
 
 export default function ReviewerCard({ college, data }: ReviewerCardProps) {
   const isActive = false;
+  const navigate = useRouter();
 
-  const handleGetCollege = () => {
-    const college_id = String(data.college_id);
-    const currentCollege = colleges.find(
-      (currentCollege) => college_id === currentCollege.id
-    );
-    const currentProgram = currentCollege?.programs.find(
-      (program: Programs) => program.id === String(data.program_id)
-    );
-    return {
-      ...currentCollege,
-      currentProgram,
-    };
+  const collegeData = useChooseCollege(data.college_id, data.program_id);
+
+  const handleNavigateTo = (id: number) => {
+    if (!id) return;
+    // console.log(id)
+    navigate.push(`/dashboard/reviewer/${id}`);
   };
-
-  const collegeData = handleGetCollege();
 
   return (
     <div
-      className="p-6 relative z-20 rounded-2xl shadow-lg bg-gradient-to-t from-[#000000a2] text-white min-w-[350px] min-h-[150px] flex justify-between items-start"
+      onClick={() => handleNavigateTo(data.id)}
+      className="cursor-pointer p-6 relative z-20 rounded-2xl shadow-lg bg-gradient-to-t from-[#000000a2] text-white min-w-[350px] min-h-[150px] flex justify-between items-start hover:scale-105 duration-300 ease-out"
       style={{ backgroundColor: `${college ? college.color : "#720000"}` }}
     >
       <div className="col flex flex-col h-full justify-between items-start">
