@@ -1,17 +1,21 @@
+"use client";
 import CollegeBanner from "@/components/dashboard/colleges/CollegeBanner";
 import { College } from "./Colleges";
-import { collegeLinks } from "@/lib/globals";
+import { adminCollegeLinks, generalCollegeLinks } from "@/lib/globals";
 import Tabcontents from "@/components/dashboard/colleges/Tabcontents";
 import { useState } from "react";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
+import { Session } from "next-auth";
+
 interface CollegeDataProps {
   college: College | null;
+  session: Session | null;
 }
 
-export default function CollegeData({ college }: CollegeDataProps) {
+export default function CollegeData({ college, session }: CollegeDataProps) {
   const [activeTabContent, setActiveTabContent] = useState<string | null>(
-    "deans"
+    "reviewers"
   );
   const handleBackgroundChange = (link: { href: string }) => {
     return activeTabContent && activeTabContent === link.href
@@ -19,11 +23,26 @@ export default function CollegeData({ college }: CollegeDataProps) {
       : "opacity-60";
   };
 
+  const role = session?.user.role;
+
+  let collegeLinks;
+  switch (role) {
+    case "admin":
+      collegeLinks = adminCollegeLinks;
+      break;
+    case "dean":
+      collegeLinks = generalCollegeLinks;
+      break;
+    default:
+      collegeLinks = null;
+      break;
+  }
+
   return (
     <section className="transition-colors">
       <CollegeBanner college={college} />
       <nav className="w-full flex flex-wrap items-center justify-center gap-8 p-4">
-        {collegeLinks.map((link, i) => (
+        {collegeLinks?.map((link, i) => (
           <button
             onClick={() => setActiveTabContent(link.href)}
             key={i}

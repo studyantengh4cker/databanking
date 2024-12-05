@@ -27,9 +27,14 @@ export const links = [
   },
 ];
 
-export const collegeLinks = [
+export const adminCollegeLinks = [
   { tag: "Dean/Program Head", icon: HeadsetIcon, href: "deans" },
   { tag: "Faculty", icon: HeadsetIcon, href: "faculty" },
   { tag: "Students", icon: GraduationCap, href: "students" },
   { tag: "Reviewers", icon: File, href: "reviewers" },
-];
+]
+export const generalCollegeLinks = [
+  { tag: "Reviewers", icon: File, href: "reviewers" },
+]
+
+

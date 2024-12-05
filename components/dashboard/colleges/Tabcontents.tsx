@@ -2,7 +2,7 @@ import Deans from "@/app/dashboard/colleges/(tabcontents)/Deans";
 import Faculty from "@/app/dashboard/colleges/(tabcontents)/Faculty";
 import Reviewers from "@/app/dashboard/colleges/(tabcontents)/Reviewers";
 import Students from "@/app/dashboard/colleges/(tabcontents)/Students";
-import { College } from "@/app/dashboard/colleges/Colleges";
+import { College, Programs } from "@/app/dashboard/colleges/Colleges";
 import React from "react";
 
 interface TabcontentsProps {

@@ -1,5 +1,5 @@
 import UserListTable from "@/components/dashboard/colleges/UserListTable";
-import { College } from "../Colleges";
+import { College, Programs } from "../Colleges";
 import { useGetCollegeUsers } from "@/app/(custom_hooks)/useGetCollegeUsers";
 import Loading from "@/components/dashboard/Loading/Loading";
 import { AddUserModal } from "@/components/modal/AddUserModal";

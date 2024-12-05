@@ -7,6 +7,7 @@ export interface College {
   color: string;
   image: string;
   programs: Programs[];
+  currentProgram: Programs | undefined;
 }
 
 export interface Programs {
@@ -22,6 +23,7 @@ export const colleges: College[] = [
     shortname: "COE",
     color: "#5521B5",
     image: "/colleges/coe.png",
+    currentProgram: undefined,
     programs: [
       {
         id: "1",
@@ -51,6 +53,7 @@ export const colleges: College[] = [
     shortname: "CED",
     color: "#808080",
     image: "/colleges/ced.png",
+    currentProgram: undefined,
     programs: [
       {
         id: "1",
@@ -80,6 +83,7 @@ export const colleges: College[] = [
     shortname: "CCS",
     color: "#16a34a",
     image: "/colleges/ccs.png",
+    currentProgram: undefined,
     programs: [
       {
         id: '1',
@@ -99,6 +103,7 @@ export const colleges: College[] = [
     shortname: "CAS",
     color: "#E3A008",
     image: "/colleges/cas.png",
+    currentProgram: undefined,
     programs: [],
   },
   {
@@ -107,6 +112,7 @@ export const colleges: College[] = [
     shortname: "CBA",
     color: "#723B13",
     image: "/colleges/cba.png",
+    currentProgram: undefined,
     programs: [],
   },
   {
@@ -115,6 +121,7 @@ export const colleges: College[] = [
     shortname: "COC",
     color: "#751A3D",
     image: "/colleges/coc.png",
+    currentProgram: undefined,
     programs: [
       {
         id: '1',
@@ -128,8 +135,13 @@ export const colleges: College[] = [
 import SelectCollege from "@/components/dashboard/colleges/SelectCollege";
 import { useState } from "react";
 import CollegeData from "./CollegeData";
+import { Session } from "next-auth";
 
-export function Colleges() {
+interface CollegesProps {
+  session: Session | null
+}
+
+export function Colleges({session} : CollegesProps) {
   const [college, setCollege] = useState<College | null>(null);
 
   const handleChange = (selected: College | null) => {
@@ -143,7 +155,7 @@ export function Colleges() {
   return (
     <section className="p-5">
       <SelectCollege activeCollege={college} handleChange={handleChange} />
-      <CollegeData college={college} />
+      <CollegeData college={college} session={session} />
     </section>
   );
 }

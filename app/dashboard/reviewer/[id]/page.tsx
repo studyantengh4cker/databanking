@@ -1,4 +1,5 @@
 import { getCollegeReviewerByID } from "@/actions/college.action";
+import Header from "@/components/dashboard/colleges/Header";
 import ReviewerHeader from "@/components/dashboard/reviewer/ReviewerHeader";
 import ReviewerInfo from "@/components/dashboard/reviewer/ReviewerInfo";
 import ReviewerQuestions from "@/components/dashboard/reviewer/ReviewerQuestions";
@@ -17,6 +18,7 @@ const ReviewerPage = async ({ params }: ReviewerPageProps) => {
 
   return (
     <div className="p-14">
+      <Header title="Reviewer" />
       <ReviewerHeader reviewer={reviewer} />
       <ReviewerInfo reviewer={reviewer} />
       <ReviewerQuestions reviewer={reviewer} />

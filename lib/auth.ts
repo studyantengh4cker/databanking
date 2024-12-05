@@ -24,6 +24,8 @@ export const { signIn, signOut, auth, handlers } = NextAuth({
             firstName: response.data.user.first_name,
             lastName: response.data.user.last_name,
             role: response.data.user.role,
+            college_id: response.data.user.college_id,
+            program_id: response.data.user.program_id,
             api_token: token,
           };
         }
@@ -42,6 +44,8 @@ export const { signIn, signOut, auth, handlers } = NextAuth({
         token.firstName = user.firstName;
         token.lastName = user.lastName;
         token.role = user.role;
+        token.college_id = user.college_id;
+        token.program_id = user.program_id;
         token.api_token = user.api_token;
       }
       return token;
@@ -52,6 +56,8 @@ export const { signIn, signOut, auth, handlers } = NextAuth({
       session.user.firstName = token.firstName as string;
       session.user.lastName = token.lastName as string;
       session.user.role = token.role as string;
+      session.user.college_id = token.college_id as number;
+      session.user.program_id = token.program_id as number;
       session.user.api_token = token.api_token as string;
       return session;
     },
