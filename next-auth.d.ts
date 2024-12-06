@@ -9,6 +9,8 @@ declare module "next-auth" {
     email: string;
     role: string;
     api_token: string;
+    college_id: number;
+    program_id:number;
   }
 
   interface Session {

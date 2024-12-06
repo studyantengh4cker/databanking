@@ -14,7 +14,7 @@ export default function Reviewers({ college }: ReviewersProps) {
   });
 
   return (
-    <div className="h-auto w-full flex flex-col gap-5 shadow-md rounded-3xl min-h-[40vh] items-start py-10 px-14">
+    <div className="h-auto w-full flex flex-col gap-5 shadow-md rounded-3xl basis-full items-start py-10 px-14">
       <header className="flex w-full gap-4 items-center">
         <AddUserModal
           college={college}

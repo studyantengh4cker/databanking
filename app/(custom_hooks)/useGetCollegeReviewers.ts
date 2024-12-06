@@ -32,6 +32,11 @@ export const useGetCollegeReviewers = (
     staleTime: 60000,
   });
 
+  // let reviewerData 
+  // if((prevcollege: string | undefined) => prevcollege !== college){
+  //   reviewerData = data?.reviewers
+  // }
+
   return {
     reviewers: data?.reviewers ?? [],
     pagination: data?.pagination,

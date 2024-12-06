@@ -5,8 +5,10 @@ import Tabcontents from "@/components/dashboard/colleges/Tabcontents";
 import { useState } from "react";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
+
 interface CollegeDataProps {
   college: College | null;
+  
 }
 
 export default function CollegeData({ college }: CollegeDataProps) {

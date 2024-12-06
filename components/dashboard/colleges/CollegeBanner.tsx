@@ -29,7 +29,7 @@ export default function CollegeBanner({
       {college ? (
         <h1 className="md:text-3xl text-lg text-white text-center relative z-20 transition-all">
           <span className="opacity-75">COLLEGE OF </span>
-          <span className="font-bold">{college.name.toUpperCase()}</span>
+          <span className="font-bold">{college?.name.toUpperCase()}</span>
         </h1>
       ) : (
         <h1 className="md:text-3xl text-lg text-white text-center relative z-20">

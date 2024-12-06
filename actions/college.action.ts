@@ -36,12 +36,13 @@ export async function getCollegeUsers(
 
 export async function getCollegeReviewers(collegeId?: string, page?: number) {
   try {
-    const checkID = collegeId ? `college_id=${collegeId}` : "";
+    const checkID = collegeId ? `college=${collegeId}` : "";
     const checkPage = page ? `page=${page}` : "";
     const queryParams = [checkID, checkPage].filter(Boolean).join("&");
     // /getbycollege?${queryParams}
-    const res = await api.get(`/reviewer`);
-
+    console.log('params: ',queryParams)
+    const res = await api.get(`/reviewer?${queryParams}`);
+    console.log('response: ', res )
     if (res.data.status === "success") {
       return res.data.data;
     }

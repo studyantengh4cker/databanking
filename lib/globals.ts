@@ -1,4 +1,5 @@
 import {
+  BookIcon,
   File,
   GraduationCap,
   HeadsetIcon,
@@ -24,6 +25,12 @@ export const links = [
     href: "/dashboard/mycollege",
     icon: SchoolIcon,
     for: ["faculty", "dean", "programhead"],
+  },
+  {
+    tag: "Reviewers",
+    href: "/dashboard/Reviewers",
+    icon: BookIcon,
+    for: ["student"],
   },
 ];
 
