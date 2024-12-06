@@ -1,7 +1,7 @@
 "use client";
 import { getCollegeUsers } from "@/actions/college.action";
 import { Pagination, User } from "@/lib/types";
-import { useQuery, UseQueryOptions } from '@tanstack/react-query';
+import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 
 interface GetCollegeUsersParams {
@@ -14,11 +14,10 @@ export interface CollegeUsersResponse {
   pagination: Pagination;
 }
 
-export const useGetCollegeUsers = (
-  p0: string,
-  id: string | undefined,
-  { role, college }: GetCollegeUsersParams
-) => {
+export const useGetCollegeUsers = ({
+  role,
+  college,
+}: GetCollegeUsersParams) => {
   const [page, setCurrentPage] = useState<number>(1);
 
   const { data, isLoading, error } = useQuery<CollegeUsersResponse, Error>({
@@ -26,7 +25,7 @@ export const useGetCollegeUsers = (
     queryFn: async (): Promise<CollegeUsersResponse> => {
       const response = await getCollegeUsers(role, college, page);
       if (!response) {
-        throw new Error('Failed to fetch college users');
+        throw new Error("Failed to fetch college users");
       }
       return response;
     },

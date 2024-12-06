@@ -3,21 +3,26 @@ import ReviewerCard from "@/components/dashboard/colleges/ReviewerCard";
 import { AddUserModal } from "@/components/modal/AddUserModal";
 import AddReviewerForm from "@/components/forms/AddReviewerForm";
 import { useGetCollegeReviewers } from "@/app/(custom_hooks)/useGetCollegeReviewers";
-import { Reviewer } from "@/lib/types";
 
 interface ReviewersProps {
   college: College | null;
 }
 
 export default function Reviewers({ college }: ReviewersProps) {
-  const { reviewers, isLoading, error } = useGetCollegeReviewers(college?.id, {
+  const { reviewers } = useGetCollegeReviewers(college?.id, {
     college: college?.id,
   });
 
   return (
     <div className="h-auto w-full flex flex-col gap-5 shadow-md rounded-3xl min-h-[40vh] items-start py-10 px-14">
       <header className="flex w-full gap-4 items-center">
-        <AddUserModal college={college} title="Add Reviewer" buttonTitle="Add Reveiwer" children={<AddReviewerForm/>} />
+        <AddUserModal
+          college={college}
+          title="Add Reviewer"
+          buttonTitle="Add Reveiwer"
+        >
+          <AddReviewerForm />
+        </AddUserModal>
         <input
           type="text"
           name="search"
@@ -41,7 +46,13 @@ export default function Reviewers({ college }: ReviewersProps) {
       <main className="flex flex-wrap gap-5">
         {reviewers && reviewers.length !== 0
           ? reviewers.map((reviewer) => {
-              return <ReviewerCard key={reviewer.id} college={college} data={reviewer} />;
+              return (
+                <ReviewerCard
+                  key={reviewer.id}
+                  college={college}
+                  data={reviewer}
+                />
+              );
             })
           : "No Reviewers for this College"}
       </main>

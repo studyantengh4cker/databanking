@@ -1,10 +1,13 @@
 import { Pagination } from "@/lib/types";
 
 interface PaginationProps {
-    pagination : Pagination | undefined
-    setCurrentPage: (page: number) => any
+  pagination: Pagination | undefined;
+  setCurrentPage: (page: number) => void;
 }
-export default function PaginationComponent({pagination, setCurrentPage}: PaginationProps) {
+export default function PaginationComponent({
+  pagination,
+  setCurrentPage,
+}: PaginationProps) {
   return (
     <div>
       {" "}

@@ -10,19 +10,21 @@ interface StudentsProps {
 }
 
 export default function Students({ college }: StudentsProps) {
-  const { users, isLoading, error } = useGetCollegeUsers(
-    "student",
-    college?.id,
-    {
-      role: "student",
-      college: college?.id,
-    }
-  );
+  const { users, isLoading } = useGetCollegeUsers({
+    role: "student",
+    college: college?.id,
+  });
 
   return (
     <div className="h-auto w-full flex flex-col gap-5 shadow-md rounded-3xl min-h-[40vh] items-start py-10 px-14">
       <header className="flex w-full gap-4 items-center">
-        <AddUserModal college={college} title="Add Student" buttonTitle="Add Student" children={<AddStudentForm/>} />
+        <AddUserModal
+          college={college}
+          title="Add Student"
+          buttonTitle="Add Student"
+        >
+          <AddStudentForm />
+        </AddUserModal>
         <input
           type="text"
           name="search"

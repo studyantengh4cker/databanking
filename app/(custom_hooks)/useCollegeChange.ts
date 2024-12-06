@@ -1,6 +1,6 @@
 import { College } from "../dashboard/colleges/Colleges";
 
-export const useHandleCollegeChange = (
+export const collegeChange = (
   form: any,
   setCollege: (selected: College | undefined) => void,
   colleges: College[],

@@ -12,7 +12,7 @@ interface DeansProps {
 }
 
 export default function Deans({ college }: DeansProps) {
-  const { users, isLoading, error } = useGetCollegeUsers("dean", college?.id, {
+  const { users, isLoading } = useGetCollegeUsers({
     role: "dean",
     college: college?.id,
   });
@@ -20,7 +20,14 @@ export default function Deans({ college }: DeansProps) {
   return (
     <div className="h-auto w-full flex flex-col gap-5 shadow-md rounded-3xl min-h-[40vh] items-start py-10 px-14">
       <header className="flex w-full gap-4 items-center">
-        <AddUserModal title="Add Dean/Program Head" buttonTitle='Add Dean' college={college} children={<AddUserForm/>} />
+        <AddUserModal
+          title="Add Dean/Program Head"
+          buttonTitle="Add Dean"
+          college={college}
+        >
+          <AddUserForm />
+        </AddUserModal>
+
         <input
           type="text"
           name="search"

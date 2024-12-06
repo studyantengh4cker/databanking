@@ -1,5 +1,5 @@
 import { useChooseCollege } from "@/app/(custom_hooks)/useChooseCollege";
-import { College, colleges, Programs } from "@/app/dashboard/colleges/Colleges";
+import { College } from "@/app/dashboard/colleges/Colleges";
 import { Reviewer } from "@/lib/types";
 import Image from "next/image";
 import { useRouter } from "next/navigation";

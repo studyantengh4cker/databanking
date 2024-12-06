@@ -17,7 +17,7 @@ import { useState } from "react";
 export type AddQuestionFormData = z.infer<typeof addQuestionSchema>;
 
 export default function AddReviewerQuestion() {
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
 
   const form = useForm<AddQuestionFormData>({
     resolver: zodResolver(addUserSchema),
@@ -30,7 +30,9 @@ export default function AddReviewerQuestion() {
       subtopic: "",
     },
   });
-  const onSubmit = () => {};
+  const onSubmit = () => {
+    setLoading(false);
+  };
 
   return (
     <FormProvider {...form}>

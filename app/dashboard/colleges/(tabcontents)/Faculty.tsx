@@ -10,7 +10,7 @@ interface FacultyProps {
 }
 
 export default function Faculty({ college }: FacultyProps) {
-  const { users, isLoading, error } = useGetCollegeUsers("faculty", college?.id, {
+  const { users, isLoading } = useGetCollegeUsers({
     role: "faculty",
     college: college?.id,
   });
@@ -18,7 +18,13 @@ export default function Faculty({ college }: FacultyProps) {
   return (
     <div className="h-auto w-full flex flex-col gap-5 shadow-md rounded-3xl min-h-[40vh] items-start py-10 px-14">
       <header className="flex w-full gap-4 items-center">
-        <AddUserModal title="Add Faculty Member" buttonTitle='Add Faculty' college={college} children={<AddFacultyForm/>} />
+        <AddUserModal
+          title="Add Faculty Member"
+          buttonTitle="Add Faculty"
+          college={college}
+        >
+          <AddFacultyForm />
+        </AddUserModal>
         <input
           type="text"
           name="search"
@@ -35,7 +41,7 @@ export default function Faculty({ college }: FacultyProps) {
         </select>
       </header>
       <main className="w-full">
-      {!isLoading ? <UserListTable datas={users} /> : <Loading />}
+        {!isLoading ? <UserListTable datas={users} /> : <Loading />}
       </main>
     </div>
   );

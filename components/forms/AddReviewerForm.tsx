@@ -1,13 +1,13 @@
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
-import { College, colleges, Programs } from "@/app/dashboard/colleges/Colleges";
+import { College, colleges } from "@/app/dashboard/colleges/Colleges";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProvider, useForm } from "react-hook-form";
 import { z } from "zod";
 import { addReviewerSchema } from "@/lib/AddReviewerZodSchema";
 import CollegeID from "../formfields/CollegeID";
-import { useHandleCollegeChange } from "@/app/(custom_hooks)/useCollegeChange";
+import { collegeChange } from "@/app/(custom_hooks)/useCollegeChange";
 import ProgramID from "../formfields/ProgramID";
 import { Button } from "../ui/button";
 import {
@@ -21,7 +21,7 @@ import { useSubmitAddReviewerForm } from "@/app/(custom_hooks)/useSubmitAddRevie
 
 export type AddReviewerFormData = z.infer<typeof addReviewerSchema>;
 
-export default function addReviewerForm() {
+export default function AddReviewerForm() {
   const form = useForm<AddReviewerFormData>({
     resolver: zodResolver(addReviewerSchema),
     defaultValues: {
@@ -33,12 +33,12 @@ export default function addReviewerForm() {
     },
   });
   const [currentCollege, setCollege] = useState<College>();
-  const { onSubmit, error, loading } = useSubmitAddReviewerForm();
+  const { onSubmit, loading } = useSubmitAddReviewerForm();
 
   const handleCollegeChange = (value: string) => {
-    useHandleCollegeChange(form, setCollege, colleges, value);
+    collegeChange(form, setCollege, colleges, value);
   };
-  
+
   return (
     <FormProvider {...form}>
       <form

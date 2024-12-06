@@ -2,8 +2,14 @@
 import { useChooseCollege } from "@/app/(custom_hooks)/useChooseCollege";
 import AddReviewerQuestion from "@/components/forms/AddReviewerQuestion";
 import { AddUserModal } from "@/components/modal/AddUserModal";
-import { Table, TableBody, TableCell, TableHeader, TableRow } from "@/components/ui/table";
-   
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+
 import { Reviewer } from "@/lib/types";
 
 interface ReviewerQuestionsProps {
@@ -38,10 +44,16 @@ export default function ReviewerQuestions({
     <div className="w-full flex flex-col gap-5 [&_h1]:text-2xl [&_h1]:font-semibold">
       <header className="w-full flex items-center gap-10">
         <h1>Questions</h1>
-        <AddUserModal title="Add Question" buttonTitle='Add Question' college={collegeData} children={<AddReviewerQuestion/>} />
+        <AddUserModal
+          title="Add Question"
+          buttonTitle="Add Question"
+          college={collegeData}
+        >
+          <AddReviewerQuestion />
+        </AddUserModal>
       </header>
       <main>
-      <Table>
+        <Table>
           <TableHeader>
             <TableRow>
               <TableCell>Question</TableCell>

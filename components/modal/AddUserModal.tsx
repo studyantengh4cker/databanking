@@ -3,25 +3,26 @@ import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import AddDeanForm from "../forms/AddDeanForm";
 
 interface ModalProps {
   title: string;
   buttonTitle: string;
-  college: College | null | {
-    currentProgram: Programs | undefined;
-    id?: string | undefined;
-    name?: string | undefined;
-    shortname?: string | undefined;
-    color?: string | undefined;
-    image?: string | undefined;
-    programs?: Programs[] | undefined;
-};
+  college:
+    | College
+    | null
+    | {
+        currentProgram: Programs | undefined;
+        id?: string | undefined;
+        name?: string | undefined;
+        shortname?: string | undefined;
+        color?: string | undefined;
+        image?: string | undefined;
+        programs?: Programs[] | undefined;
+      };
   children: React.ReactNode;
 }
 export function AddUserModal({

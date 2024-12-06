@@ -4,16 +4,9 @@ import ReviewerInfo from "@/components/dashboard/reviewer/ReviewerInfo";
 import ReviewerQuestions from "@/components/dashboard/reviewer/ReviewerQuestions";
 import { Reviewer } from "@/lib/types";
 
-interface ReviewerPageProps {
-  params: {
-    id: string;
-  };
-}
-
-const ReviewerPage = async ({ params }: ReviewerPageProps) => {
-  const { id } = await params;
-  if (!id) return null;
-  const reviewer: Reviewer = await getCollegeReviewerByID(Number(id));
+const ReviewerPage = async ({ params }: { params: any }) => {
+  if (!params.id) return null;
+  const reviewer: Reviewer = await getCollegeReviewerByID(Number(params.id));
 
   return (
     <div className="p-14">

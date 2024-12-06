@@ -9,17 +9,23 @@ import {
 } from "@/components/ui/select";
 import { College, colleges } from "@/app/dashboard/colleges/Colleges";
 import { useSubmitAddUserForm } from "@/app/(custom_hooks)/useSubmitAddUserForm";
-import { useHandleCollegeChange } from "@/app/(custom_hooks)/useCollegeChange";
+import { collegeChange } from "@/app/(custom_hooks)/useCollegeChange";
 import { addUserSchema } from "@/lib/AddUserZodSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProvider, useForm } from "react-hook-form";
 import { Button } from "../ui/button";
-import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "../ui/form";
+import {
+  FormField,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormMessage,
+} from "../ui/form";
 import { AddUserFormData } from "./AddDeanForm";
 
-export default function addFacultyForm() {
+export default function AddFacultyForm() {
   const [currentCollege, setCollege] = useState<College>();
-  const { onSubmit, error, loading } = useSubmitAddUserForm();
+  const { onSubmit, loading } = useSubmitAddUserForm();
 
   const form = useForm<AddUserFormData>({
     resolver: zodResolver(addUserSchema),
@@ -39,7 +45,7 @@ export default function addFacultyForm() {
   });
 
   const handleCollegeChange = (value: string) => {
-    useHandleCollegeChange(form, setCollege, colleges, value);
+    collegeChange(form, setCollege, colleges, value);
   };
 
   return (
@@ -125,7 +131,6 @@ export default function addFacultyForm() {
               </FormItem>
             )}
           />
-
         </div>
         <div className="input-group flex gap-5">
           {" "}
@@ -227,7 +232,7 @@ export default function addFacultyForm() {
             )}
           />
         </div>
-        <Button  className="w-[30%]" type="submit" disabled={loading}>
+        <Button className="w-[30%]" type="submit" disabled={loading}>
           {loading ? "Submitting..." : "Submit"}
         </Button>
       </form>
