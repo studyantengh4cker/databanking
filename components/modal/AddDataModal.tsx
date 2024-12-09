@@ -25,7 +25,7 @@ interface ModalProps {
       };
   children: React.ReactNode;
 }
-export function AddUserModal({
+export function AddDataModal({
   title,
   buttonTitle,
   college,

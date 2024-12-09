@@ -2,8 +2,8 @@ import UserListTable from "@/components/dashboard/colleges/UserListTable";
 import { College } from "../Colleges";
 import { useGetCollegeUsers } from "@/app/(custom_hooks)/useGetCollegeUsers";
 import Loading from "@/components/dashboard/Loading/Loading";
-import { AddUserModal } from "@/components/modal/AddUserModal";
 import AddUserForm from "@/components/forms/AddDeanForm";
+import { AddDataModal } from "@/components/modal/AddDataModal";
 
 // import PaginationComponent from "@/components/dashboard/Pagination";
 
@@ -20,13 +20,13 @@ export default function Deans({ college }: DeansProps) {
   return (
     <div className="h-auto w-full flex flex-col gap-5 shadow-md rounded-3xl min-h-[40vh] items-start py-10 px-14">
       <header className="flex w-full gap-4 items-center">
-        <AddUserModal
+        <AddDataModal
           title="Add Dean/Program Head"
           buttonTitle="Add Dean"
           college={college}
         >
           <AddUserForm />
-        </AddUserModal>
+        </AddDataModal>
 
         <input
           type="text"

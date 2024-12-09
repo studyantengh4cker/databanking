@@ -55,3 +55,16 @@ export interface Pagination {
   next_page_url: string | null;
   prev_page_url: string | null;
 }
+
+export interface Topic {
+  topic_name: string;
+  college_id: number;
+  program_id: number;
+}
+
+export interface Subtopic {
+  subtopic_name: string;
+  topic_id: number;
+  college_id: number;
+  program_id: number;
+}

@@ -20,7 +20,7 @@ export async function addDeanorProgramHead(formvalue: AddUserFormData) {
       return res.data;
     }
   } catch (error) {
-    console.error("Error fetching college users:", error);
+    console.error("Error adding dean or programhead:", error);
   }
 }
 
@@ -38,6 +38,6 @@ export async function addReviewer(formvalue: AddReviewerFormData) {
       return res.data;
     }
   } catch (error) {
-    console.error("Error fetching college users:", error);
+    console.error("Error adding reviewer:", error);
   }
 }

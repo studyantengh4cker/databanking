@@ -2,8 +2,8 @@ import UserListTable from "@/components/dashboard/colleges/UserListTable";
 import { College } from "../Colleges";
 import { useGetCollegeUsers } from "@/app/(custom_hooks)/useGetCollegeUsers";
 import Loading from "@/components/dashboard/Loading/Loading";
-import { AddUserModal } from "@/components/modal/AddUserModal";
 import AddFacultyForm from "@/components/forms/AddFacultyForm";
+import { AddDataModal } from "@/components/modal/AddDataModal";
 
 interface FacultyProps {
   college: College | null;
@@ -18,13 +18,13 @@ export default function Faculty({ college }: FacultyProps) {
   return (
     <div className="h-auto w-full flex flex-col gap-5 shadow-md rounded-3xl min-h-[40vh] items-start py-10 px-14">
       <header className="flex w-full gap-4 items-center">
-        <AddUserModal
+        <AddDataModal
           title="Add Faculty Member"
           buttonTitle="Add Faculty"
           college={college}
         >
           <AddFacultyForm />
-        </AddUserModal>
+        </AddDataModal>
         <input
           type="text"
           name="search"

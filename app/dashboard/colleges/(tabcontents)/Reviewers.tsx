@@ -1,8 +1,10 @@
 import { College } from "../Colleges";
 import ReviewerCard from "@/components/dashboard/colleges/ReviewerCard";
-import { AddUserModal } from "@/components/modal/AddUserModal";
 import AddReviewerForm from "@/components/forms/AddReviewerForm";
 import { useGetCollegeReviewers } from "@/app/(custom_hooks)/useGetCollegeReviewers";
+import { AddDataModal } from "@/components/modal/AddDataModal";
+import AddTopicForm from "@/components/forms/AddTopicForm";
+import AddSubtopicForm from "@/components/forms/AddSubtopicForm";
 
 interface ReviewersProps {
   college: College | null;
@@ -16,13 +18,27 @@ export default function Reviewers({ college }: ReviewersProps) {
   return (
     <div className="h-auto w-full flex flex-col gap-5 shadow-md rounded-3xl basis-full items-start py-10 px-14">
       <header className="flex w-full gap-4 items-center">
-        <AddUserModal
+        <AddDataModal
           college={college}
           title="Add Reviewer"
           buttonTitle="Add Reveiwer"
         >
           <AddReviewerForm />
-        </AddUserModal>
+        </AddDataModal>
+        <AddDataModal
+          college={college}
+          title="Add Topic"
+          buttonTitle="Add Topic"
+        >
+          <AddTopicForm />
+        </AddDataModal>
+        <AddDataModal
+          college={college}
+          title="Add Topic"
+          buttonTitle="Add Subtopic"
+        >
+          <AddSubtopicForm />
+        </AddDataModal>
         <input
           type="text"
           name="search"

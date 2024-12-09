@@ -1,6 +1,5 @@
 "use client";
 import { Session } from "next-auth";
-import CollegeData from "../../colleges/CollegeData";
 import { useChooseCollege } from "@/app/(custom_hooks)/useChooseCollege";
 import CollegeBanner from "@/components/dashboard/colleges/CollegeBanner";
 import Reviewers from "../../colleges/(tabcontents)/Reviewers";
