@@ -1,4 +1,5 @@
 "use server";
+import { AddQuestionFormData } from "@/components/forms/AddReviewerQuestion";
 import { AddSubtopicFormData } from "@/components/forms/AddSubtopicForm";
 import { AddTopicFormData } from "@/components/forms/AddTopicForm";
 import api from "@/lib/api";
@@ -36,5 +37,21 @@ export async function addSubtopic(formvalue: AddSubtopicFormData) {
     }
   } catch (error) {
     console.error("Error adding subtopic data:", error);
+  }
+}
+
+export async function addQuestion(formvalue: AddQuestionFormData) {
+  try {
+    const transformedFormValue = {
+      ...formvalue,
+      question_choices: JSON.stringify(formvalue.question_choices)
+    };
+    const res = await api.post(`/question`, transformedFormValue);
+
+    if (res.data.status === "success") {
+      return res.data;
+    }
+  } catch (error) {
+    console.error("Error adding question data:", error);
   }
 }

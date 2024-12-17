@@ -19,17 +19,15 @@ export default function AddReviewerQuestion() {
   const [loading, setLoading] = useState(false);
   const [choices, setChoices] = useState<string[]>([]);
   const [choiceError, setChoiceError] = useState<string | null>(null);
-  const [currentChoice, setCurrentChoice] = useState<string>(""); // Track the input for a single choice
+  const [currentChoice, setCurrentChoice] = useState<string>(""); 
 
   const form = useForm<AddQuestionFormData>({
     resolver: zodResolver(addQuestionSchema),
     defaultValues: {
-      question: "",
+      question_content: "",
       correct_answer: "",
       question_choices: [],
       question_point: "",
-      topic: "",
-      subtopic: "",
     },
   });
 
@@ -45,8 +43,8 @@ export default function AddReviewerQuestion() {
     }
 
     setChoices((prev) => [...prev, trimmedChoice]);
-    setCurrentChoice(""); // Clear input
-    setChoiceError(null); // Clear error
+    setCurrentChoice(""); 
+    setChoiceError(null); 
   };
 
   const onSubmit = (data: AddQuestionFormData) => {
@@ -64,7 +62,7 @@ export default function AddReviewerQuestion() {
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
         <FormField
           control={form.control}
-          name="question"
+          name="question_content"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Question</FormLabel>

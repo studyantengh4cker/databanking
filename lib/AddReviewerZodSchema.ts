@@ -23,13 +23,14 @@ export const  addSubTopicSchema = z.object({
 })
   
 export const addQuestionSchema = z.object({
-  question: z.string().nonempty("Question is required"),
+  question_content: z.string().nonempty("Question is required"),
   correct_answer: z.string().nonempty("Question is required"),
   question_point: z.string().nonempty('Question point is required'),
   question_choices: z
   .array(z.string().nonempty("Choice cannot be empty")) 
   .min(2, "At least two choices are required") 
   .max(4, "No more than four choices are allowed"), 
-  topic: z.string().nonempty("Topic is required"),
-  subtopic: z.string().nonempty("Subtopic is required"),
+  // topic: z.string().nonempty("Topic is required"),
+  // subtopic: z.string().nonempty("Subtopic is required"),
 })
+
