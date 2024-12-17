@@ -5,8 +5,9 @@ import ReviewerQuestions from "@/components/dashboard/reviewer/ReviewerQuestions
 import { Reviewer } from "@/lib/types";
 
 const ReviewerPage = async ({ params }: { params: any }) => {
-  if (!params.id) return null;
-  const reviewer: Reviewer = await getCollegeReviewerByID(Number(params.id));
+  const {id} = await params
+  if (!id) return null;
+  const reviewer: Reviewer = await getCollegeReviewerByID(Number(id));
 
   return (
     <div className="p-14">

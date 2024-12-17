@@ -15,14 +15,16 @@ import { useState } from "react";
 import CollegeID from "../formfields/CollegeID";
 import ProgramID from "../formfields/ProgramID";
 import { collegeChange } from "@/app/(custom_hooks)/useCollegeChange";
-import { College, colleges } from "@/app/dashboard/colleges/Colleges";
+import { colleges } from "@/app/dashboard/colleges/Colleges";
 import { addTopic } from "@/actions/dean.action";
 import { toast } from "@/hooks/use-toast";
+import { useCollegeContext } from "@/context/reviewers/CollegeContext";
 
 export type AddTopicFormData = z.infer<typeof addTopicSchema>;
 
 export default function AddTopicForm() {
-  const [currentCollege, setCollege] = useState<College>();
+  // const [currentCollege, setCollege] = useState<College>();
+  const {setCurrentCollege} = useCollegeContext()
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
 
@@ -30,7 +32,8 @@ export default function AddTopicForm() {
     resolver: zodResolver(addTopicSchema),
     defaultValues: {
       topic_name: "",
-      college_id: "",
+      topic_description: "",
+      reviewer_id: "",
       program_id: "",
     },
   });
@@ -65,7 +68,7 @@ export default function AddTopicForm() {
   };
 
   const handleCollegeChange = (value: string) => {
-    collegeChange(form, setCollege, colleges, value);
+    collegeChange(form, setCurrentCollege, colleges, value);
   };
   return (
     <FormProvider {...form}>
@@ -83,8 +86,21 @@ export default function AddTopicForm() {
             </FormItem>
           )}
         />
+        <FormField
+          control={form.control}
+          name="topic_description"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Topic Description</FormLabel>
+              <FormControl>
+                <Input placeholder="Enter Topic Description" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         <CollegeID form={form} handleCollegeChange={handleCollegeChange} />
-        <ProgramID form={form} currentCollege={currentCollege} />
+        <ProgramID form={form} />
         <Button className="w-[30%]" type="submit" disabled={loading}>
           {loading ? "Submitting..." : "Submit"}
         </Button>

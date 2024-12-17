@@ -1,6 +1,5 @@
-import { useState } from "react";
 import { Input } from "@/components/ui/input";
-import { College, colleges } from "@/app/dashboard/colleges/Colleges";
+import { colleges } from "@/app/dashboard/colleges/Colleges";
 import {
   FormControl,
   FormField,
@@ -17,9 +16,10 @@ import { Button } from "../ui/button";
 import { AddUserFormData } from "./AddDeanForm";
 import CollegeID from "../formfields/CollegeID";
 import ProgramID from "../formfields/ProgramID";
+import { useCollegeContext } from "@/context/reviewers/CollegeContext";
 
 export default function AddStudentForm() {
-  const [currentCollege, setCollege] = useState<College>();
+  const {setCurrentCollege} = useCollegeContext()
   const { onSubmit, loading } = useSubmitAddUserForm();
 
   const form = useForm<AddUserFormData>({
@@ -40,7 +40,7 @@ export default function AddStudentForm() {
   });
 
   const handleCollegeChange = (value: string) => {
-    collegeChange(form, setCollege, colleges, value);
+    collegeChange(form, setCurrentCollege, colleges, value);
   };
 
   return (
@@ -130,7 +130,7 @@ export default function AddStudentForm() {
         <div className="input-group flex gap-5">
           {" "}
           <CollegeID form={form} handleCollegeChange={handleCollegeChange} />
-          <ProgramID form={form} currentCollege={currentCollege} />
+          <ProgramID form={form}  />
         </div>
         <div className="input-group flex gap-5">
           <FormField

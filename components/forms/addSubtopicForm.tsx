@@ -12,26 +12,21 @@ import {
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { useState } from "react";
-import CollegeID from "../formfields/CollegeID";
-import ProgramID from "../formfields/ProgramID";
-import { collegeChange } from "@/app/(custom_hooks)/useCollegeChange";
-import { College, colleges } from "@/app/dashboard/colleges/Colleges";
 import { addSubtopic } from "@/actions/dean.action";
 import { toast } from "@/hooks/use-toast";
 
 export type AddSubtopicFormData = z.infer<typeof addSubTopicSchema>;
 
 export default function AddSubtopicForm() {
-  const [currentCollege, setCollege] = useState<College>();
+  // const [currentCollege, setCollege] = useState<College>();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const form = useForm<AddSubtopicFormData>({
     resolver: zodResolver(addSubTopicSchema),
     defaultValues: {
       subtopic_name: "",
+      subtopic_description: "",
       topic_id: "",
-      college_id: "",
-      program_id: "",
     },
   });
   const onSubmit = async (values: AddSubtopicFormData) => {
@@ -62,9 +57,9 @@ export default function AddSubtopicForm() {
       setLoading(false);
     }
   };
-  const handleCollegeChange = (value: string) => {
-    collegeChange(form, setCollege, colleges, value);
-  };
+  // const handleCollegeChange = (value: string) => {
+  //   collegeChange(form, setCollege, colleges, value);
+  // };
   return (
     <FormProvider {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -94,8 +89,7 @@ export default function AddSubtopicForm() {
             </FormItem>
           )}
         />
-        <CollegeID form={form} handleCollegeChange={handleCollegeChange} />
-        <ProgramID form={form} currentCollege={currentCollege} />
+
         <Button className="w-[30%]" type="submit" disabled={loading}>
           {loading ? "Submitting..." : "Submit"}
         </Button>

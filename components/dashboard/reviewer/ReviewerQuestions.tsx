@@ -1,6 +1,8 @@
 "use client";
 import { useChooseCollege } from "@/app/(custom_hooks)/useChooseCollege";
 import AddReviewerQuestion from "@/components/forms/AddReviewerQuestion";
+import AddSubtopicForm from "@/components/forms/AddSubtopicForm";
+import AddTopicForm from "@/components/forms/AddTopicForm";
 import { AddDataModal } from "@/components/modal/AddDataModal";
 
 import {
@@ -51,6 +53,22 @@ export default function ReviewerQuestions({
           college={collegeData}
         >
           <AddReviewerQuestion />
+        </AddDataModal>
+        <AddDataModal
+          college={collegeData}
+          title="Add Topic"
+          buttonTitle="Add Topic"
+        >
+          <AddTopicForm />
+        </AddDataModal>
+        
+        <AddDataModal
+          college={collegeData}
+          title="Add Topic"
+          buttonTitle="Add Subtopic"
+        >
+          <AddSubtopicForm />
+
         </AddDataModal>
       </header>
       <main>

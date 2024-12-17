@@ -1,6 +1,5 @@
-import { useState } from "react";
 import { Input } from "@/components/ui/input";
-import { College, colleges } from "@/app/dashboard/colleges/Colleges";
+import { colleges } from "@/app/dashboard/colleges/Colleges";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProvider, useForm } from "react-hook-form";
@@ -18,6 +17,7 @@ import {
   FormMessage,
 } from "../ui/form";
 import { useSubmitAddReviewerForm } from "@/app/(custom_hooks)/useSubmitAddReviewer";
+import { useCollegeContext } from "@/context/reviewers/CollegeContext";
 
 export type AddReviewerFormData = z.infer<typeof addReviewerSchema>;
 
@@ -32,11 +32,11 @@ export default function AddReviewerForm() {
       program_id: "",
     },
   });
-  const [currentCollege, setCollege] = useState<College>();
+  const {setCurrentCollege} = useCollegeContext()
   const { onSubmit, loading } = useSubmitAddReviewerForm();
 
   const handleCollegeChange = (value: string) => {
-    collegeChange(form, setCollege, colleges, value);
+    collegeChange(form, setCurrentCollege, colleges, value);
   };
 
   return (
@@ -88,7 +88,7 @@ export default function AddReviewerForm() {
         </div>
         <div className="college w-full flex gap-5">
           <CollegeID form={form} handleCollegeChange={handleCollegeChange} />
-          <ProgramID form={form} currentCollege={currentCollege} />
+          <ProgramID form={form} />
         </div>
         <div className="button w-full h-1/4 flex items-end">
           <Button className="w-[30%]" type="submit" disabled={loading}>

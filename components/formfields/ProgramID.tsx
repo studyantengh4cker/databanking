@@ -1,15 +1,14 @@
 
+import { useCollegeContext } from "@/context/reviewers/CollegeContext";
 import { FormField, FormItem, FormLabel, FormMessage,  } from "../ui/form";
-import { College, Programs } from "@/app/dashboard/colleges/Colleges";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "../ui/select";
 
 interface ProgramIDProps {
     form: any
-    currentCollege: College | undefined
-    
 }
 
-export default function ProgramID({form, currentCollege,}: ProgramIDProps) {
+export default function ProgramID({form}: ProgramIDProps) {
+  const {currentCollege} = useCollegeContext()
   return (
     <FormField
             control={form.control}
@@ -25,11 +24,11 @@ export default function ProgramID({form, currentCollege,}: ProgramIDProps) {
                     <SelectValue placeholder="Select program" />
                   </SelectTrigger>
                   <SelectContent>
-                    {currentCollege ? (
-                      currentCollege.programs.length > 0 ? (
-                        currentCollege.programs.map((program: Programs) => (
+                    {currentCollege && currentCollege?.programs && currentCollege?.programs.length > 0 ? (
+                      currentCollege?.programs.length > 0 ? (
+                        currentCollege?.programs.map((program: any) => (
                           <SelectItem key={program.id} value={program.id}>
-                            {program.name}
+                            {program.program_name}
                           </SelectItem>
                         ))
                       ) : (

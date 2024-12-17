@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import { ReactQueryProvider } from "./_react-query-provider";
+import { CollegeContextProvider } from "@/context/reviewers/CollegeContext";
 
 const kumbh = localFont({
   src: "./fonts/KumbhSans-Black.ttf",
@@ -23,7 +24,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${kumbh.variable} antialiased`}>
-        <ReactQueryProvider>{children}</ReactQueryProvider>
+        <ReactQueryProvider>
+          <CollegeContextProvider>{children}</CollegeContextProvider>
+        </ReactQueryProvider>
         <Toaster />
       </body>
     </html>

@@ -11,15 +11,15 @@ export const addReviewerSchema = z
   
 export const  addTopicSchema = z.object({
   topic_name: z.string().nonempty("Topic name is required"),
-  college_id: z.string().nonempty("College is required"),
+  topic_description: z.string().nonempty("Description is required"),
+  reviewer_id: z.string().optional(),
   program_id: z.string().nonempty("Program is required"),
 })
 
 export const  addSubTopicSchema = z.object({
   subtopic_name: z.string().nonempty("Subtopic name is required"),
+  subtopic_description: z.string().nonempty("Description is required"),
   topic_id: z.string().nonempty("Topic is required"),
-  college_id: z.string().nonempty("College is required"),
-  program_id: z.string().nonempty("Program is required"),
 })
   
 export const addQuestionSchema = z.object({

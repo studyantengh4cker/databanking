@@ -8,7 +8,7 @@ export async function addTopic(formvalue: AddTopicFormData) {
   try {
     const transformedFormValue = {
       ...formvalue,
-      college_id: Number(formvalue.college_id),
+      reviewer_id: Number(),
       program_id: Number(formvalue.program_id),
     };
 
@@ -26,9 +26,7 @@ export async function addSubtopic(formvalue: AddSubtopicFormData) {
   try {
     const transformedFormValue = {
       ...formvalue,
-      topic_id: Number(formvalue.college_id),
-      college_id: Number(formvalue.college_id),
-      program_id: Number(formvalue.program_id),
+      topic_id: Number(formvalue.topic_id),
     };
     const res = await api.post(`/subtopic`, transformedFormValue);
 

@@ -1,0 +1,25 @@
+reviewer:
+reviewer_id
+name
+desc
+
+topic:
+name
+college_id
+
+subtopic
+topic_id
+name
+
+
+question:
+college_id fk
+contnet:
+correct_anwer
+...etc
+
+question_tags
+question_id ***
+topic_id ***
+subtopic_id ***
+reviewer_id ***

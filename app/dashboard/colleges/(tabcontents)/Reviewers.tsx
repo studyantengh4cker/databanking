@@ -3,8 +3,6 @@ import ReviewerCard from "@/components/dashboard/colleges/ReviewerCard";
 import AddReviewerForm from "@/components/forms/AddReviewerForm";
 import { useGetCollegeReviewers } from "@/app/(custom_hooks)/useGetCollegeReviewers";
 import { AddDataModal } from "@/components/modal/AddDataModal";
-import AddTopicForm from "@/components/forms/AddTopicForm";
-import AddSubtopicForm from "@/components/forms/AddSubtopicForm";
 
 interface ReviewersProps {
   college: College | null;
@@ -25,20 +23,7 @@ export default function Reviewers({ college }: ReviewersProps) {
         >
           <AddReviewerForm />
         </AddDataModal>
-        <AddDataModal
-          college={college}
-          title="Add Topic"
-          buttonTitle="Add Topic"
-        >
-          <AddTopicForm />
-        </AddDataModal>
-        <AddDataModal
-          college={college}
-          title="Add Topic"
-          buttonTitle="Add Subtopic"
-        >
-          <AddSubtopicForm />
-        </AddDataModal>
+        
         <input
           type="text"
           name="search"

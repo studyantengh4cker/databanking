@@ -40,9 +40,9 @@ export async function getCollegeReviewers(collegeId?: string, page?: number) {
     const checkPage = page ? `page=${page}` : "";
     const queryParams = [checkID, checkPage].filter(Boolean).join("&");
     // /getbycollege?${queryParams}
-    console.log('params: ',queryParams)
+    console.log("params: ", queryParams);
     const res = await api.get(`/reviewer?${queryParams}`);
-    console.log('response: ', res )
+    console.log("response: ", res);
     if (res.data.status === "success") {
       return res.data.data;
     }
@@ -59,6 +59,21 @@ export async function getCollegeReviewerByID(id: number) {
       return res.data.data;
     }
   } catch (error) {
-    console.error("Error fetching college reviewers:", error);
+    console.error(`Error fetching college reviewers with id: ${id} `, error);
   }
 }
+
+export const getAllCollege = async () => {
+  try {
+    const res = await api.get("/college");
+    
+    if (res.data.status === "success") {
+      console.log(res.data.data)
+      return res.data.data;
+    }
+  } catch (error) {
+    console.error("Error fetching colleges:", error);
+  }
+};
+
+
