@@ -1,10 +1,6 @@
 "use client";
-import { useChooseCollege } from "@/app/(custom_hooks)/useChooseCollege";
-import AddReviewerQuestion from "@/components/forms/AddReviewerQuestion";
-import AddSubtopicForm from "@/components/forms/AddSubtopicForm";
-import AddTopicForm from "@/components/forms/AddTopicForm";
-import { AddDataModal } from "@/components/modal/AddDataModal";
-
+import React, { useState, useEffect } from "react";
+import { getQuestions } from "@/actions/college.action";
 import {
   Table,
   TableBody,
@@ -13,86 +9,72 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-import { Reviewer } from "@/lib/types";
+import { Question } from "@/lib/types";
 
-interface ReviewerQuestionsProps {
-  reviewer: Reviewer;
-}
-
-export default function ReviewerQuestions({
-  reviewer,
-}: ReviewerQuestionsProps) {
-  const collegeData = useChooseCollege(
-    reviewer.college_id,
-    reviewer.program_id
+export default function ReviewerQuestions() {
+  const [questionsData, setQuestionData] = useState<Question[] | []>([]);
+  const [expandedQuestionId, setExpandedQuestionId] = useState<number | null>(
+    null
   );
 
-  // Example data for the table
-  const questionsData = [
-    {
-      question: "What is your favorite subject?",
-      topic: "Math",
-      subtopic: "Subjects",
-      action: "Edit",
-    },
-    {
-      question: "How do you find the course structure?",
-      topic: "Math",
-      subtopic: "Structure",
-      action: "Edit",
-    },
-  ];
+  useEffect(() => {
+    async function handleGetQuestions() {
+      const res = await getQuestions();
+      setQuestionData(res.questions);
+    }
+    handleGetQuestions();
+  }, []);
+
+  const toggleQuestionDetails = (id: number) => {
+    setExpandedQuestionId(expandedQuestionId === id ? null : id);
+  };
 
   return (
     <div className="w-full flex flex-col gap-5 [&_h1]:text-2xl [&_h1]:font-semibold">
-      <header className="w-full flex items-center gap-10">
-        <h1>Questions</h1>
-        <AddDataModal
-          title="Add Question"
-          buttonTitle="Add Question"
-          college={collegeData}
-        >
-          <AddReviewerQuestion />
-        </AddDataModal>
-        <AddDataModal
-          college={collegeData}
-          title="Add Topic"
-          buttonTitle="Add Topic"
-        >
-          <AddTopicForm />
-        </AddDataModal>
-        
-        <AddDataModal
-          college={collegeData}
-          title="Add Topic"
-          buttonTitle="Add Subtopic"
-        >
-          <AddSubtopicForm />
-
-        </AddDataModal>
-      </header>
       <main>
         <Table>
           <TableHeader>
             <TableRow>
               <TableCell>Question</TableCell>
-              <TableCell>Topic</TableCell>
               <TableCell>Subtopic</TableCell>
               <TableCell>Action</TableCell>
             </TableRow>
           </TableHeader>
           <TableBody>
             {questionsData.map((row, index) => (
-              <TableRow key={index}>
-                <TableCell>{row.question}</TableCell>
-                <TableCell>{row.topic}</TableCell>
-                <TableCell>{row.subtopic}</TableCell>
-                <TableCell>
-                  <button className="text-blue-500 hover:text-blue-700">
-                    {row.action}
-                  </button>
-                </TableCell>
-              </TableRow>
+              <React.Fragment key={index}>
+                <TableRow
+                  className={`transition-all duration-300 ${
+                    expandedQuestionId === row.id ? "h-auto" : "h-16"
+                  }`}
+                >
+                  <TableCell>{row.question_content}</TableCell>
+                  <TableCell>{row.subtopic_id}</TableCell>
+                  <TableCell>
+                    <button
+                      className="text-blue-500 hover:text-blue-700"
+                      onClick={() => toggleQuestionDetails(row.id)}
+                    >
+                      View
+                    </button>
+                  </TableCell>
+                </TableRow>
+                <TableRow className="flex-1">
+                  {expandedQuestionId === row.id && (
+                    <div className="mt-2 p-2 bg-gray-100 rounded flex flex-col">
+                      <h3 className="font-semibold flex-1">Choices</h3>
+                      <ul>
+                        {row.choices?.map((choice, idx) => (
+                          <li key={idx} className="flex gap-3 py-1">
+                            <span>{choice.choice_index}</span>:{" "}
+                            <span>{choice.choice_content}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </TableRow>
+              </React.Fragment>
             ))}
           </TableBody>
         </Table>

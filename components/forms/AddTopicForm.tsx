@@ -19,30 +19,35 @@ import { colleges } from "@/app/dashboard/colleges/Colleges";
 import { addTopic } from "@/actions/dean.action";
 import { toast } from "@/hooks/use-toast";
 import { useCollegeContext } from "@/context/reviewers/CollegeContext";
+import { Reviewer } from "@/lib/types";
 
 export type AddTopicFormData = z.infer<typeof addTopicSchema>;
 
-export default function AddTopicForm() {
+interface AddTopicFormProps {
+  reviewer: Reviewer
+}
+
+export default function AddTopicForm({reviewer}: AddTopicFormProps) {
   // const [currentCollege, setCollege] = useState<College>();
   const {setCurrentCollege} = useCollegeContext()
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
 
+  
   const form = useForm<AddTopicFormData>({
     resolver: zodResolver(addTopicSchema),
     defaultValues: {
       topic_name: "",
       topic_description: "",
-      reviewer_id: "",
+      reviewer_id: reviewer.id,
       program_id: "",
     },
   });
   const onSubmit = async (values: AddTopicFormData) => {
-    console.log('clicked')
     try {
       setLoading(true);
       const res = await addTopic(values);
-
+      console.log(values.program_id)
       if (!res || res?.status !== "success") {
         setError(true);
       } else {
@@ -66,10 +71,13 @@ export default function AddTopicForm() {
       setLoading(false);
     }
   };
-
+  
   const handleCollegeChange = (value: string) => {
     collegeChange(form, setCurrentCollege, colleges, value);
   };
+  if(!reviewer){
+    return null
+  }
   return (
     <FormProvider {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">

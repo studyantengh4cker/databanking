@@ -1,33 +1,39 @@
-import { useCollegeContext } from "@/context/reviewers/CollegeContext";
+import React, { useEffect, useState } from 'react'
 import { FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "../ui/select";
+import { getSubtopics } from '@/actions/college.action';
 
-interface ProgramIDProps {
-  form: any;
-}
+export default function SubtopicID({form}: any) {
+  const [subtopics, setSubtopics] = useState([])
 
-export default function ProgramID({ form }: ProgramIDProps) {
-  const { currentCollege } = useCollegeContext();
+  useEffect(() => {
+    async function fetchData(){
+        const res = await getSubtopics()
+        setSubtopics(res.subtopics)
+    }
+    fetchData()
+  },[])
 
   return (
     <FormField
       control={form.control}
-      name="program_id"
+      name="subtopic_id"
       render={({ field }) => (
         <FormItem>
-          <FormLabel>Program</FormLabel>
+          <FormLabel>Subtopic</FormLabel>
           <Select
             onValueChange={(value) => field.onChange(value)}
             value={field.value?.toString()}
+            
           >
             <SelectTrigger>
-              <SelectValue placeholder="Select program" />
+              <SelectValue placeholder="Select subtopic" />
             </SelectTrigger>
             <SelectContent>
-              {currentCollege && currentCollege?.programs && currentCollege?.programs.length > 0 ? (
-                currentCollege?.programs.map((program: any) => (
-                  <SelectItem key={program.id} value={program.id.toString()}>
-                    {program.program_name}
+              {subtopics?.length > 0 ? (
+                subtopics?.map((subtopic: any) => (
+                  <SelectItem key={subtopic.id} value={subtopic.id.toString()}>
+                    {subtopic.subtopic_name}
                   </SelectItem>
                 ))
               ) : (
@@ -39,5 +45,5 @@ export default function ProgramID({ form }: ProgramIDProps) {
         </FormItem>
       )}
     />
-  );
+  )
 }

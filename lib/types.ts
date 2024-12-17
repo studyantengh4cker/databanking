@@ -17,16 +17,16 @@ export interface User {
 
 export interface Reviewer {
   id: number;
-  reviewer_name: string;
-  reviewer_description: string;
-  topic_id: number | undefined;
-  subtopic_id: number | undefined;
-  updated_at: string;
-  school_year: number;
-  college_id: number;
-  program_id: number;
-  program: Program;
   college: College;
+  college_id: number;
+  program: Program;
+  program_id: number;
+  reviewer_description: string;
+  reviewer_name: string;
+  school_year: string | null;
+  topics: any[]; 
+  created_at: string;
+  updated_at: string;
 }
 
 export interface College {
@@ -57,14 +57,38 @@ export interface Pagination {
 }
 
 export interface Topic {
-  topic_name: string;
-  college_id: number;
+  id: number;
+  program: Program;
   program_id: number;
+  reviewer: Reviewer;
+  reviewer_id: number;
+  topic_name: string;
+  topic_description: string;
+  created_at: string;
+  updated_at: string;
 }
 
 export interface Subtopic {
+  id: number;
   subtopic_name: string;
+  subtopic_description: string;
   topic_id: number;
-  college_id: number;
-  program_id: number;
+  created_at: string;
+}
+
+export interface Choice {
+  choice_index: string;
+  choice_content: string;
+}
+
+export interface Question {
+  id: number;
+  question_content: string;
+  question_point: string;
+  correct_answer: string;
+  subtopic_id: number;
+  created_at: string;
+  updated_at: string;
+  choices: Choice[]; 
+  subtopic: Subtopic; 
 }

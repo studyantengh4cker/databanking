@@ -14,6 +14,7 @@ import { Button } from "../ui/button";
 import { useState } from "react";
 import { addSubtopic } from "@/actions/dean.action";
 import { toast } from "@/hooks/use-toast";
+import TopicID from "../formfields/TopicID";
 
 export type AddSubtopicFormData = z.infer<typeof addSubTopicSchema>;
 
@@ -78,18 +79,19 @@ export default function AddSubtopicForm() {
         />
         <FormField
           control={form.control}
-          name="topic_id"
+          name="subtopic_description"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Topic </FormLabel>
+              <FormLabel>Subtopic Description</FormLabel>
               <FormControl>
-                <Input placeholder="Enter Topic ID" {...field} />
+                <Input placeholder="Enter Subtopic Description" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-
+      
+        <TopicID form={form} />
         <Button className="w-[30%]" type="submit" disabled={loading}>
           {loading ? "Submitting..." : "Submit"}
         </Button>

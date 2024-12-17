@@ -66,9 +66,9 @@ export async function getCollegeReviewerByID(id: number) {
 export const getAllCollege = async () => {
   try {
     const res = await api.get("/college");
-    
+
     if (res.data.status === "success") {
-      console.log(res.data.data)
+      console.log(res.data.data);
       return res.data.data;
     }
   } catch (error) {
@@ -76,4 +76,57 @@ export const getAllCollege = async () => {
   }
 };
 
+export const getQuestions = async () => {
+  try {
+    const res = await api.get(`/question`);
+    if (res.data.status === "success") {
+      return res.data.data;
+    }
+  } catch (error) {
+    console.error("Error fetching questions:", error);
+  }
+};
 
+export const getTopics = async () => {
+  try {
+    const res = await api.get(`/topic`);
+    if (res.data.status === "success") {
+      return res.data.data;
+    }
+  } catch (error) {
+    console.error("Error fetching topics:", error);
+  }
+};
+
+export const getTopicsByReviewerId = async (reviewerID: number) => {
+  try {
+    const res = await api.get(`/topic?reviewer_id=${reviewerID}`);
+    if (res.data.status === "success") {
+      return res.data.data;
+    }
+  } catch (error) {
+    console.error("Error fetching topics:", error);
+  }
+};
+
+export const getSubtopics = async () => {
+  try {
+    const res = await api.get(`/subtopic`);
+    if (res.data.status === "success") {
+      return res.data.data;
+    }
+  } catch (error) {
+    console.error("Error fetching subtopics:", error);
+  }
+};
+
+export const getSubtopicsByTopicsId = async (topicID: number) => {
+  try {
+    const res = await api.get(`/subtopic?topic_id=${topicID}`);
+    if (res.data.status === "success") {
+      return res.data.data;
+    }
+  } catch (error) {
+    console.error("Error fetching subtopics:", error);
+  }
+};

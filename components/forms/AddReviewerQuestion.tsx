@@ -1,6 +1,6 @@
 import { addQuestionSchema } from "@/lib/AddReviewerZodSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { FormProvider, useForm } from "react-hook-form";
+import { useForm, FormProvider } from "react-hook-form";
 import { z } from "zod";
 import {
   FormControl,
@@ -10,56 +10,86 @@ import {
   FormMessage,
 } from "../ui/form";
 import { Input } from "../ui/input";
+import {  useState } from "react";
 import { Button } from "../ui/button";
-import { useState } from "react";
+
+import SubtopicID from "../formfields/SubtopicID";
+import { addQuestion } from "@/actions/dean.action";
+import { toast } from "@/hooks/use-toast";
 
 export type AddQuestionFormData = z.infer<typeof addQuestionSchema>;
+export type ChoiceKey = "a" | "b" | "c" | "d";
 
 export default function AddReviewerQuestion() {
   const [loading, setLoading] = useState(false);
-  const [choices, setChoices] = useState<string[]>([]);
-  const [choiceError, setChoiceError] = useState<string | null>(null);
-  const [currentChoice, setCurrentChoice] = useState<string>(""); 
+  const [error, setError] = useState(false);
+  const [currentChoice, setCurrentChoice] = useState<string>("");
+  const [choiceKey, setChoiceKey] = useState<ChoiceKey>("a");
 
   const form = useForm<AddQuestionFormData>({
     resolver: zodResolver(addQuestionSchema),
     defaultValues: {
       question_content: "",
       correct_answer: "",
-      question_choices: [],
       question_point: "",
+      subtopic_id: "",
+      question_choices: { a: "", b: "", c: "", d: "" },
     },
   });
 
   const addChoice = () => {
     const trimmedChoice = currentChoice.trim();
     if (!trimmedChoice) {
-      setChoiceError("Choice cannot be empty.");
-      return;
-    }
-    if (choices.length >= 4) {
-      setChoiceError("You can only add up to 4 choices.");
+      alert("Choice cannot be empty.");
       return;
     }
 
-    setChoices((prev) => [...prev, trimmedChoice]);
-    setCurrentChoice(""); 
-    setChoiceError(null); 
+    const updatedChoices = { ...form.getValues().question_choices };
+    updatedChoices[choiceKey] = trimmedChoice;
+
+    form.setValue("question_choices", updatedChoices);
+    setCurrentChoice("");
+    setChoiceKey(nextChoiceKey(choiceKey));
   };
 
-  const onSubmit = (data: AddQuestionFormData) => {
-    setLoading(true);
-    const questionData = {
-      ...data,
-      question_choices: choices, 
-    };
-    console.log("Submitted data:", questionData);
-    setLoading(false);
+  const nextChoiceKey = (key: ChoiceKey): ChoiceKey => {
+    const keys: ChoiceKey[] = ["a", "b", "c", "d"];
+    const currentIndex = keys.indexOf(key);
+
+    return keys[Math.min(currentIndex + 1, keys.length - 1)];
   };
+
+  const onSubmit = async (values: AddQuestionFormData) => {
+    try {
+      setLoading(true);
+
+      const res = await addQuestion(values);
+
+      if (!res || res?.status !== "success") {
+        setError(true);
+      } else {
+        toast({
+          title: `Added ${values.question_content} question`,
+          description: "Successfully added question!",
+        });
+      }
+    } catch (err) {
+      console.error(err);
+      setError(true);
+      alert(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if(error){
+    return <div>ERROR</div>
+  }
 
   return (
     <FormProvider {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        <SubtopicID form={form} />
         <FormField
           control={form.control}
           name="question_content"
@@ -109,42 +139,34 @@ export default function AddReviewerQuestion() {
               value={currentChoice}
               onChange={(e) => setCurrentChoice(e.target.value)}
             />
-            {choiceError && (
-              <p className="text-red-500 text-sm">{choiceError}</p>
-            )}
           </div>
           <button
             type="button"
             onClick={addChoice}
-            disabled={!currentChoice.trim() || choices.length >= 4}
-            className={`container cursor-pointer rounded-full text-white ${
-              choices.length < 4
-                ? "bg-[#720000] hover:bg-[#320000]"
-                : "bg-gray-400"
-            } flex justify-center items-center w-[40px] h-[40px]`}
+            className="container cursor-pointer rounded-full text-white bg-[#720000] hover:bg-[#320000] flex justify-center items-center w-[40px] h-[40px]"
+            disabled={
+              !currentChoice.trim() ||
+              Object.values(form.getValues().question_choices).filter(Boolean)
+                .length >= 4
+            }
           >
             +
           </button>
         </div>
-        {/* Display current choices */}
         <div className="flex flex-wrap gap-4">
-          {choices.map((choice, index) => (
-            <div
-              key={index}
-              className="bg-gray-100 flex-1 px-4 py-2 rounded shadow-sm flex justify-between items-center"
-            >
-              <span>{choice}</span>
-              <button
-                type="button"
-                onClick={() =>
-                  setChoices((prev) => prev.filter((_, i) => i !== index))
-                }
-                className="text-red-500 hover:underline"
-              >
-                Remove
-              </button>
-            </div>
-          ))}
+          {Object.entries(form.getValues().question_choices).map(
+            ([key, value]) =>
+              value ? (
+                <div
+                  key={key}
+                  className="bg-gray-100 flex-1 px-4 py-2 rounded shadow-sm flex justify-between items-center"
+                >
+                  <span>
+                    <strong>{key.toUpperCase()}:</strong> {value}
+                  </span>
+                </div>
+              ) : null
+          )}
         </div>
         <Button className="w-[30%]" type="submit" disabled={loading}>
           {loading ? "Submitting..." : "Submit"}
