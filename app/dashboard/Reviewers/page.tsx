@@ -10,8 +10,10 @@ export default async function Reviewers() {
     return redirect("/login");
   }
 
-  return <div>
-    <Header title={"Reviewers"} />
-    <Reviewersmainpage session={session} />
-  </div>
+  return (
+    <div className="w-full">
+      <Header title={"Reviewers"} />
+      <Reviewersmainpage session={session} />
+    </div>
+  );
 }

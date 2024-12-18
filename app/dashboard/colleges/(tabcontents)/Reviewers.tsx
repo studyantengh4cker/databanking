@@ -3,6 +3,7 @@ import ReviewerCard from "@/components/dashboard/colleges/ReviewerCard";
 import AddReviewerForm from "@/components/forms/AddReviewerForm";
 import { useGetCollegeReviewers } from "@/app/(custom_hooks)/useGetCollegeReviewers";
 import { AddDataModal } from "@/components/modal/AddDataModal";
+import LoadingCard from "@/components/dashboard/Loading/LoadingCard";
 
 interface ReviewersProps {
   college: College | null;
@@ -23,7 +24,7 @@ export default function Reviewers({ college }: ReviewersProps) {
         >
           <AddReviewerForm />
         </AddDataModal>
-        
+
         <input
           type="text"
           name="search"
@@ -45,8 +46,9 @@ export default function Reviewers({ college }: ReviewersProps) {
         </select>
       </header>
       <main className="flex flex-wrap gap-5">
-        {reviewers && reviewers.length !== 0
-          ? reviewers.map((reviewer) => {
+        {reviewers ? (
+          reviewers.length !== 0 ? (
+            reviewers.map((reviewer) => {
               return (
                 <ReviewerCard
                   key={reviewer.id}
@@ -55,7 +57,12 @@ export default function Reviewers({ college }: ReviewersProps) {
                 />
               );
             })
-          : "No Reviewers for this College"}
+          ) : (
+            <p>No Reviewers for this College</p>
+          )
+        ) : (
+          <LoadingCard />
+        )}
       </main>
     </div>
   );

@@ -8,17 +8,23 @@ import { Reviewer } from "@/lib/types";
 import React, { useState } from "react";
 import ReviewerQuestions from "./ReviewerQuestions";
 import Topics from "./Topics";
+import { Loader2 } from "lucide-react";
 
 interface ReviewerBodyProps {
   reviewer: Reviewer;
 }
 export default function ReviewerBody({ reviewer }: ReviewerBodyProps) {
+
+  
   const collegeData = useChooseCollege(
     reviewer.college_id,
     reviewer.program_id
   );
   const [currentTab, setCurrentTab] = useState<string>('questions')
-
+  
+  if(!reviewer){
+    return <Loader2/>
+  }
   return (
     <div>
       <header className="w-full flex items-center justify-between gap-10">
@@ -45,9 +51,9 @@ export default function ReviewerBody({ reviewer }: ReviewerBodyProps) {
         >
           <AddSubtopicForm />
         </AddDataModal></div>
-        <div className="col flex gap-5">
-            <button onClick={() => setCurrentTab('questions')}>Questions</button>
-            <button onClick={() => setCurrentTab('topics')}>Topics</button>
+        <div className="col flex gap-5 text-white [&_button]:px-10 [&_button]:py-2 [&_button]:rounded-md">
+            <button className={``} style={{backgroundColor: collegeData.color}} onClick={() => setCurrentTab('questions')}>Questions</button>
+            <button className={``} style={{backgroundColor: collegeData.color}} onClick={() => setCurrentTab('topics')}>Topics</button>
         </div>
       </header>
       <main>

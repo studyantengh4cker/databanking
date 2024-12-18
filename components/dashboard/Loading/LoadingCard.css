@@ -1,0 +1,159 @@
+
+.logo-container {
+    height: 100%;
+    display: grid;
+    place-items: center;
+}
+
+footer {
+    color: #b5a197;
+    margin: 4px 0;
+    font-family: "Inconsolata", monospace;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    font-variation-settings: "wdth" 100;
+}
+
+footer a {
+    text-decoration: none;
+    color: rgb(100, 100, 100);
+}
+
+@keyframes eyeball-rotation {
+    12.5% {
+        transform: translate(10px, 0);
+    }
+
+    25% {
+        transform: translate(10px, -10px);
+    }
+
+    37.5% {
+        transform: translate(0, -10px);
+    }
+
+    50% {
+        transform: translate(-10px, -10px);
+    }
+
+    62.5% {
+        transform: translate(-10px, 0);
+    }
+
+    75% {
+        transform: translate(0);
+    }
+
+    87.5% {
+        transform: translate(0, 10px);
+    }
+
+    100% {
+        transform: translate(0);
+    }
+}
+
+@keyframes chameleon-main {
+    16.6667% {
+        color: rgb(49, 179, 117);
+    }
+
+    33.3333% {
+        color: rgb(255, 107, 181);
+    }
+
+    50% {
+        color: rgb(105, 180, 255);
+    }
+
+    66.6667% {
+        color: rgb(150, 105, 255);
+    }
+
+    83.3333% {
+        color: rgb(180, 255, 105);
+    }
+
+    100% {
+        color: rgb(255, 105, 137);
+    }
+}
+
+@keyframes chameleon-shadow {
+    16.6667% {
+        color: rgb(19, 147, 72); /* Adjusted color values */
+    }
+
+    33.3333% {
+        color: rgb(225, 57, 148);
+    }
+
+    50% {
+        color: rgb(75, 147, 222);
+    }
+
+    66.6667% {
+        color: rgb(120, 72, 222);
+    }
+
+    83.3333% {
+        color: rgb(150, 222, 60);
+    }
+
+    100% {
+        color: rgb(225, 72, 104);
+    }
+}
+
+#layer-1,
+#layer-3,
+#layer-5 {
+    color: #ff69b4; /* light pink */
+    animation-name: chameleon-main;
+}
+
+#layer-2,
+#layer-4 {
+    color: #e14887; /* dark pink */
+    animation-name: chameleon-shadow;
+}
+
+#layer-1,
+#layer-2,
+#layer-3,
+#layer-4,
+#layer-5 {
+    animation-duration: 10s; /* length of colors array (6) * total-animation-duration (2s) */
+    animation-timing-function: steps(1, jump-start);
+    animation-iteration-count: infinite;
+}
+
+#layer-1 {
+    animation-delay: 500ms;
+}
+
+#layer-2 {
+    animation-delay: 600ms;
+}
+
+#layer-3 {
+    animation-delay: 700ms;
+}
+
+#layer-4 {
+    animation-delay: 800ms;
+}
+
+#layer-5 {
+    animation-delay: 1000ms;
+}
+
+#newme-text {
+    color: #ff69b4; /* light pink */
+    animation: 12s steps(1, jump-start) infinite chameleon-main; /* 6 colors * 2s = 12s */
+}
+
+#eyeball-fg {
+    animation: 8s steps(1, jump-start) infinite alternate eyeball-rotation;
+}

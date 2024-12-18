@@ -38,7 +38,7 @@ export const useGetCollegeReviewers = (
   // }
 
   return {
-    reviewers: data?.reviewers ?? [],
+    reviewers: data?.reviewers ?? null,
     pagination: data?.pagination,
     isLoading,
     error,
