@@ -31,10 +31,10 @@ export default function UserListTable({ datas }: UserListTable) {
         {datas && datas.length > 0 ? (
           datas.map((data, index) => (
             <TableRow key={index}>
-              <TableCell className="font-medium">{data.idnum}</TableCell>
+              <TableCell className="font-medium">{data.id}</TableCell>
               <TableCell>{data.email}</TableCell>
               <TableCell>
-                {data.first_name} {data.last_name}
+                {data.firstName} {data.lastName}
               </TableCell>
               <TableCell className="text-right">{data.role}</TableCell>
               <TableCell className="text-right">{data.college_id}</TableCell>

@@ -3,7 +3,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import { ReactQueryProvider } from "./_react-query-provider";
-import { CollegeContextProvider } from "@/context/reviewers/CollegeContext";
+import { CollegeContextProvider } from "@/context/form_field/CollegeContext";
 
 const kumbh = localFont({
   src: "./fonts/KumbhSans-Black.ttf",

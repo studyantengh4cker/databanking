@@ -9,14 +9,17 @@ import {
   TableCell,
   TableBody,
 } from "@/components/ui/table";
-import { Reviewer, Subtopic, Topic } from "@/lib/types";
+import { Reviewer, Subtopic, Topic, User } from "@/lib/types";
+import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
 interface TopicsProps {
   reviewer: Reviewer;
+  user: User | undefined;
 }
 
-export default function Topics({ reviewer }: TopicsProps) {
+export default function Topics({ reviewer, user }: TopicsProps) {
+  const navigate = useRouter();
   const [topics, setTopics] = useState<Topic[] | null>(null);
   const [subTopics, setSubtopics] = useState<Subtopic[] | null>(null);
   const [expandedTopicId, setExpandedTopicId] = useState<number | null>(null);
@@ -30,15 +33,21 @@ export default function Topics({ reviewer }: TopicsProps) {
     }
     handleGetTopics();
   }, [reviewer]);
+
+  const handleClickViewButton = (reviewer_id: number, topic_id: number) => {
+    if (user?.role === "student") {
+      handleGetSubtopics(topic_id);
+      setExpandedTopicId(expandedTopicId === topic_id ? null : topic_id);
+    } else {
+      navigate.push(`/dashboard/reviewer/${reviewer_id}/topic/${topic_id}`);
+    }
+  };
+
   const handleGetSubtopics = async (id: number) => {
     if (topics) {
       const res = await getSubtopicsByTopicsId(id);
       setSubtopics(res.subtopics);
     }
-  };
-  const toggleTopicsDetails = async (id: number) => {
-    handleGetSubtopics(id);
-    setExpandedTopicId(expandedTopicId === id ? null : id);
   };
 
   return (
@@ -66,15 +75,12 @@ export default function Topics({ reviewer }: TopicsProps) {
                     <TableCell>
                       <button
                         className="text-blue-500 hover:text-blue-700"
-                        onClick={() => toggleTopicsDetails(row.id)}
-                        onMouseEnter={() => handleGetSubtopics(row.id)}
-                        
+                        onClick={() => handleClickViewButton(row.reviewer_id,row.id)}
                       >
                         View
                       </button>
                     </TableCell>
                   </TableRow>
-
                   {expandedTopicId === row.id &&
                   subTopics &&
                   subTopics.length > 0 ? (

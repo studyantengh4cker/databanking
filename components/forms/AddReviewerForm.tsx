@@ -17,7 +17,7 @@ import {
   FormMessage,
 } from "../ui/form";
 import { useSubmitAddReviewerForm } from "@/app/(custom_hooks)/useSubmitAddReviewer";
-import { useCollegeContext } from "@/context/reviewers/CollegeContext";
+import { useFormfieldCollegeContext } from "@/context/form_field/CollegeContext";
 
 export type AddReviewerFormData = z.infer<typeof addReviewerSchema>;
 
@@ -32,7 +32,7 @@ export default function AddReviewerForm() {
       program_id: "",
     },
   });
-  const {setCurrentCollege} = useCollegeContext()
+  const {setCurrentCollege} = useFormfieldCollegeContext()
   const { onSubmit, loading } = useSubmitAddReviewerForm();
 
   const handleCollegeChange = (value: string) => {

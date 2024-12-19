@@ -18,7 +18,7 @@ import { collegeChange } from "@/app/(custom_hooks)/useCollegeChange";
 import { colleges } from "@/app/dashboard/colleges/Colleges";
 import { addTopic } from "@/actions/dean.action";
 import { toast } from "@/hooks/use-toast";
-import { useCollegeContext } from "@/context/reviewers/CollegeContext";
+import { useFormfieldCollegeContext } from "@/context/form_field/CollegeContext";
 import { Reviewer } from "@/lib/types";
 
 export type AddTopicFormData = z.infer<typeof addTopicSchema>;
@@ -29,7 +29,7 @@ interface AddTopicFormProps {
 
 export default function AddTopicForm({reviewer}: AddTopicFormProps) {
   // const [currentCollege, setCollege] = useState<College>();
-  const {setCurrentCollege} = useCollegeContext()
+  const {setCurrentCollege} = useFormfieldCollegeContext()
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
 

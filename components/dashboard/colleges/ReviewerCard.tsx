@@ -18,7 +18,6 @@ export default function ReviewerCard({ college, data }: ReviewerCardProps) {
 
   const handleNavigateTo = (id: number) => {
     if (!id) return;
-    // console.log(id)
     navigate.push(`/dashboard/reviewer/${id}`);
   };
 

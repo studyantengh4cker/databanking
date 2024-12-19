@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { FormField, FormItem, FormLabel, FormMessage } from '../ui/form';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '../ui/select';
 import { getAllCollege } from '@/actions/college.action';
-import { useCollegeContext } from '@/context/reviewers/CollegeContext';
+import { useFormfieldCollegeContext } from '@/context/form_field/CollegeContext';
 
 interface CollegeIDProps {
   form: any;
@@ -11,7 +11,7 @@ interface CollegeIDProps {
 
 export default function CollegeID({ form, handleCollegeChange }: CollegeIDProps) {
   const [colleges, setCollege] = useState<any[]>([]);
-  const { setCurrentCollege } = useCollegeContext();
+  const { setCurrentCollege } = useFormfieldCollegeContext();
 
   useEffect(() => {
     const handleGetCollege = async () => {

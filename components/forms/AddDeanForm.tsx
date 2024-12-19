@@ -22,6 +22,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { collegeChange } from "@/app/(custom_hooks)/useCollegeChange";
 import { useSubmitAddUserForm } from "@/app/(custom_hooks)/useSubmitAddUserForm";
 import { addUserSchema } from "@/lib/AddUserZodSchema";
+import FirstName from "../formfields/FirstName";
 
 export type AddUserFormData = z.infer<typeof addUserSchema>;
 
@@ -54,19 +55,7 @@ export default function AddDeanForm() {
     <FormProvider {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
         <div className="input-group flex gap-5">
-          <FormField
-            control={form.control}
-            name="first_name"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>First Name</FormLabel>
-                <FormControl>
-                  <Input placeholder="Enter first name" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          <FirstName form={form} />
           <FormField
             control={form.control}
             name="last_name"

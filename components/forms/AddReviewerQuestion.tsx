@@ -1,5 +1,4 @@
 import { addQuestionSchema } from "@/lib/AddReviewerZodSchema";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, FormProvider } from "react-hook-form";
 import { z } from "zod";
 import {
@@ -10,168 +9,258 @@ import {
   FormMessage,
 } from "../ui/form";
 import { Input } from "../ui/input";
-import {  useState } from "react";
+import { useState } from "react";
 import { Button } from "../ui/button";
-
-import SubtopicID from "../formfields/SubtopicID";
-import { addQuestion } from "@/actions/dean.action";
+import { addQuestion, editQuestion } from "@/actions/dean.action";
 import { toast } from "@/hooks/use-toast";
+import { Question, Reviewer } from "@/lib/types";
 
 export type AddQuestionFormData = z.infer<typeof addQuestionSchema>;
-export type ChoiceKey = "a" | "b" | "c" | "d";
 
-export default function AddReviewerQuestion() {
+interface AddReviewerQuestionProps {
+  reviewer: Reviewer;
+  defaultValues: Question;
+}
+
+export default function AddReviewerQuestion({
+  reviewer,
+  defaultValues,
+}: AddReviewerQuestionProps) {
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
-  const [currentChoice, setCurrentChoice] = useState<string>("");
-  const [choiceKey, setChoiceKey] = useState<ChoiceKey>("a");
+  const [error, setError] = useState<Error | null>(null);
+  const [currentChoice, setCurrentChoice] = useState("");
 
   const form = useForm<AddQuestionFormData>({
-    resolver: zodResolver(addQuestionSchema),
     defaultValues: {
-      question_content: "",
-      correct_answer: "",
-      question_point: "",
-      subtopic_id: "",
-      question_choices: { a: "", b: "", c: "", d: "" },
+      reviewer_id: reviewer.id,
+      question_content: defaultValues?.question_content || "",
+      correct_answer: defaultValues?.correct_answer || "",
+      question_point: defaultValues?.question_point || "",
+      choices: defaultValues?.choices?.map((choice) => ({
+        choice_index: choice.choice_index as "A" | "B" | "C" | "D",
+        choice_content: choice.choice_content,
+      })) || [
+        { choice_index: "A", choice_content: "" },
+        { choice_index: "B", choice_content: "" },
+        { choice_index: "C", choice_content: "" },
+        { choice_index: "D", choice_content: "" },
+      ],
     },
   });
 
   const addChoice = () => {
     const trimmedChoice = currentChoice.trim();
     if (!trimmedChoice) {
-      alert("Choice cannot be empty.");
+      toast({
+        title: "Error",
+        description: "Choice cannot be empty",
+        variant: "destructive",
+      });
       return;
     }
 
-    const updatedChoices = { ...form.getValues().question_choices };
-    updatedChoices[choiceKey] = trimmedChoice;
+    const choices = form.getValues().choices;
+    const emptyChoiceIndex = choices.findIndex(
+      (choice) => !choice.choice_content
+    );
+    if (emptyChoiceIndex === -1) {
+      toast({
+        title: "Error",
+        description: "Maximum 4 choices allowed",
+        variant: "destructive",
+      });
+      return;
+    }
 
-    form.setValue("question_choices", updatedChoices);
+    const updatedChoices = [...choices];
+    updatedChoices[emptyChoiceIndex].choice_content = trimmedChoice;
+
+    form.setValue("choices", updatedChoices);
     setCurrentChoice("");
-    setChoiceKey(nextChoiceKey(choiceKey));
   };
 
-  const nextChoiceKey = (key: ChoiceKey): ChoiceKey => {
-    const keys: ChoiceKey[] = ["a", "b", "c", "d"];
-    const currentIndex = keys.indexOf(key);
-
-    return keys[Math.min(currentIndex + 1, keys.length - 1)];
+  const removeChoice = (choiceIndex: "A" | "B" | "C" | "D") => {
+    const updatedChoices = form
+      .getValues()
+      .choices.map((choice) =>
+        choice.choice_index === choiceIndex
+          ? { ...choice, choice_content: "" }
+          : choice
+      );
+    form.setValue("choices", updatedChoices);
   };
 
+  const isEditing = defaultValues?.question_content?.trim() !== "";
   const onSubmit = async (values: AddQuestionFormData) => {
     try {
       setLoading(true);
 
-      const res = await addQuestion(values);
+      const res = isEditing
+        ? await editQuestion(values, defaultValues.id)
+        : await addQuestion(values);
 
       if (!res || res?.status !== "success") {
-        setError(true);
-      } else {
-        toast({
-          title: `Added ${values.question_content} question`,
-          description: "Successfully added question!",
-        });
+        throw new Error(
+          isEditing ? "Failed to edit question" : "Failed to add question"
+        );
+      }
+
+      toast({
+        title: "Success",
+        description: isEditing
+          ? `Edited question: "${values.question_content}"`
+          : `Added question: "${values.question_content}"`,
+      });
+
+      if (!isEditing) {
+        form.reset();
       }
     } catch (err) {
-      console.error(err);
-      setError(true);
-      alert(err);
+      setError(err instanceof Error ? err : new Error("An error occurred"));
+      toast({
+        title: "Error",
+        description:
+          err instanceof Error
+            ? err.message
+            : isEditing
+            ? "Failed to edit question"
+            : "Failed to add question",
+        variant: "destructive",
+      });
     } finally {
       setLoading(false);
     }
   };
 
-  if(error){
-    return <div>ERROR</div>
-  }
-
   return (
-    <FormProvider {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-        <SubtopicID form={form} />
-        <FormField
-          control={form.control}
-          name="question_content"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Question</FormLabel>
-              <FormControl>
-                <Input placeholder="Enter Question" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <div className="group flex gap-4">
-          <FormField
-            control={form.control}
-            name="correct_answer"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Correct Answer</FormLabel>
-                <FormControl>
-                  <Input placeholder="Enter Correct Answer" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="question_point"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Question Point</FormLabel>
-                <FormControl>
-                  <Input placeholder="Enter Question Point" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+    <>
+      {error && (
+        <div className="bg-red-400 rounded-md px-10 py-3 text-white">
+          {error.message}
         </div>
-        <div className="flex items-end gap-2">
-          <div className="flex-1">
-            <FormLabel>Question Choices</FormLabel>
-            <Input
-              placeholder="Enter a choice"
-              value={currentChoice}
-              onChange={(e) => setCurrentChoice(e.target.value)}
+      )}
+      <FormProvider {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <FormField
+            control={form.control}
+            name="reviewer_id"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Reviewer ID</FormLabel>
+                <FormControl>
+                  <Input {...field} value={reviewer.id} readOnly />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="question_content"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Question</FormLabel>
+                <FormControl>
+                  <Input placeholder="Enter Question" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <div className="grid grid-cols-2 gap-4">
+            <FormField
+              control={form.control}
+              name="correct_answer"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Correct Answer</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Enter Correct Answer" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="question_point"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Question Point</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Enter Question Point" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
           </div>
-          <button
-            type="button"
-            onClick={addChoice}
-            className="container cursor-pointer rounded-full text-white bg-[#720000] hover:bg-[#320000] flex justify-center items-center w-[40px] h-[40px]"
-            disabled={
-              !currentChoice.trim() ||
-              Object.values(form.getValues().question_choices).filter(Boolean)
-                .length >= 4
-            }
-          >
-            +
-          </button>
-        </div>
-        <div className="flex flex-wrap gap-4">
-          {Object.entries(form.getValues().question_choices).map(
-            ([key, value]) =>
-              value ? (
+
+          <div className="flex items-end gap-2">
+            <div className="flex-1">
+              <FormLabel>Question Choices</FormLabel>
+              <Input
+                placeholder="Enter a choice"
+                value={currentChoice}
+                onChange={(e) => setCurrentChoice(e.target.value)}
+              />
+            </div>
+            <Button
+              type="button"
+              onClick={addChoice}
+              className="h-10 w-10 rounded-full"
+              variant="default"
+              disabled={
+                !currentChoice.trim() ||
+                form
+                  .getValues()
+                  .choices.every((choice) => choice.choice_content)
+              }
+            >
+              +
+            </Button>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            {form.getValues().choices.map((choice) =>
+              choice.choice_content ? (
                 <div
-                  key={key}
-                  className="bg-gray-100 flex-1 px-4 py-2 rounded shadow-sm flex justify-between items-center"
+                  key={choice.choice_index}
+                  className="bg-gray-100 px-4 py-2 rounded shadow-sm flex justify-between items-center"
                 >
-                  <span>
-                    <strong>{key.toUpperCase()}:</strong> {value}
-                  </span>
+                  <p className="flex justify-between w-full items-center">
+                    <span>
+                      <strong>{choice.choice_index}:</strong>{" "}
+                      {choice.choice_content}
+                    </span>{" "}
+                    <span
+                      className=" text-red-400 rounded-md p-2 cursor-pointer"
+                      onClick={() =>
+                        removeChoice(
+                          choice.choice_index as "A" | "B" | "C" | "D"
+                        )
+                      }
+                    >
+                      Remove
+                    </span>
+                  </p>
                 </div>
               ) : null
-          )}
-        </div>
-        <Button className="w-[30%]" type="submit" disabled={loading}>
-          {loading ? "Submitting..." : "Submit"}
-        </Button>
-      </form>
-    </FormProvider>
+            )}
+          </div>
+
+          <Button
+            className="w-full md:w-[30%]"
+            type="submit"
+            disabled={loading}
+          >
+            {loading ? "Submitting..." : "Submit"}
+          </Button>
+        </form>
+      </FormProvider>
+    </>
   );
 }

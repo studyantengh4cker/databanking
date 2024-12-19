@@ -4,16 +4,18 @@ import AddReviewerQuestion from "@/components/forms/AddReviewerQuestion";
 import AddSubtopicForm from "@/components/forms/AddSubtopicForm";
 import AddTopicForm from "@/components/forms/AddTopicForm";
 import { AddDataModal } from "@/components/modal/AddDataModal";
-import { Reviewer } from "@/lib/types";
 import React, { useState } from "react";
 import ReviewerQuestions from "./ReviewerQuestions";
 import Topics from "./Topics";
 import { Loader2 } from "lucide-react";
+import { Question, Reviewer, User } from "@/lib/types";
 
-interface ReviewerBodyProps {
-  reviewer: Reviewer;
+interface ReviewerBodyProps{
+  reviewer: Reviewer
+  user: User | undefined
 }
-export default function ReviewerBody({ reviewer }: ReviewerBodyProps) {
+
+export default function ReviewerBody({ reviewer, user }: ReviewerBodyProps) {
 
   
   const collegeData = useChooseCollege(
@@ -34,7 +36,7 @@ export default function ReviewerBody({ reviewer }: ReviewerBodyProps) {
           buttonTitle="Add Question"
           college={collegeData}
         >
-          <AddReviewerQuestion />
+          <AddReviewerQuestion reviewer={reviewer} defaultValues={{} as Question} />
         </AddDataModal>
         <AddDataModal
           college={collegeData}
@@ -49,7 +51,7 @@ export default function ReviewerBody({ reviewer }: ReviewerBodyProps) {
           title="Add Topic"
           buttonTitle="Add Subtopic"
         >
-          <AddSubtopicForm />
+          <AddSubtopicForm topic_id="" />
         </AddDataModal></div>
         <div className="col flex gap-5 text-white [&_button]:px-10 [&_button]:py-2 [&_button]:rounded-md">
             <button className={``} style={{backgroundColor: collegeData.color}} onClick={() => setCurrentTab('questions')}>Questions</button>
@@ -57,7 +59,7 @@ export default function ReviewerBody({ reviewer }: ReviewerBodyProps) {
         </div>
       </header>
       <main>
-        {currentTab === "questions" ? <ReviewerQuestions /> : <Topics reviewer={reviewer} />}
+        {currentTab === "questions" ? <ReviewerQuestions reviewer={reviewer} /> : <Topics reviewer={reviewer} user={user} />}
       </main>
     </div>
   );

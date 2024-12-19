@@ -18,7 +18,11 @@ import TopicID from "../formfields/TopicID";
 
 export type AddSubtopicFormData = z.infer<typeof addSubTopicSchema>;
 
-export default function AddSubtopicForm() {
+interface AddSubtopicFormProps {
+  topic_id: string;
+}
+
+export default function AddSubtopicForm({ topic_id }: AddSubtopicFormProps) {
   // const [currentCollege, setCollege] = useState<College>();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -27,7 +31,7 @@ export default function AddSubtopicForm() {
     defaultValues: {
       subtopic_name: "",
       subtopic_description: "",
-      topic_id: "",
+      topic_id,
     },
   });
   const onSubmit = async (values: AddSubtopicFormData) => {
@@ -90,8 +94,8 @@ export default function AddSubtopicForm() {
             </FormItem>
           )}
         />
-      
-        <TopicID form={form} />
+
+        {topic_id && topic_id === "" && <TopicID form={form} />}
         <Button className="w-[30%]" type="submit" disabled={loading}>
           {loading ? "Submitting..." : "Submit"}
         </Button>

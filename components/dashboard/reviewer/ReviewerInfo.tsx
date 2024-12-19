@@ -1,10 +1,10 @@
 import { Reviewer } from '@/lib/types'
 
-interface ReviewerInfoProps{
+export interface ReviewerProps{
     reviewer: Reviewer
 }
 
-export default function ReviewerInfo({reviewer}:ReviewerInfoProps) {
+export default function ReviewerInfo({reviewer}:ReviewerProps) {
     if(!reviewer){
         return <div>Loading</div>
     }

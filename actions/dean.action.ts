@@ -39,20 +39,44 @@ export async function addSubtopic(formvalue: AddSubtopicFormData) {
 
 export async function addQuestion(formvalue: AddQuestionFormData) {
   try {
+    const validChoices = formvalue.choices.filter(
+      (choice) => choice.choice_content.trim() !== ""
+    );
     const transformedFormValue = {
-      question_content: formvalue.question_content,
-      correct_answer: formvalue.correct_answer,
+      ...formvalue,
       question_point: Number(formvalue.question_point),
-      subtopic_id: Number(formvalue.subtopic_id),
-      choices: Object.entries(formvalue.question_choices).map(
-        ([index, content]) => ({
-          choice_index: index.toUpperCase(),
-          choice_content: content,
-        })
-      ),
+      choices: validChoices.map((choice) => ({
+        choice_index: choice.choice_index,
+        choice_content: choice.choice_content,
+      })),
     };
 
-    const res = await api.post(`/question`, transformedFormValue);
+    const questions = [transformedFormValue];
+
+    const res = await api.post(`/question`, { questions });
+
+    if (res.data.status === "success") {
+      return res.data;
+    }
+  } catch (error) {
+    console.error("Error adding question data:", error);
+  }
+}
+export async function editQuestion(formvalue: AddQuestionFormData, id: number) {
+  try {
+    const validChoices = formvalue.choices.filter(
+      (choice) => choice.choice_content.trim() !== ""
+    );
+    const transformedFormValue = {
+      ...formvalue,
+      question_point: Number(formvalue.question_point),
+      choices: validChoices.map((choice) => ({
+        choice_index: choice.choice_index,
+        choice_content: choice.choice_content,
+      })),
+    };
+
+    const res = await api.put(`/question/${id}`, transformedFormValue);
 
     if (res.data.status === "success") {
       return res.data;

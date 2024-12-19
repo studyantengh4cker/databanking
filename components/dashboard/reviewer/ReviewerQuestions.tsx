@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { getQuestions } from "@/actions/college.action";
+import { getQuestionsByReviewerId } from "@/actions/college.action";
 import {
   Table,
   TableBody,
@@ -9,26 +9,34 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-import { Question } from "@/lib/types";
+import { Question, Reviewer } from "@/lib/types";
 import Loading from "../Loading/Loading";
+import { AddDataModal } from "@/components/modal/AddDataModal";
+import { useChooseCollege } from "@/app/(custom_hooks)/useChooseCollege";
+import AddReviewerQuestion from "@/components/forms/AddReviewerQuestion";
 
-export default function ReviewerQuestions() {
+interface ReviewerQuestionProps {
+  reviewer: Reviewer;
+}
+
+export default function ReviewerQuestions({ reviewer }: ReviewerQuestionProps) {
   const [questionsData, setQuestionData] = useState<Question[] | null>(null);
-  const [expandedQuestionId, setExpandedQuestionId] = useState<number | null>(
-    null
+  const collegeData = useChooseCollege(
+    reviewer.college_id,
+    reviewer.program_id
   );
-
   useEffect(() => {
     async function handleGetQuestions() {
-      const res = await getQuestions();
-      setQuestionData(res.questions);
+      const res = await getQuestionsByReviewerId(reviewer.id);
+      if (res) {
+        setQuestionData(res.questions);
+        console.log(res.questions);
+      } else {
+        setQuestionData([]);
+      }
     }
     handleGetQuestions();
-  }, []);
-
-  const toggleQuestionDetails = (id: number) => {
-    setExpandedQuestionId(expandedQuestionId === id ? null : id);
-  };
+  }, [reviewer.id]);
 
   return (
     <div className="w-full flex flex-col gap-5 [&_h1]:text-2xl [&_h1]:font-semibold">
@@ -38,50 +46,43 @@ export default function ReviewerQuestions() {
             <TableRow>
               <TableCell>Question</TableCell>
               <TableCell>Subtopic</TableCell>
-              <TableCell>Action</TableCell>
+              <TableCell className="text-right">Action</TableCell>
             </TableRow>
           </TableHeader>
           {questionsData ? (
-            <TableBody>
-              {questionsData.map((row, index) => (
-                <React.Fragment key={index}>
+            questionsData.length > 0 ? (
+              <TableBody>
+                {questionsData.map((row) => (
                   <TableRow
-                    className={`transition-all duration-300 ${
-                      expandedQuestionId === row.id ? "h-auto" : "h-16"
-                    }`}
+                    key={row.id}
+                    className={`transition-all duration-300 `}
                   >
                     <TableCell>{row.question_content}</TableCell>
                     <TableCell>{row.subtopic_id}</TableCell>
-                    <TableCell>
-                      <button
-                        className="text-blue-500 hover:text-blue-700"
-                        onClick={() => toggleQuestionDetails(row.id)}
+                    <TableCell className="text-right">
+                      <AddDataModal
+                        title={"Question Info"}
+                        buttonTitle={"View Question"}
+                        college={collegeData}
                       >
-                        View
-                      </button>
+                        <AddReviewerQuestion
+                          reviewer={reviewer}
+                          defaultValues={row}
+                        />
+                      </AddDataModal>{" "}
                     </TableCell>
                   </TableRow>
-                  <TableRow className="flex-1">
-                    {expandedQuestionId === row.id && (
-                      <TableCell>
-                        {" "}
-                        <div className="mt-2 p-2 bg-gray-100 rounded flex flex-col">
-                          <h3 className="font-semibold flex-1">Choices</h3>
-                          <ul>
-                            {row.choices?.map((choice, idx) => (
-                              <li key={idx} className="flex gap-3 py-1">
-                                <span>{choice.choice_index}</span>:{" "}
-                                <span>{choice.choice_content}</span>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      </TableCell>
-                    )}
-                  </TableRow>
-                </React.Fragment>
-              ))}
-            </TableBody>
+                ))}
+              </TableBody>
+            ) : (
+              <TableBody>
+                <TableRow>
+                  <TableCell>
+                    <p>No question for this review material yet</p>
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            )
           ) : (
             <TableBody>
               <TableRow>

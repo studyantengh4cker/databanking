@@ -26,16 +26,23 @@ export const addQuestionSchema = z.object({
   question_content: z.string().nonempty("Question is required"),
   correct_answer: z.string().nonempty("Correct answer is required"),
   question_point: z.string().nonempty("Question point is required"),
-  subtopic_id: z.string().nonempty("Subtopic is required"),
-  question_choices: z
-    .object({
-      a: z.string().nonempty("Choice A cannot be empty"),
-      b: z.string().nonempty("Choice B cannot be empty"),
-      c: z.string().optional(),
-      d: z.string().optional(),
+  reviewer_id: z.number(),
+  choices: z
+  .array(z.object({
+      choice_index: z.enum(["A", "B", "C", "D"]),
+      choice_content: z.string().nonempty("Choice content cannot be empty")
     })
-    .refine(
-      (choices) => Object.keys(choices).length >= 2 && Object.keys(choices).length <= 4,
-      "Choices must have between 2 and 4 entries"
-    ),
-});
+  )
+  .refine(
+    (choices) => choices.length >= 2 && choices.length <= 4,
+    "Choices must have between 2 and 4 entries"
+  )
+  .refine(
+    (choices) => {
+     
+      const indices = choices.map(choice => choice.choice_index);
+      return new Set(indices).size === indices.length;
+    },
+    "Each choice must have a unique index"
+  ),
+})

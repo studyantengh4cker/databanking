@@ -1,4 +1,4 @@
-import { useCollegeContext } from "@/context/reviewers/CollegeContext";
+import { useFormfieldCollegeContext } from "@/context/form_field/CollegeContext";
 import { FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "../ui/select";
 
@@ -7,7 +7,7 @@ interface ProgramIDProps {
 }
 
 export default function ProgramID({ form }: ProgramIDProps) {
-  const { currentCollege } = useCollegeContext();
+  const { currentCollege } = useFormfieldCollegeContext();
 
   return (
     <FormField

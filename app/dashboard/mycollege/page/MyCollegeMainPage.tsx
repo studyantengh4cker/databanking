@@ -17,7 +17,7 @@ export default function MyCollegeMainPage({ session }: MyCollegeMainPageProps) {
   return (
     <div>
       <CollegeBanner college={college} />
-      <Reviewers college={college} />
+      <Reviewers college={college}  />
     </div>
   )
 }

@@ -36,7 +36,7 @@ export async function getCollegeUsers(
 
 export async function getCollegeReviewers(collegeId?: string, page?: number) {
   try {
-    const checkID = collegeId ? `college=${collegeId}` : "";
+    const checkID = collegeId ? `college_id=${collegeId}` : "";
     const checkPage = page ? `page=${page}` : "";
     const queryParams = [checkID, checkPage].filter(Boolean).join("&");
     // /getbycollege?${queryParams}
@@ -86,10 +86,31 @@ export const getQuestions = async () => {
     console.error("Error fetching questions:", error);
   }
 };
+export const getQuestionsByReviewerId = async (id: number) => {
+  try {
+    const res = await api.get(`/question?reviewer_id=${id}`);
+    if (res.data.status === "success") {
+      return res.data.data;
+    }
+  } catch (error) {
+    console.error("Error fetching questions:", error);
+  }
+};
 
 export const getTopics = async () => {
   try {
     const res = await api.get(`/topic`);
+    if (res.data.status === "success") {
+      return res.data.data;
+    }
+  } catch (error) {
+    console.error("Error fetching topics:", error);
+  }
+};
+
+export const getTopicById = async (id: number) => {
+  try {
+    const res = await api.get(`/topic/${id}`);
     if (res.data.status === "success") {
       return res.data.data;
     }

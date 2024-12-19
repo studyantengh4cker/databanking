@@ -1,18 +1,12 @@
 export interface User {
-  id: number;
-  idnum: string;
-  first_name: string;
-  last_name: string;
+  id: string;
+  firstName: string;
+  lastName: string;
   email: string;
   role: string;
-  college_id: string | null;
-  program_id: number | null;
-  year_level: number | null;
-  email_verified_at: Date | null;
-  password: string;
-  remember_token: string | null;
-  created_at: Date;
-  updated_at: Date;
+  api_token: string;
+  college_id: number;
+  program_id:number;
 }
 
 export interface Reviewer {
@@ -77,18 +71,25 @@ export interface Subtopic {
 }
 
 export interface Choice {
-  choice_index: string;
+  id: number;
   choice_content: string;
+  choice_index: string; 
+  question_id: number; 
+  created_at: string; 
+  updated_at: string; 
 }
 
 export interface Question {
   id: number;
   question_content: string;
-  question_point: string;
+  choices: Choice[];
   correct_answer: string;
-  subtopic_id: number;
-  created_at: string;
-  updated_at: string;
-  choices: Choice[]; 
-  subtopic: Subtopic; 
+  question_point: string;
+  reviewer_id: number;
+  subtopic: string | null;
+  subtopic_id: string | null;
+  topic: string | null;
+  topic_id: string | null;
+  created_at: string; 
+  updated_at: string; 
 }
