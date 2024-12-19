@@ -44,10 +44,12 @@ export async function addQuestion(formvalue: AddQuestionFormData) {
       correct_answer: formvalue.correct_answer,
       question_point: Number(formvalue.question_point),
       subtopic_id: Number(formvalue.subtopic_id),
-      choices: Object.entries(formvalue.question_choices).map(([index, content]) => ({
-        choice_index: index.toUpperCase(),
-        choice_content: content,
-      })),
+      choices: Object.entries(formvalue.question_choices).map(
+        ([index, content]) => ({
+          choice_index: index.toUpperCase(),
+          choice_content: content,
+        })
+      ),
     };
 
     const res = await api.post(`/question`, transformedFormValue);
@@ -59,4 +61,3 @@ export async function addQuestion(formvalue: AddQuestionFormData) {
     console.error("Error adding question data:", error);
   }
 }
-
