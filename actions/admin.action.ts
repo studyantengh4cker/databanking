@@ -2,7 +2,15 @@
 
 import { AddUserFormData } from "@/components/forms/AddDeanForm";
 import { AddReviewerFormData } from "@/components/forms/AddReviewerForm";
+import { UserFormData } from "@/components/forms/UserForm";
 import api from "@/lib/api";
+
+export async function addUser(data: UserFormData) {
+  try {
+  } catch (error) {
+    console.log(error);
+  }
+}
 
 export async function addDeanorProgramHead(formvalue: AddUserFormData) {
   try {
