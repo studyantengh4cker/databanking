@@ -12,6 +12,7 @@ import {
 import { Reviewer, Subtopic, Topic, User } from "@/lib/types";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
+import Loading from "../Loading/Loading";
 
 interface TopicsProps {
   reviewer: Reviewer;
@@ -28,7 +29,9 @@ export default function Topics({ reviewer, user }: TopicsProps) {
     async function handleGetTopics() {
       if (reviewer) {
         const res = await getTopicsByReviewerId(reviewer?.id);
-        setTopics(res.topics);
+        if (res) {
+          setTopics(res.topics);
+        }
       }
     }
     handleGetTopics();
@@ -75,7 +78,9 @@ export default function Topics({ reviewer, user }: TopicsProps) {
                     <TableCell>
                       <button
                         className="text-blue-500 hover:text-blue-700"
-                        onClick={() => handleClickViewButton(row.reviewer_id,row.id)}
+                        onClick={() =>
+                          handleClickViewButton(row.reviewer_id, row.id)
+                        }
                       >
                         View
                       </button>
@@ -102,15 +107,13 @@ export default function Topics({ reviewer, user }: TopicsProps) {
               ))
             ) : (
               <TableRow>
-                <TableCell colSpan={3} className="text-center">
-                  No data available
-                </TableCell>
+                <TableCell colSpan={3} className="text-center"><Loading /></TableCell>
               </TableRow>
             )
           ) : (
             <TableRow>
               <TableCell colSpan={3} className="text-center">
-                Loading...
+                No data available
               </TableCell>
             </TableRow>
           )}

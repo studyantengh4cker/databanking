@@ -1,18 +1,25 @@
 import React, { useEffect, useState } from 'react'
 import { FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "../ui/select";
-import { getSubtopics } from '@/actions/college.action';
+import { getSubtopicsByTopicsId } from '@/actions/college.action';
 
-export default function SubtopicID({form}: any) {
+interface SubtopicProps {
+  form: any
+  topic_id: number
+}
+
+export default function SubtopicID({form, topic_id}: SubtopicProps) {
   const [subtopics, setSubtopics] = useState([])
 
   useEffect(() => {
     async function fetchData(){
-        const res = await getSubtopics()
-        setSubtopics(res.subtopics)
+        const res = await getSubtopicsByTopicsId(topic_id)
+        if(res){
+          setSubtopics(res.subtopics)
+        }
     }
     fetchData()
-  },[])
+  },[topic_id])
 
   return (
     <FormField
@@ -37,7 +44,7 @@ export default function SubtopicID({form}: any) {
                   </SelectItem>
                 ))
               ) : (
-                <SelectItem value="empty">No College</SelectItem>
+                <SelectItem value="empty">No Subtopic for this topic</SelectItem>
               )}
             </SelectContent>
           </Select>

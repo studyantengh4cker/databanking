@@ -24,7 +24,7 @@ export default function TopicHeader({ topic, reviewer }: TopicProps) {
         buttonTitle={"Add Subtopic"}
         college={collegeData}
       >
-        <AddSubtopicForm topic_id={String(topic.id)} />
+        <AddSubtopicForm topic_id={topic.id} reviewer_id={reviewer.id} />
       </AddDataModal>
     </header>
   );

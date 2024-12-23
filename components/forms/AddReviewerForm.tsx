@@ -4,7 +4,7 @@ import { colleges } from "@/app/dashboard/colleges/Colleges";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProvider, useForm } from "react-hook-form";
 import { z } from "zod";
-import { addReviewerSchema } from "@/lib/AddReviewerZodSchema";
+import { addReviewerSchema } from "@/lib/ZodSchemas/AddReviewerZodSchema";
 import CollegeID from "../formfields/CollegeID";
 import { collegeChange } from "@/app/(custom_hooks)/useCollegeChange";
 import ProgramID from "../formfields/ProgramID";

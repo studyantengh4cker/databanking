@@ -3,6 +3,7 @@ import { AddQuestionFormData } from "@/components/forms/AddReviewerQuestion";
 import { AddSubtopicFormData } from "@/components/forms/AddSubtopicForm";
 import { AddTopicFormData } from "@/components/forms/AddTopicForm";
 import api from "@/lib/api";
+import { revalidatePath } from "next/cache";
 
 export async function addTopic(formvalue: AddTopicFormData) {
   try {
@@ -14,6 +15,7 @@ export async function addTopic(formvalue: AddTopicFormData) {
     const res = await api.post(`/topic`, transformedFormValue);
 
     if (res.data.status === "success") {
+      revalidatePath("/")
       return res.data;
     }
   } catch (error) {

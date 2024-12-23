@@ -21,7 +21,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { collegeChange } from "@/app/(custom_hooks)/useCollegeChange";
 import { useSubmitAddUserForm } from "@/app/(custom_hooks)/useSubmitAddUserForm";
-import { addUserSchema } from "@/lib/AddUserZodSchema";
+import { addUserSchema } from "@/lib/ZodSchemas/AddUserZodSchema";
 import FirstName from "../formfields/FirstName";
 
 export type AddUserFormData = z.infer<typeof addUserSchema>;

@@ -19,10 +19,12 @@ export const  addTopicSchema = z.object({
 export const  addSubTopicSchema = z.object({
   subtopic_name: z.string().nonempty("Subtopic name is required"),
   subtopic_description: z.string().nonempty("Description is required"),
-  topic_id: z.string().nonempty("Topic is required"),
+  topic_id: z.number().min(0)
 })
 
 export const addQuestionSchema = z.object({
+  topic_id: z.number().nullable(),
+  subtopic_id: z.number().nullable(),
   question_content: z.string().nonempty("Question is required"),
   correct_answer: z.string().nonempty("Correct answer is required"),
   question_point: z.string().nonempty("Question point is required"),

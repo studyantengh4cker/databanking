@@ -1,4 +1,4 @@
-import { addSubTopicSchema } from "@/lib/AddReviewerZodSchema";
+import { addSubTopicSchema } from "@/lib/ZodSchemas/AddReviewerZodSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProvider, useForm } from "react-hook-form";
 import { z } from "zod";
@@ -19,10 +19,14 @@ import TopicID from "../formfields/TopicID";
 export type AddSubtopicFormData = z.infer<typeof addSubTopicSchema>;
 
 interface AddSubtopicFormProps {
-  topic_id: string;
+  topic_id: number | undefined;
+  reviewer_id: number;
 }
 
-export default function AddSubtopicForm({ topic_id }: AddSubtopicFormProps) {
+export default function AddSubtopicForm({
+  topic_id,
+  reviewer_id,
+}: AddSubtopicFormProps) {
   // const [currentCollege, setCollege] = useState<College>();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -68,6 +72,9 @@ export default function AddSubtopicForm({ topic_id }: AddSubtopicFormProps) {
   return (
     <FormProvider {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+      {!topic_id && 
+          <TopicID form={form} reviewer_id={reviewer_id} />
+        }
         <FormField
           control={form.control}
           name="subtopic_name"
@@ -95,7 +102,7 @@ export default function AddSubtopicForm({ topic_id }: AddSubtopicFormProps) {
           )}
         />
 
-        {topic_id && topic_id === "" && <TopicID form={form} />}
+       
         <Button className="w-[30%]" type="submit" disabled={loading}>
           {loading ? "Submitting..." : "Submit"}
         </Button>

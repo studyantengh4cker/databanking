@@ -1,4 +1,4 @@
-import { addQuestionSchema } from "@/lib/AddReviewerZodSchema";
+import { addQuestionSchema } from "@/lib/ZodSchemas/AddReviewerZodSchema";
 import { useForm, FormProvider } from "react-hook-form";
 import { z } from "zod";
 import {
@@ -9,17 +9,19 @@ import {
   FormMessage,
 } from "../ui/form";
 import { Input } from "../ui/input";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "../ui/button";
 import { addQuestion, editQuestion } from "@/actions/dean.action";
 import { toast } from "@/hooks/use-toast";
 import { Question, Reviewer } from "@/lib/types";
+import TopicID from "../formfields/TopicID";
+import SubtopicID from "../formfields/SubtopicID";
 
 export type AddQuestionFormData = z.infer<typeof addQuestionSchema>;
 
 interface AddReviewerQuestionProps {
   reviewer: Reviewer;
-  defaultValues: Question;
+  defaultValues: Question | undefined;
 }
 
 export default function AddReviewerQuestion({
@@ -29,9 +31,12 @@ export default function AddReviewerQuestion({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
   const [currentChoice, setCurrentChoice] = useState("");
+  const [choices, setChoices] = useState<any>();
 
   const form = useForm<AddQuestionFormData>({
     defaultValues: {
+      topic_id: null,
+      subtopic_id: null,
       reviewer_id: reviewer.id,
       question_content: defaultValues?.question_content || "",
       correct_answer: defaultValues?.correct_answer || "",
@@ -87,8 +92,14 @@ export default function AddReviewerQuestion({
           ? { ...choice, choice_content: "" }
           : choice
       );
-    form.setValue("choices", updatedChoices);
+    setChoices(updatedChoices);
   };
+
+  useEffect(() => {
+    if (choices) {
+      form.setValue("choices", choices);
+    }
+  }, [form, choices]);
 
   const isEditing = defaultValues?.question_content?.trim() !== "";
   const onSubmit = async (values: AddQuestionFormData) => {
@@ -96,7 +107,7 @@ export default function AddReviewerQuestion({
       setLoading(true);
 
       const res = isEditing
-        ? await editQuestion(values, defaultValues.id)
+        ? await editQuestion(values, defaultValues?.id || 0)
         : await addQuestion(values);
 
       if (!res || res?.status !== "success") {
@@ -141,6 +152,15 @@ export default function AddReviewerQuestion({
       )}
       <FormProvider {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <div className="topic-subtopic flex gap-5">
+            <div className="topic flex-1">{defaultValues && <TopicID reviewer_id={reviewer.id} form={form} />}</div>
+            <div className="subtopic flex-1">{defaultValues && (
+              <SubtopicID
+                topic_id={form.getValues().topic_id || 0}
+                form={form}
+              />
+            )}</div>
+          </div>
           <FormField
             control={form.control}
             name="reviewer_id"
@@ -226,7 +246,7 @@ export default function AddReviewerQuestion({
 
           <div className="grid grid-cols-2 gap-4">
             {form.getValues().choices.map((choice) =>
-              choice.choice_content ? (
+              choice.choice_content !== "" ? (
                 <div
                   key={choice.choice_index}
                   className="bg-gray-100 px-4 py-2 rounded shadow-sm flex justify-between items-center"
@@ -238,11 +258,7 @@ export default function AddReviewerQuestion({
                     </span>{" "}
                     <span
                       className=" text-red-400 rounded-md p-2 cursor-pointer"
-                      onClick={() =>
-                        removeChoice(
-                          choice.choice_index as "A" | "B" | "C" | "D"
-                        )
-                      }
+                      onClick={() => removeChoice(choice.choice_index)}
                     >
                       Remove
                     </span>

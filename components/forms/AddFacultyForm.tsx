@@ -10,7 +10,7 @@ import {
 import { College, colleges } from "@/app/dashboard/colleges/Colleges";
 import { useSubmitAddUserForm } from "@/app/(custom_hooks)/useSubmitAddUserForm";
 import { collegeChange } from "@/app/(custom_hooks)/useCollegeChange";
-import { addUserSchema } from "@/lib/AddUserZodSchema";
+import { addUserSchema } from "@/lib/ZodSchemas/AddUserZodSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProvider, useForm } from "react-hook-form";
 import { Button } from "../ui/button";

@@ -8,7 +8,7 @@ import React, { useState } from "react";
 import ReviewerQuestions from "./ReviewerQuestions";
 import Topics from "./Topics";
 import { Loader2 } from "lucide-react";
-import { Question, Reviewer, User } from "@/lib/types";
+import { Reviewer, User } from "@/lib/types";
 
 interface ReviewerBodyProps{
   reviewer: Reviewer
@@ -36,7 +36,7 @@ export default function ReviewerBody({ reviewer, user }: ReviewerBodyProps) {
           buttonTitle="Add Question"
           college={collegeData}
         >
-          <AddReviewerQuestion reviewer={reviewer} defaultValues={{} as Question} />
+          <AddReviewerQuestion reviewer={reviewer} defaultValues={undefined} />
         </AddDataModal>
         <AddDataModal
           college={collegeData}
@@ -48,10 +48,10 @@ export default function ReviewerBody({ reviewer, user }: ReviewerBodyProps) {
 
         <AddDataModal
           college={collegeData}
-          title="Add Topic"
+          title="Add Subtopic"
           buttonTitle="Add Subtopic"
         >
-          <AddSubtopicForm topic_id="" />
+          <AddSubtopicForm topic_id={undefined} reviewer_id={reviewer.id} />
         </AddDataModal></div>
         <div className="col flex gap-5 text-white [&_button]:px-10 [&_button]:py-2 [&_button]:rounded-md">
             <button className={``} style={{backgroundColor: collegeData.color}} onClick={() => setCurrentTab('questions')}>Questions</button>

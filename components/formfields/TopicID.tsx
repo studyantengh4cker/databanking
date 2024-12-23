@@ -1,30 +1,33 @@
 import React, { useEffect, useState } from 'react';
 
 
-import { getTopics } from '@/actions/college.action';
+import { getTopicsByReviewerId } from '@/actions/college.action';
 import { Topic } from '@/lib/types';
 import { FormField, FormItem, FormLabel, FormMessage } from '../ui/form';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem  } from '../ui/select';
 
 interface TopicIDProps {
   form: any;
+  reviewer_id: number
 }
 
-export default function TopicID({ form }: TopicIDProps) {
+export default function TopicID({ form, reviewer_id }: TopicIDProps) {
   const [topics, setTopics] = useState<Topic[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await getTopics();
+        const res = await getTopicsByReviewerId(reviewer_id);
+       if(res){
         setTopics(res.topics || []);
+       }
       } catch (error) {
         console.error('Error fetching topics:', error);
       }
     };
 
     fetchData();
-  }, []);
+  }, [reviewer_id]);
 
   return (
     <FormField

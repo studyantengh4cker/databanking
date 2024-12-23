@@ -1,4 +1,4 @@
-import { addTopicSchema } from "@/lib/AddReviewerZodSchema";
+import { addTopicSchema } from "@/lib/ZodSchemas/AddReviewerZodSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProvider, useForm } from "react-hook-form";
 import { z } from "zod";
