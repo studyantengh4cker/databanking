@@ -28,7 +28,7 @@ export const links = [
   },
   {
     tag: "Reviewers",
-    href: "/dashboard/Reviewers",
+    href: "/student/reviewers",
     icon: BookIcon,
     for: ["student"],
   },

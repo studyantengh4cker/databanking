@@ -1,8 +1,13 @@
 import TestSpecificationForm from "@/components/forms/TestSpecificationForm";
 import { AddDataModal } from "@/components/modal/AddDataModal";
+import { Topic } from "@/lib/types";
 import React from "react";
 
-export default function TestSpecifications() {
+interface TestSpecificationsProps{
+  topics: Topic[] | null
+}
+
+export default function TestSpecifications({topics}: TestSpecificationsProps) {
   return (
     <div className="p-5 flex flex-col flex-1 gap-4">
       <div className="row flex gap-20 [&_button]:flex-1 [&_button]:bg-[#720000] [&_button]:rounded-xl [&_button]:text-white [&_button]:py-2">
@@ -12,7 +17,7 @@ export default function TestSpecifications() {
           buttonTitle={"Edit Test Specification"}
           college={null}
         >
-          <TestSpecificationForm/>
+          <TestSpecificationForm topics={topics}/>
         </AddDataModal>
       </div>
       <div className="test-specification-card">
