@@ -29,12 +29,15 @@ const TestSpecificationForm = ({ topics }: TestSpecificationFormProps) => {
     defaultValues: {
       time_limit: 30,
       number_of_items: 10,
+      topic_id: selectedTopicIds,
+      subtopic_id: selectedSubtopicIds,
     },
   });
 
   const onSubmit = async () => {
     try {
       setLoading(true);
+
     } catch (error) {
       console.error(error);
     } finally {
@@ -49,7 +52,7 @@ const TestSpecificationForm = ({ topics }: TestSpecificationFormProps) => {
         for (const topicId of selectedTopicIds) {
           const data = await getSubtopicsByTopicsId(topicId as number);
 
-          if (Array.isArray(data.subtopics)) {
+          if (data && Array.isArray(data?.subtopics)) {
             newSubtopics.push(...data.subtopics);
           } else {
             console.warn(
