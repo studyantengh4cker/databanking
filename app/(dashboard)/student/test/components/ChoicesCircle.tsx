@@ -44,7 +44,7 @@ export default function ChoicesCircle({ isDisabled, choice_index }: ChoicesCircl
     const y = e.clientY - rect.top;
 
     setIsDrawing(true);
-    ctx.strokeStyle = "#505050";
+    ctx.strokeStyle = "#152259";
     ctx.lineWidth = 10;
     ctx.setLineDash([]);
 

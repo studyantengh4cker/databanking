@@ -4,7 +4,7 @@ import Header from '@/components/dashboard/colleges/Header'
 
 export default function TestPage() {
   return (
-    <div>
+    <div className=''>
       <Header title='Test' />
       <Test />
     </div>

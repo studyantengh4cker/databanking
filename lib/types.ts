@@ -82,7 +82,7 @@ export interface Choice {
 export interface Question {
   id: number;
   question_content: string;
-  question_choices: Choice[];
+  choices: Choice[];
   correct_answer: string;
   question_point: string;
   reviewer_id: number;
