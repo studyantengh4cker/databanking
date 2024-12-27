@@ -1,6 +1,7 @@
 import TestSpecificationForm from "@/components/forms/TestSpecificationForm";
 import { AddDataModal } from "@/components/modal/AddDataModal";
 import { Topic } from "@/lib/types";
+import Link from "next/link";
 import React from "react";
 
 interface TestSpecificationsProps{
@@ -26,6 +27,7 @@ export default function TestSpecifications({topics}: TestSpecificationsProps) {
         </div>
         <div className="body shadow-md rounded-b-xl bg-white flex-1 p-5 min-h-full">
           <p>Test is not yet specified</p>
+          <Link href="/student/test">Take Test</Link>
         </div>
       </div>
     </div>
