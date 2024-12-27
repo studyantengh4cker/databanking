@@ -41,7 +41,7 @@ export default function AddReviewerQuestion({
       question_content: defaultValues?.question_content || "",
       correct_answer: defaultValues?.correct_answer || "",
       question_point: defaultValues?.question_point || "",
-      choices: defaultValues?.choices?.map((choice) => ({
+      choices: defaultValues?.question_choices?.map((choice) => ({
         choice_index: choice.choice_index as "A" | "B" | "C" | "D",
         choice_content: choice.choice_content,
       })) || [
