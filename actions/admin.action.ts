@@ -32,6 +32,28 @@ export async function addDeanorProgramHead(formvalue: AddUserFormData) {
   }
 }
 
+export async function addUsers(users: UserFormData[]) {
+  try {
+    // Transform each user's data before sending
+    const transformedUsers = users.map((user) => ({
+      ...user,
+      idnum: Number(user.idnum),
+      college_id: user.college_id ? Number(user.college_id) : null,
+      program_id: user.program_id ? Number(user.program_id) : null,
+      year_level: user.year_level ? Number(user.year_level) : null,
+    }));
+
+    // Send the transformed data to the API
+    const res = await api.post(`/user/bulk`, { users: transformedUsers });
+
+    if (res.data.status === "success") {
+      return res.data;
+    }
+  } catch (error) {
+    console.error("Error adding users:", error);
+  }
+}
+
 export async function addReviewer(formvalue: AddReviewerFormData) {
   try {
     const transformedFormValue = {
