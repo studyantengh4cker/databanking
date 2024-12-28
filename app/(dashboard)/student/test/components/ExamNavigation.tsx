@@ -7,13 +7,13 @@ interface ExamNavigationProps {
 
 export default function ExamNavigation({ test_items }: ExamNavigationProps) {
   return (
-    <div className="flex flex-col gap-4 p-4 text-[#152259]">
+    <div className="flex flex-col gap-4 p-4 px-10 text-[#152259] fixed">
       <h1 className="font-semibold text-2xl">Exam Navigation</h1>
       <p>Page 1 of 10</p>
       <div className="container flex flex-wrap gap-4">
         {test_items && test_items.length > 0 ? (
           test_items.map((item, index) => {
-            return <ItemNavigationCard key={item.id} index={index} />;
+            return <ItemNavigationCard key={item.id} index={index} question={item.question} />;
           })
         ) : (
           <p>No test items</p>

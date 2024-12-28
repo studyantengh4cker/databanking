@@ -1,4 +1,5 @@
-import React from "react";
+'use client'
+import React, {useState } from "react";
 import TestHeader from "./components/TestHeader";
 import TestBody from "./components/TestBody";
 import ExamNavigation from "./components/ExamNavigation";
@@ -20,9 +21,9 @@ export default function Test() {
           { choice_index: "C", choice_content: "Maybe" },
           { choice_index: "D", choice_content: "Hmmmm" },
         ],
+        status: "not_answered",
+        isFlagged: false,
       },
-      status: "not_answered",
-      isFlagged: false,
     },
     {
       id: 2,
@@ -37,9 +38,9 @@ export default function Test() {
           { choice_index: "C", choice_content: "Green" },
           { choice_index: "D", choice_content: "Yellow" },
         ],
+        status: "not_answered",
+        isFlagged: false,
       },
-      status: "not_answered",
-      isFlagged: false,
     },
     {
       id: 3,
@@ -54,9 +55,9 @@ export default function Test() {
           { choice_index: "C", choice_content: "Sometimes" },
           { choice_index: "D", choice_content: "Not sure" },
         ],
+        status: "not_answered",
+        isFlagged: false,
       },
-      status: "not_answered",
-      isFlagged: false,
     },
     {
       id: 4,
@@ -71,9 +72,9 @@ export default function Test() {
           { choice_index: "C", choice_content: "8-12" },
           { choice_index: "D", choice_content: "More than 12" },
         ],
+        status: "not_answered",
+        isFlagged: false,
       },
-      status: "not_answered",
-      isFlagged: false,
     },
     {
       id: 5,
@@ -88,9 +89,9 @@ export default function Test() {
           { choice_index: "C", choice_content: "Public Transport" },
           { choice_index: "D", choice_content: "Walking" },
         ],
+        status: "not_answered",
+        isFlagged: false,
       },
-      status: "not_answered",
-      isFlagged: false,
     },
     {
       id: 6,
@@ -105,9 +106,9 @@ export default function Test() {
           { choice_index: "C", choice_content: "Dinner" },
           { choice_index: "D", choice_content: "Snack" },
         ],
+        status: "not_answered",
+        isFlagged: false,
       },
-      status: "not_answered",
-      isFlagged: false,
     },
     {
       id: 7,
@@ -122,9 +123,9 @@ export default function Test() {
           { choice_index: "C", choice_content: "Autumn" },
           { choice_index: "D", choice_content: "Winter" },
         ],
+        status: "not_answered",
+        isFlagged: false,
       },
-      status: "not_answered",
-      isFlagged: false,
     },
     {
       id: 8,
@@ -139,9 +140,9 @@ export default function Test() {
           { choice_index: "C", choice_content: "Tennis" },
           { choice_index: "D", choice_content: "Swimming" },
         ],
+        status: "not_answered",
+        isFlagged: false,
       },
-      status: "not_answered",
-      isFlagged: false,
     },
     {
       id: 9,
@@ -156,9 +157,9 @@ export default function Test() {
           { choice_index: "C", choice_content: "Maybe" },
           { choice_index: "D", choice_content: "Not sure" },
         ],
+        status: "not_answered",
+        isFlagged: false,
       },
-      status: "not_answered",
-      isFlagged: false,
     },
     {
       id: 10,
@@ -173,24 +174,58 @@ export default function Test() {
           { choice_index: "C", choice_content: "Doing chores" },
           { choice_index: "D", choice_content: "Working" },
         ],
+        status: "not_answered",
+        isFlagged: false,
       },
-      status: "not_answered",
-      isFlagged: false,
     },
   ];
   
-  
+  const [test_items, setTestItems] = useState(DummyTest)
 
+  const handleAnswer = (questionId: number, status: string) => {
+    setTestItems((prevItems) => {
+      return prevItems.map((item) => {
+        if (item.question.id === questionId) {
+          return {
+            ...item,
+            question: {
+              ...item.question,
+              status,
+            },
+          };
+        }
+        return item;
+      });
+    });
+  };
+  const handleFlag = (questionId: number, isFlagged: boolean) => {
+    setTestItems((prevItems) => {
+      return prevItems.map((item) => {
+        if (item.question.id === questionId) {
+          return {
+            ...item,
+            question: {
+              ...item.question,
+              isFlagged,
+            },
+          };
+        }
+        return item;
+      });
+    });
+  };
+
+  if(!test_items) return
   return (
     <div className="flex gap-10 h-full">
       <div className="flex flex-col gap-10 flex-1 h-full">
         <TestHeader />
-        <TestBody test_items={DummyTest} />
+        <TestBody test_items={test_items} handle_answer={handleAnswer} handle_flag={handleFlag} />
       </div>
-      <div className="exam-navigation-container basis-[20%]">
-        <ExamNavigation test_items={DummyTest} />
+      <div className="exam-navigation-container basis-[25%] ">
+        <ExamNavigation test_items={test_items} />
       </div>
-      <div className="absolute right-0 top-[40%]"><SheetDemo test_items={DummyTest} /></div>
+      <div className="absolute right-0 top-[40%]"><SheetDemo test_items={test_items} /></div>
     </div>
   );
 }
