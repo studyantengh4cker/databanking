@@ -27,7 +27,7 @@ const ReviewerPage = async ({ params }: { params: any }) => {
             <TakeReviewer user={user as User} reviewer={reviewer} />
           </div>
           <div className="col flex-1">
-            <TestSpecifications topics={topics} />
+            <TestSpecifications topics={topics} reviewer_id={reviewer_id} />
           </div>
         </div>
       ) : (

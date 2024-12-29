@@ -19,6 +19,11 @@ export const StudentLinks = [
     href: "/student/dashboard",
     icon: LayoutDashboard,
   },
+  {
+    tag: "Reviewers",
+    href: "/student/reviewers",
+    icon: BookAIcon,
+  },
 ];
 
 export const FacultyLinks = [
