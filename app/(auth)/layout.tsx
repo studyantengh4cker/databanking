@@ -8,8 +8,9 @@ export default async function AuthLayout({
 }>) {
   const session = await auth();
 
+  //Change back after using, remove session role
   if (session) {
-    return redirect("/dashboard");
+    return redirect(`/${session.user.role}/dashboard`);
   }
 
   return <main>{children}</main>;
