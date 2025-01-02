@@ -20,10 +20,11 @@ import {
 } from "@/components/ui/sheet";
 
 interface SheetDemoProps {
-  test_items: any[] | null;
+  test_items: any ;
 }
 
 export function SheetDemo({ test_items }: SheetDemoProps) {
+  
   return (
     <Sheet>
       <SheetTrigger asChild>
@@ -41,12 +42,12 @@ export function SheetDemo({ test_items }: SheetDemoProps) {
         </SheetHeader>
         <div className="flex flex-col gap-4 py-4">
           <div className="flex flex-col items-start gap-4">
-            {test_items && test_items.length > 0 ? (
-              test_items.map((item) => {
+            {test_items.topics && test_items.topics.length > 0 ? (
+              test_items.topics.map((item: any) => {
                 return (
                   <div key={item.id}>
                     <Label htmlFor="name" className="text-right">
-                      Topic Name {item.id}
+                      Topic Name {item.name}
                     </Label>
                     <Select>
                       <SelectTrigger className="w-[180px]">
@@ -54,11 +55,15 @@ export function SheetDemo({ test_items }: SheetDemoProps) {
                       </SelectTrigger>
                       <SelectContent>
                         <SelectGroup>
-                          <SelectItem value="apple">Apple</SelectItem>
-                          <SelectItem value="banana">Banana</SelectItem>
-                          <SelectItem value="blueberry">Blueberry</SelectItem>
-                          <SelectItem value="grapes">Grapes</SelectItem>
-                          <SelectItem value="pineapple">Pineapple</SelectItem>
+                          {item.subtopics.length > 0  
+                            ? item.subtopics.map((subtopic: any, index: number) => {
+                                return (
+                                  <SelectItem key={index} value={subtopic.name}>
+                                    {subtopic.name}s
+                                  </SelectItem>
+                                );
+                              })
+                            : ""}
                         </SelectGroup>
                       </SelectContent>
                     </Select>

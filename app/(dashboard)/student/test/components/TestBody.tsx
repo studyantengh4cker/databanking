@@ -13,11 +13,11 @@ export default function TestBody({ test_items, handle_answer,handle_flag }: Test
       {test_items && test_items.length > 0 ? (
         test_items.map((item, index) => {
           return (
-            <div key={item.id}>
+            <div key={index}>
               <ItemCard
                 handle_answer={handle_answer}
                 handle_flag={handle_flag}
-                question={item.question}
+                question={item}
                 index={index}
               />
             </div>

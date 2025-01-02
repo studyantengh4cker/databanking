@@ -27,7 +27,7 @@ const ChoicesCircle = forwardRef(
       clearCanvas,
     }));
 
-    const drawCircle =  useCallback(() => {
+    const drawCircle = useCallback(() => {
       const canvas = canvasRef.current;
       if (!canvas) return;
       const ctx = canvas.getContext("2d");
@@ -47,15 +47,15 @@ const ChoicesCircle = forwardRef(
       ctx.strokeStyle = isSelected ? "#00981C" : "#720000";
       ctx.lineWidth = 4;
       ctx.stroke();
-    }, []);
+    }, [isSelected]);
 
     useEffect(() => {
       if (!isSelected) {
         return drawCircle();
       }
-    }, [isSelected]);
+    }, [isSelected, drawCircle]);
 
-    const startDrawing = (e: React.MouseEvent<HTMLCanvasElement>) => {
+    const startDrawing = (e: React.TouchEvent | React.MouseEvent) => {
       if (isDisabled) return;
 
       const canvas = canvasRef.current;
@@ -64,10 +64,16 @@ const ChoicesCircle = forwardRef(
       if (!ctx) return;
 
       const rect = canvas.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
+      const x = (e as React.TouchEvent).touches
+        ? (e as React.TouchEvent).touches[0].clientX - rect.left
+        : (e as React.MouseEvent).clientX - rect.left;
+      const y = (e as React.TouchEvent).touches
+        ? (e as React.TouchEvent).touches[0].clientY - rect.top
+        : (e as React.MouseEvent).clientY - rect.top;
 
       setIsDrawing(true);
+      disableScrolling();
+
       ctx.strokeStyle = "#152259";
       ctx.lineWidth = 10;
       ctx.setLineDash([]);
@@ -76,7 +82,7 @@ const ChoicesCircle = forwardRef(
       ctx.moveTo(x, y);
     };
 
-    const draw = (e: React.MouseEvent<HTMLCanvasElement>) => {
+    const draw = (e: React.TouchEvent | React.MouseEvent) => {
       if (!isDrawing || isDisabled) return;
 
       const canvas = canvasRef.current;
@@ -85,11 +91,22 @@ const ChoicesCircle = forwardRef(
       if (!ctx) return;
 
       const rect = canvas.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
+      const x = (e as React.TouchEvent).touches
+        ? (e as React.TouchEvent).touches[0].clientX - rect.left
+        : (e as React.MouseEvent).clientX - rect.left;
+      const y = (e as React.TouchEvent).touches
+        ? (e as React.TouchEvent).touches[0].clientY - rect.top
+        : (e as React.MouseEvent).clientY - rect.top;
 
       ctx.lineTo(x, y);
       ctx.stroke();
+    };
+
+    const stopDrawing = () => {
+      if (!isDrawing) return;
+      setIsDrawing(false);
+      enableScrolling();
+      checkFillPercentage();
     };
 
     const checkFillPercentage = () => {
@@ -113,12 +130,6 @@ const ChoicesCircle = forwardRef(
       }
     };
 
-    const stopDrawing = () => {
-      if (!isDrawing) return;
-      setIsDrawing(false);
-      checkFillPercentage();
-    };
-
     const clearCanvas = () => {
       const canvas = canvasRef.current;
       if (!canvas) return;
@@ -127,6 +138,14 @@ const ChoicesCircle = forwardRef(
 
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       drawCircle();
+    };
+
+    const disableScrolling = () => {
+      document.body.style.overflow = "hidden";
+    };
+
+    const enableScrolling = () => {
+      document.body.style.overflow = "auto";
     };
 
     return (
@@ -145,6 +164,9 @@ const ChoicesCircle = forwardRef(
             onMouseMove={draw}
             onMouseUp={stopDrawing}
             onMouseOut={stopDrawing}
+            onTouchStart={startDrawing}
+            onTouchMove={draw}
+            onTouchEnd={stopDrawing}
           />
         </div>
         <p className="absolute top-[38%] left-[44%] -z-0">{choice_index}</p>

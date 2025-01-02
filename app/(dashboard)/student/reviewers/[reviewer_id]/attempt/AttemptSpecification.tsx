@@ -9,7 +9,7 @@ interface AttemptProps {
   user_id: number;
 }
 
-export default function Attempt({
+export default function AttemptSpecification({
   topics,
   reviewer_id,
   user_id,

@@ -101,7 +101,7 @@ export default function AddReviewerQuestion({
     }
   }, [form, choices]);
 
-  const isEditing = defaultValues?.question_content?.trim() !== "";
+  const isEditing = defaultValues?.question_content?.trim() !== undefined;
   const onSubmit = async (values: AddQuestionFormData) => {
     try {
       setLoading(true);

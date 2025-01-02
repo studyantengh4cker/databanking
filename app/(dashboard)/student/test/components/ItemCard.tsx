@@ -1,10 +1,25 @@
 import React, { useRef } from "react";
 import ChoicesCircle from "./ChoicesCircle";
-import { Choice, ReviewerQuestion } from "@/lib/types";
+
 import { Flag, FlagOffIcon } from "lucide-react";
 
+interface Choice {
+  id: number;
+  content: string;
+  index: string; // Typically "A", "B", "C", etc.
+}
+interface Question {
+  id: number;
+  content: string;
+  choices: Choice[];
+  isFlagged: boolean;
+  point: string;
+  status: "answered" | "unanswered";
+  user_answers: string[];
+}
+
 interface ItemsCardProps {
-  question: ReviewerQuestion | null;
+  question: Question | null;
   index: number;
   handle_answer: (questionId: number, status: string) => void;
   handle_flag: (questionId: number, isFlagged: boolean) => void;
@@ -32,7 +47,7 @@ export default function ItemCard({
 
   const handleAnswer = (choice: Choice) => {
     if (!question) return;
-    setSelectedAnswer(choice.choice_index as "A" | "B" | "C" | "D");
+    setSelectedAnswer(choice.index as "A" | "B" | "C" | "D");
     handle_answer(question.id, "answered");
   };
 
@@ -50,25 +65,25 @@ export default function ItemCard({
           {index + 1}
         </p>
         <button onClick={handleFlag}>
-          {question.isFlagged? <Flag /> : <FlagOffIcon/>}
+          {question.isFlagged ? <Flag /> : <FlagOffIcon />}
         </button>
       </div>
       <div className="question-details flex flex-1 gap-20 flex-wrap">
         <div className="flex-col flex-1">
           <p className="text-[#777777]">Questions</p>
-          <p>{question.question_content}</p>
+          <p>{question.content}</p>
           <div className="choices">
             {question.choices.map((choice: Choice) => (
               <div
-                key={choice.id + choice.choice_index}
+                key={choice.id + choice.index}
                 className={`flex gap-3 ${
-                  selectedAnswer === choice.choice_index
+                  selectedAnswer === choice.index
                     ? "bg-green-500 px-2 text-white rounded-md"
                     : ""
                 }`}
               >
-                <p>{choice.choice_index}.</p>
-                <p>{choice.choice_content}</p>
+                <p>{choice.index}.</p>
+                <p>{choice.content}</p>
               </div>
             ))}
           </div>
@@ -82,9 +97,9 @@ export default function ItemCard({
               return (
                 <ChoicesCircle
                   ref={ref}
-                  key={choice.id + choice.choice_index}
-                  choice_index={choice.choice_index}
-                  isSelected={selectedAnswer === choice.choice_index}
+                  key={choice.id + choice.index}
+                  choice_index={choice.index}
+                  isSelected={selectedAnswer === choice.index}
                   isDisabled={selectedAnswer !== null}
                   onComplete={() => handleAnswer(choice)}
                 />

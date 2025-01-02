@@ -1,6 +1,6 @@
 import Header from "@/components/dashboard/colleges/Header";
 import React from "react";
-import Attempt from "./Attempt";
+import AttemptSpecification from "./AttemptSpecification";
 import { getTopicsByReviewerId } from "@/actions/college.action";
 import { Session } from "next-auth";
 import { auth } from "@/lib/auth";
@@ -14,7 +14,7 @@ export default async function AttemptPage({ params }: any) {
   return (
     <div>
       <Header title="Attempt" />
-      <Attempt topics={topics.topics} reviewer_id={Number(reviewer_id)} user_id={Number(session.user.id)} />
+      <AttemptSpecification topics={topics.topics} reviewer_id={Number(reviewer_id)} user_id={Number(session.user.id)} />
     </div>
   );
 }

@@ -19,6 +19,7 @@ import { generateAttempt } from "@/actions/attempt.action";
 import { toast } from "@/hooks/use-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
+import { useRouter } from "next/navigation";
 
 interface TestSpecificationFormProps {
   topics: Topic[] | null;
@@ -35,7 +36,7 @@ const TestSpecificationForm = ({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [subtopics, setSubtopics] = useState<Subtopic[]>([]);
-
+  const navigate = useRouter()
   const form = useForm<TestSpecificationFormData>({
     resolver: zodResolver(testSpecificationSchema),
     defaultValues: {
@@ -65,6 +66,7 @@ const TestSpecificationForm = ({
           description: "You may now be able to take this test",
           variant: "default",
         });
+        navigate.push(`/student/reviewers/${reviewer_id}/attempt/${res.data.reviewer_attempt.id}`)
       } else {
         setError(true);
       }
