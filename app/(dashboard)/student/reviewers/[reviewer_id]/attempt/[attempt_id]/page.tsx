@@ -12,7 +12,7 @@ export default async function TakeAttempt({ params }: any) {
   return (
     <div>
       <Header title='Attempt' />
-      <Attempt test_items={attempt} handle_answer={undefined} handle_flag={undefined} />
+      <Attempt test_items={attempt}  />
     </div>
   )
 }

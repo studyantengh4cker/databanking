@@ -14,8 +14,11 @@ export default function ItemNavigationCard({
   const [isFlagged, setIsFlagged] = useState<boolean>(false);
 
   const borderColor = isFlagged ? "#FEAA01" : "#152259";
-  const backgroundColor =
-    isFlagged ? "#FEAA01" : status === "answered" ? "#152259" : "transparent";
+  const backgroundColor = isFlagged
+    ? "#FEAA01"
+    : status === "answered"
+    ? "#152259"
+    : "transparent";
 
   useEffect(() => {
     if (question) {

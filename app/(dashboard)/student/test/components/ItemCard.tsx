@@ -49,6 +49,7 @@ export default function ItemCard({
     if (!question) return;
     setSelectedAnswer(choice.index as "A" | "B" | "C" | "D");
     handle_answer(question.id, "answered");
+    console.log('answering for quesiont ID', question.id)
   };
 
   const handleFlag = () => {
