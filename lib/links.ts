@@ -1,4 +1,4 @@
-import { BookAIcon, LayoutDashboard } from "lucide-react";
+import { BookAIcon, LayoutDashboard, Paperclip } from "lucide-react";
 
 export const AdminLinks = [
   {
@@ -18,6 +18,11 @@ export const StudentLinks = [
     tag: "Dashboard",
     href: "/student/dashboard",
     icon: LayoutDashboard,
+  },
+  {
+    tag: "Reviewer",
+    href: "/student/reviewer",
+    icon: Paperclip,
   },
 ];
 

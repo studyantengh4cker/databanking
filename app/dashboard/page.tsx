@@ -1,11 +1,11 @@
 import Header from "@/components/dashboard/colleges/Header";
-import UsersForm from "@/components/forms/UsersForm";
+import QuestionsForm from "@/components/forms/QuestionsForm";
 
 export default function DashboardPage() {
   return (
     <main className="p-10">
       <Header title="Dashboard" />
-      <UsersForm role="admin" />
+      <QuestionsForm reviewer_id={2} />
     </main>
   );
 }
