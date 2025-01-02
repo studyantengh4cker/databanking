@@ -1,4 +1,4 @@
-import { BookAIcon, LayoutDashboard, Paperclip } from "lucide-react";
+import { BookAIcon, LayoutDashboard } from "lucide-react";
 
 export const AdminLinks = [
   {

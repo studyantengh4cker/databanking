@@ -12,7 +12,7 @@ export default function ExamNavigation({ questions }: ExamNavigationProps) {
       <p>Page 1 of {questions && questions.length }</p>
       <div className="container flex flex-wrap gap-4">
         {questions && questions.length > 0 ? (
-          questions.map((item, index) => {
+          questions.map((item, index) => {  
             return <ItemNavigationCard key={item.id} index={index} question={item} />;
           })
         ) : (

@@ -1,4 +1,5 @@
 "use client";
+import { submitQuestionAnswer } from "@/actions/attempt.action";
 import ExamNavigation from "@/app/(dashboard)/student/test/components/ExamNavigation";
 import { SheetDemo } from "@/app/(dashboard)/student/test/components/Sheet";
 import TestBody from "@/app/(dashboard)/student/test/components/TestBody";
@@ -25,23 +26,16 @@ export default function Attempt({ test_items }: AttemptProps) {
     }
   }, [test_items]);
 
-  const handle_answer = (questionId: number, status: string) => {
-    setQuestions((prevItems) => {
-      return prevItems.map((item) => {
-        if (item.id === questionId) {
-          return {
-            ...item,
-            status,
-          };
-        }
-        return item;
-      });
-    });
+  const handle_answer = async (questionId: string, answer: string) => {
+    const res = await submitQuestionAnswer(questionId, answer)
+    if(res){
+        console.log("ANswered", questionId)
+    }
   };
-  const handle_flag = (questionId: number, isFlagged: boolean) => {
+  const handle_flag = (questionId: string, isFlagged: boolean) => {
     setQuestions((prevItems) => {
       return prevItems.map((item) => {
-        if (item.id === questionId) {
+        if (item.reviewer_attempt_question_id === questionId) {
           return {
             ...item,
             isFlagged,

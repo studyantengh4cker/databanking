@@ -3,8 +3,8 @@ import ItemCard from "./ItemCard";
 
 interface TestBodyProps {
   questions: any[];
-  handle_answer: (questionId: number, status: string) => void;
-  handle_flag: (questionId: number, isFlagged: boolean) => void;
+  handle_answer: (questionId: string, answer: string) => void;
+  handle_flag: (questionId: string, isFlagged: boolean) => void;
 }
 
 export default function TestBody({ questions, handle_answer,handle_flag }: TestBodyProps) {

@@ -36,3 +36,18 @@ export async function getAttemptQuestions(attempt_id: string) {
     console.error("Error fetching attempt questions:", error);
   }
 }
+
+export async function submitQuestionAnswer(question_id: string, answer: string) {
+  try {
+    const res = await api.post(
+      `/submit-answer?reviewer_attempt_question_id=${question_id}&answer=${answer}`
+    );
+
+    if (res.data.status === "success") {
+      revalidatePath('/')
+      return res.data.data;
+    }
+  } catch (error) {
+    console.error("Error submitting attempt question answer:", error);
+  }
+}

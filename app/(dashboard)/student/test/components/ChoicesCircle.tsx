@@ -13,11 +13,18 @@ interface ChoicesCircleProps {
   isSelected: boolean;
   choice_index: string;
   onComplete: () => void;
+  isAnswer?: boolean;
 }
 
 const ChoicesCircle = forwardRef(
   (
-    { isDisabled, isSelected, choice_index, onComplete }: ChoicesCircleProps,
+    {
+      isDisabled,
+      isSelected,
+      choice_index,
+      onComplete,
+      isAnswer = false,
+    }: ChoicesCircleProps,
     ref
   ) => {
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -26,6 +33,31 @@ const ChoicesCircle = forwardRef(
     useImperativeHandle(ref, () => ({
       clearCanvas,
     }));
+
+    const fillCircle = useCallback(() => {
+      const canvas = canvasRef.current;
+      if (!canvas) return;
+      const ctx = canvas.getContext("2d");
+      if (!ctx) return;
+
+      const rect = canvas.getBoundingClientRect();
+      canvas.width = rect.width;
+      canvas.height = rect.height;
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      ctx.beginPath();
+      const centerX = canvas.width / 2;
+      const centerY = canvas.height / 2;
+      const radius = Math.min(canvas.width, canvas.height) / 2 - 2;
+      ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+      ctx.fillStyle = "#152259";
+      ctx.fill();
+
+      ctx.strokeStyle = isSelected ? "#00981C" : "#720000";
+      ctx.lineWidth = 4;
+      ctx.stroke();
+    }, [isSelected]);
 
     const drawCircle = useCallback(() => {
       const canvas = canvasRef.current;
@@ -50,13 +82,15 @@ const ChoicesCircle = forwardRef(
     }, [isSelected]);
 
     useEffect(() => {
-      if (!isSelected) {
-        return drawCircle();
+      if (isAnswer) {
+        fillCircle();
+      } else if (!isSelected) {
+        drawCircle();
       }
-    }, [isSelected, drawCircle]);
+    }, [isSelected, isAnswer, drawCircle, fillCircle]);
 
     const startDrawing = (e: React.TouchEvent | React.MouseEvent) => {
-      if (isDisabled) return;
+      if (isDisabled || isAnswer) return;
 
       const canvas = canvasRef.current;
       if (!canvas) return;
@@ -83,7 +117,7 @@ const ChoicesCircle = forwardRef(
     };
 
     const draw = (e: React.TouchEvent | React.MouseEvent) => {
-      if (!isDrawing || isDisabled) return;
+      if (!isDrawing || isDisabled || isAnswer) return;
 
       const canvas = canvasRef.current;
       if (!canvas) return;
@@ -137,7 +171,11 @@ const ChoicesCircle = forwardRef(
       if (!ctx) return;
 
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      drawCircle();
+      if (isAnswer) {
+        fillCircle();
+      } else {
+        drawCircle();
+      }
     };
 
     const disableScrolling = () => {
@@ -174,5 +212,6 @@ const ChoicesCircle = forwardRef(
     );
   }
 );
+
 ChoicesCircle.displayName = "ChoicesCircle";
 export default ChoicesCircle;

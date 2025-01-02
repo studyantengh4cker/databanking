@@ -6,23 +6,23 @@ import { Flag, FlagOffIcon } from "lucide-react";
 interface Choice {
   id: number;
   content: string;
-  index: string; // Typically "A", "B", "C", etc.
+  index: string; 
 }
-interface Question {
-  id: number;
+export interface AttemptQuestion {
+  reviewer_attempt_question_id: number;
   content: string;
   choices: Choice[];
   isFlagged: boolean;
   point: string;
   status: "answered" | "unanswered";
-  user_answers: string[];
+  answer: string;
 }
 
 interface ItemsCardProps {
-  question: Question | null;
+  question: AttemptQuestion | null;
   index: number;
-  handle_answer: (questionId: number, status: string) => void;
-  handle_flag: (questionId: number, isFlagged: boolean) => void;
+  handle_answer: (questionId: string, answer: string) => void;
+  handle_flag: (questionId: string, isFlagged: boolean) => void;
 }
 
 export default function ItemCard({
@@ -42,25 +42,26 @@ export default function ItemCard({
     if (!question) return;
     setSelectedAnswer(null);
     circleRefs.current.forEach((ref) => ref.current?.clearCanvas());
-    handle_answer(question.id, "not_answered");
+    handle_answer(String(question.reviewer_attempt_question_id), "not_answered");
   };
 
   const handleAnswer = (choice: Choice) => {
     if (!question) return;
     setSelectedAnswer(choice.index as "A" | "B" | "C" | "D");
-    handle_answer(question.id, "answered");
-    console.log('answering for quesiont ID', question.id)
+    handle_answer(String(question.reviewer_attempt_question_id), choice.index);
+    console.log('answering for quesiont ID', String(question.reviewer_attempt_question_id))
   };
 
   const handleFlag = () => {
     if (!question) return;
-    handle_flag(question.id, !question.isFlagged);
+    handle_flag(String(question.reviewer_attempt_question_id), !question.isFlagged);
+    console.log('trying to flag', question.reviewer_attempt_question_id)
   };
 
   if (!question) return null;
 
   return (
-    <div id={String(question.id)} className="flex [&_p]:m-0 gap-4 flex-1">
+    <div id={String(question.reviewer_attempt_question_id)} className="flex [&_p]:m-0 gap-4 flex-1">
       <div className="flex-col flex gap-3 items-center ">
         <p className="bg-[#720000] rounded-full w-10 h-10 flex items-center justify-center text-white text-sm sm:text-base md:text-lg lg:text-xl">
           {index + 1}
@@ -78,7 +79,7 @@ export default function ItemCard({
               <div
                 key={choice.id + choice.index}
                 className={`flex gap-3 ${
-                  selectedAnswer === choice.index
+                  question?.answer === choice.index
                     ? "bg-green-500 px-2 text-white rounded-md"
                     : ""
                 }`}
@@ -103,6 +104,7 @@ export default function ItemCard({
                   isSelected={selectedAnswer === choice.index}
                   isDisabled={selectedAnswer !== null}
                   onComplete={() => handleAnswer(choice)}
+                  isAnswer={question.answer === choice.index}
                 />
               );
             })}
