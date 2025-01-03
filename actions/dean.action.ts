@@ -56,7 +56,7 @@ export async function addQuestion(formvalue: AddQuestionFormData) {
 
     const questions = [transformedFormValue];
 
-    const res = await api.post(`/question`, { questions });
+    const res = await api.post(`/question`, {questions} );
 
     if (res.data.status === "success") {
       return res.data;
@@ -115,8 +115,8 @@ export async function editQuestion(formvalue: AddQuestionFormData, id: number) {
         choice_content: choice.choice_content,
       })),
     };
-
-    const res = await api.put(`/question/${id}`, transformedFormValue);
+    
+    const res = await api.put(`/question/${id}`, transformedFormValue );
 
     if (res.data.status === "success") {
       return res.data;

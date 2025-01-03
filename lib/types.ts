@@ -82,7 +82,7 @@ export interface Choice {
 export interface Question {
   id: number;
   question_content: string;
-  question_choices: Choice[];
+  choices: Choice[];
   correct_answer: string;
   question_point: string;
   reviewer_id: number;
@@ -93,3 +93,24 @@ export interface Question {
   created_at: string; 
   updated_at: string; 
 }
+
+
+export interface ReviewerQuestion {
+  id: number;
+  question_content: string;
+  choices: Choice[];
+  correct_answer: string;
+  question_point: string;
+  reviewer_id: number;
+  subtopic: string | null;
+  subtopic_id: string | null;
+  topic: string | null;
+  topic_id: string | null;
+  status: 'not_answered' | 'answered';
+  isFlagged: boolean;
+  created_at: string; 
+  updated_at: string; 
+}
+
+
+

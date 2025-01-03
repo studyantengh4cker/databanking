@@ -20,9 +20,9 @@ export const StudentLinks = [
     icon: LayoutDashboard,
   },
   {
-    tag: "Reviewer",
-    href: "/student/reviewer",
-    icon: Paperclip,
+    tag: "Reviewers",
+    href: "/student/reviewers",
+    icon: BookAIcon,
   },
 ];
 

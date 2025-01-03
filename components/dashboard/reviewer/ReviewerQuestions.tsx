@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { getQuestionsByReviewerId } from "@/actions/college.action";
 import {
   Table,
@@ -21,23 +21,39 @@ interface ReviewerQuestionProps {
 
 export default function ReviewerQuestions({ reviewer }: ReviewerQuestionProps) {
   const [questionsData, setQuestionData] = useState<Question[] | null>(null);
+  const [pagination, setPaginate] = useState<any>(null);
   const collegeData = useChooseCollege(
     reviewer.college_id,
     reviewer.program_id
   );
-  useEffect(() => {
-    async function handleGetQuestions() {
-      const res = await getQuestionsByReviewerId(reviewer.id);
-      if (res) {
-        setQuestionData(res.questions);
-        console.log(res.questions);
-      } else {
-        setQuestionData([]);
-      }
+  const handleGetQuestions = useCallback(async (page: number) => {
+    const res = await getQuestionsByReviewerId(reviewer.id, page);
+    if (res) {
+      setQuestionData(res.questions);
+      setPaginate(res.pagination);
+    } else {
+      setQuestionData([]);
     }
-    handleGetQuestions();
   }, [reviewer.id]);
+  
+  
+  useEffect(() => {
+    handleGetQuestions(1); 
+  }, [reviewer.id, handleGetQuestions]);
 
+  const buttons = [];
+for (let i = 1; i <= pagination?.total_pages; i++) {
+  buttons.push(
+    <button
+      className="bg-[#320000] hover:bg-[#720000] text-white rounded-md p-2"
+      key={i}
+      onClick={() => handleGetQuestions(i)} 
+    >
+      {i}
+    </button>
+  );
+}
+  
   return (
     <div className="w-full flex flex-col gap-5 [&_h1]:text-2xl [&_h1]:font-semibold">
       <main>
@@ -94,6 +110,11 @@ export default function ReviewerQuestions({ reviewer }: ReviewerQuestionProps) {
           )}
         </Table>
       </main>
+      <footer className="flex  justify-between">
+       <div className="button flex gap-5">{buttons}</div>
+      <div className="total-pages flex flex-col items-end"> <p>Total Pages</p>
+      {pagination?.total_pages}</div>
+      </footer>
     </div>
   );
 }

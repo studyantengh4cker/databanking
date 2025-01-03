@@ -86,9 +86,9 @@ export const getQuestions = async () => {
     console.error("Error fetching questions:", error);
   }
 };
-export const getQuestionsByReviewerId = async (id: number) => {
+export const getQuestionsByReviewerId = async (id: number, page: number) => {
   try {
-    const res = await api.get(`/question?reviewer_id=${id}`);
+    const res = await api.get(`/question?reviewer_id=${id}&page=${page}`);
     if (res.data.status === "success") {
       return res.data.data;
     }

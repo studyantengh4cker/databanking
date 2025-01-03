@@ -49,7 +49,9 @@ export default function Topics({ reviewer, user }: TopicsProps) {
   const handleGetSubtopics = async (id: number) => {
     if (topics) {
       const res = await getSubtopicsByTopicsId(id);
-      setSubtopics(res.subtopics);
+      if(res){
+        setSubtopics(res.subtopics);
+      }
     }
   };
 

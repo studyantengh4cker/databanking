@@ -2,17 +2,24 @@ import React from "react";
 import ItemCard from "./ItemCard";
 
 interface TestBodyProps {
-  test_items: any[];
+  questions: any[];
+  handle_answer: (questionId: number, status: string) => void;
+  handle_flag: (questionId: number, isFlagged: boolean) => void;
 }
 
-export default function TestBody({ test_items }: TestBodyProps) {
+export default function TestBody({ questions, handle_answer,handle_flag }: TestBodyProps) {
   return (
-    <div className="questions-container flex-1 flex flex-col gap-10">
-      {test_items && test_items.length > 0 ? (
-        test_items.map((item, index) => {
+    <div className="questions-container flex-1 flex flex-col gap-10 max-h-full overflow-auto">
+      {questions && questions.length > 0 ? (
+        questions.map((item, index) => {
           return (
-            <div key={item.id}>
-              <ItemCard question={item.question} index={index} />;
+            <div key={index}>
+              <ItemCard
+                handle_answer={handle_answer}
+                handle_flag={handle_flag}
+                question={item}
+                index={index}
+              />
             </div>
           );
         })

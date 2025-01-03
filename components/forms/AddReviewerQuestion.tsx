@@ -41,7 +41,7 @@ export default function AddReviewerQuestion({
       question_content: defaultValues?.question_content || "",
       correct_answer: defaultValues?.correct_answer || "",
       question_point: defaultValues?.question_point || "",
-      choices: defaultValues?.question_choices?.map((choice) => ({
+      choices: defaultValues?.choices?.map((choice) => ({
         choice_index: choice.choice_index as "A" | "B" | "C" | "D",
         choice_content: choice.choice_content,
       })) || [
@@ -101,7 +101,7 @@ export default function AddReviewerQuestion({
     }
   }, [form, choices]);
 
-  const isEditing = defaultValues?.question_content?.trim() !== "";
+  const isEditing = defaultValues?.question_content?.trim() !== undefined;
   const onSubmit = async (values: AddQuestionFormData) => {
     try {
       setLoading(true);
