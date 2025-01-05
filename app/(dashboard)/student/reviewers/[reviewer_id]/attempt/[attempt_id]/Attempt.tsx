@@ -10,6 +10,7 @@ import TestBody from "@/app/(dashboard)/student/test/components/TestBody";
 import TestHeader from "@/app/(dashboard)/student/test/components/TestHeader";
 import { useRouter } from "next/navigation";
 import React, { useState, useEffect } from "react";
+import { AttemptType } from "./page";
 
 
 interface AttemptProps {
