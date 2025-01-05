@@ -159,7 +159,8 @@ const ChoicesCircle = forwardRef(
       }
 
       const fillPercentage = (filledPixels / totalPixels) * 100;
-      if (fillPercentage >= 79) {
+      //79 ang pinaka accurate
+      if (fillPercentage >= 40) {
         onComplete();
       }
     };

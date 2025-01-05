@@ -96,7 +96,8 @@ export interface Question {
 
 
 export interface ReviewerQuestion {
-  id: number;
+  question_id: number;
+  reviewer_attempt_question_id: number,
   question_content: string;
   choices: Choice[];
   correct_answer: string;

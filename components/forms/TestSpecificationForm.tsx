@@ -29,8 +29,8 @@ const TestSpecificationForm = ({ topics }: TestSpecificationFormProps) => {
     defaultValues: {
       time_limit: 30,
       number_of_items: 10,
-      topic_id: selectedTopicIds,
-      subtopic_id: selectedSubtopicIds,
+      topic_ids: selectedTopicIds,
+      subtopic_ids: selectedSubtopicIds,
     },
   });
 

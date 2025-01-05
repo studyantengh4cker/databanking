@@ -1,8 +1,8 @@
-import { ReviewerQuestion } from "@/lib/types";
 import React, { useState, useEffect } from "react";
+import { AttemptQuestion } from "./ItemCard";
 
 interface ItemNavigationCardProps {
-  question: ReviewerQuestion;
+  question: AttemptQuestion;
   index: number;
 }
 
@@ -13,11 +13,22 @@ export default function ItemNavigationCard({
   const [status, setStatus] = useState<string>("not_answered");
   const [isFlagged, setIsFlagged] = useState<boolean>(false);
 
-  const borderColor = isFlagged ? "#FEAA01" : "#152259";
+  const borderColor = isFlagged
+    ? "#FEAA01"
+    : question?.is_correct === true
+    ? "#16A34A"
+    : question?.is_correct === false
+    ? "#DC2626"
+    : "#152259";
+
   const backgroundColor = isFlagged
     ? "#FEAA01"
     : status === "answered"
-    ? "#152259"
+    ? question?.is_correct === true
+      ? "#16A34A"
+      : question?.is_correct === false
+      ? "#DC2626"
+      : "#152259"
     : "transparent";
 
   useEffect(() => {
@@ -34,7 +45,7 @@ export default function ItemNavigationCard({
       } rounded-xl flex flex-col items-center cursor-pointer`}
       style={{ borderColor: borderColor }}
     >
-      <a href={`#${String(question.id)}`} className="flex-1">
+      <a href={`#${String(question.question_id)}`} className="flex-1">
         {index + 1}
       </a>
       <div

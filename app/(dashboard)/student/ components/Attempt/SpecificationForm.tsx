@@ -44,8 +44,8 @@ const TestSpecificationForm = ({
       reviewer_id,
       status: "pending",
       score: 0,
-      topic_id: [],
-      subtopic_id: [],
+      topic_ids: [],
+      subtopic_ids: [],
       time_limit: 30,
       question_amount: 10,
     },
@@ -53,8 +53,8 @@ const TestSpecificationForm = ({
 
   const { watch, setValue } = form;
 
-  const selectedTopicIds = watch("topic_id");
-  const selectedSubtopicIds = watch("subtopic_id");
+  const selectedTopicIds = watch("topic_ids");
+  const selectedSubtopicIds = watch("subtopic_ids");
 
   const onSubmit = async (values: TestSpecificationFormData) => {
     try {
@@ -143,7 +143,7 @@ const TestSpecificationForm = ({
                         }
                       }
                       setValue(
-                        "topic_id",
+                        "topic_ids",
                         newSelected as [string, ...string[]],
                         { shouldValidate: true }
                       );
@@ -179,7 +179,7 @@ const TestSpecificationForm = ({
                         }
                       }
                       setValue(
-                        "subtopic_id",
+                        "subtopic_ids",
                         newSelected as [string, ...string[]],
                         { shouldValidate: true }
                       );

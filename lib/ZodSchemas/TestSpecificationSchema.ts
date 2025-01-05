@@ -5,10 +5,10 @@ export const testSpecificationSchema = z.object({
   reviewer_id: z.number().min(0, 'Reviewer ID is required'),
   status: z.string().default("pending"),
   score: z.number().min(0),
-  topic_id: z
+  topic_ids: z
   .array(z.string())
   .nonempty({ message: "At least 1 topic must be selected" }),
-  subtopic_id: z
+  subtopic_ids: z
   .array(z.string())
   .nonempty({ message: "At least 1 subtopic must be selected" }),
   time_limit: z

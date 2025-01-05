@@ -189,35 +189,7 @@ export default function AddReviewerQuestion({
             )}
           />
 
-          <div className="grid grid-cols-2 gap-4">
-            <FormField
-              control={form.control}
-              name="correct_answer"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Correct Answer</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Enter Correct Answer" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="question_point"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Question Point</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Enter Question Point" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
+         
 
           <div className="flex items-end gap-2">
             <div className="flex-1">
@@ -267,7 +239,37 @@ export default function AddReviewerQuestion({
               ) : null
             )}
           </div>
+          <p>Please provide the correct answer by specifying its corresponding index (e.g., &quot;A&quot;).</p>
 
+          <div className="grid grid-cols-2 gap-4">
+            <FormField
+              control={form.control}
+              name="correct_answer"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Correct Answer</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Enter Correct Answer" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="question_point"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Question Point</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Enter Question Point" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
           <Button
             className="w-full md:w-[30%]"
             type="submit"

@@ -20,10 +20,10 @@ import {
 } from "@/components/ui/sheet";
 
 interface SheetDemoProps {
-  test_items: any ;
+  attempt: any ;
 }
 
-export function SheetDemo({ test_items }: SheetDemoProps) {
+export function SheetDemo({ attempt }: SheetDemoProps) {
   
   return (
     <Sheet>
@@ -42,8 +42,8 @@ export function SheetDemo({ test_items }: SheetDemoProps) {
         </SheetHeader>
         <div className="flex flex-col gap-4 py-4">
           <div className="flex flex-col items-start gap-4">
-            {test_items.topics && test_items.topics.length > 0 ? (
-              test_items.topics.map((item: any) => {
+            {attempt && attempt.topics && attempt.topics.length > 0 ? (
+              attempt.topics.map((item: any) => {
                 return (
                   <div key={item.id}>
                     <Label htmlFor="name" className="text-right">
