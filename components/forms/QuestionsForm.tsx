@@ -5,8 +5,11 @@ import { useForm, useFieldArray, FormProvider } from "react-hook-form";
 import * as XLSX from "xlsx";
 
 import { Button } from "../ui/button";
+import { Input } from "../ui/input";
+import { Label } from "../ui/label";
 import { toast } from "@/hooks/use-toast";
 import { addQuestions } from "@/actions/dean.action";
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
 
 const questionSchema = z.object({
   question_content: z.string().min(1, "Question content is required"),
@@ -101,34 +104,118 @@ export default function QuestionsForm({
   return (
     <FormProvider {...form}>
       <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-8">
+        {/* File Upload Section */}
         <div>
-          <label
-            htmlFor="file-upload"
-            className="block mb-2 text-sm font-medium"
-          >
+          <Label htmlFor="file-upload" className="block text-sm font-medium">
             Upload Excel File
-          </label>
-          <input
-            type="file"
+          </Label>
+          <Input
             id="file-upload"
+            type="file"
             accept=".xlsx, .xls"
             onChange={handleFileUpload}
             className="block w-full text-sm border rounded-lg"
           />
         </div>
 
+        {/* Questions Form Fields */}
         {fields.map((field, index) => (
           <div key={field.id} className="space-y-4 border p-4 rounded-md">
-            <h3>Question {index + 1}</h3>
-            {/* Form Fields */}
+            <h3 className="text-lg font-semibold">Question {index + 1}</h3>
+
+            {/* Question Content */}
+            <FormField
+              control={form.control}
+              name={`questions.${index}.question_content`}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Question Content</FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      placeholder="Enter the question"
+                      className="block w-full text-sm border rounded-lg"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {/* Correct Answer */}
+            <FormField
+              control={form.control}
+              name={`questions.${index}.correct_answer`}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Correct Answer</FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      placeholder="Enter correct answer"
+                      className="block w-full text-sm border rounded-lg"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {/* Question Points */}
+            <FormField
+              control={form.control}
+              name={`questions.${index}.question_point`}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Question Points</FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      type="number"
+                      placeholder="Enter points"
+                      className="block w-full text-sm border rounded-lg"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {/* Choices */}
+            <div className="space-y-2">
+              {field.choices.map((choice, choiceIndex) => (
+                <FormField
+                  key={choiceIndex}
+                  control={form.control}
+                  name={`questions.${index}.choices.${choiceIndex}.choice_content`}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{choice.choice_index}. Choice Content</FormLabel>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          placeholder={`Choice ${choice.choice_index}`}
+                          className="block w-full text-sm border rounded-lg"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              ))}
+            </div>
           </div>
         ))}
 
-        <Button type="button" onClick={handleAddQuestion}>
+        {/* Add New Question Button */}
+        <Button type="button" onClick={handleAddQuestion} variant="outline">
           Add New Question
         </Button>
 
-        <Button type="submit">Submit</Button>
+        {/* Submit Button */}
+        <Button type="submit">
+          Submit
+        </Button>
       </form>
     </FormProvider>
   );

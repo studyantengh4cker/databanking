@@ -15,7 +15,7 @@ const ReviewerPage = async ({ params }: { params: any }) => {
   const { reviewer_id } = await params;
   if (!reviewer_id) return null;
   const reviewer: Reviewer = await getCollegeReviewerByID(Number(reviewer_id));
-
+  
   return (
     <div className="p-5 flex flex-col">
       <Header title="Reviewer" />

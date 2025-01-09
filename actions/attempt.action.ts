@@ -121,3 +121,25 @@ export async function viewResult(attempt_id: number) {
     console.error("Error retreiving attempt result:", error);
   }
 }
+
+export async function getAttemptHistory(){
+  try{
+    const res = await api.get(`/get-attempts`)
+    if (res.data.status === "success") {
+      return res.data.data;
+    }
+  }catch(error){
+    console.error("Error in retreiving attempts", error)
+  }
+}
+
+export async function getUserAttemptHistory(user_id: number){
+  try{
+    const res = await api.get(`/get-attempts?user_id=${user_id}`)
+    if (res.data.status === "success") {
+      return res.data.data;
+    }
+  }catch(error){
+    console.error("Error in retreiving attempts", error)
+  }
+}

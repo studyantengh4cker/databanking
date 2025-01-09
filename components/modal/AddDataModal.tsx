@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { College, Programs } from "@/app/dashboard/colleges/Colleges";
 import { Button } from "@/components/ui/button";
 import {
@@ -7,6 +8,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import QuestionsForm from "../forms/QuestionsForm";
 
 interface ModalProps {
   title: string;
@@ -31,6 +33,8 @@ export function AddDataModal({
   college,
   children,
 }: ModalProps) {
+  const [selectedMode, setSelectedMode] = useState<"manual" | "csv">("manual");
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -46,13 +50,37 @@ export function AddDataModal({
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px] min-w-[969px] min-h-[691px] !rounded-sm p-20 text-[#4f4f4f] flex flex-col justify-start">
         <DialogHeader className="flex flex-col gap-5">
-          <DialogTitle className="text-4xl ">{title}</DialogTitle>
+          <DialogTitle className="text-4xl">{title}</DialogTitle>
           <div className="buttons flex gap-10  [&_button]:text-[#4f4f4f] [&_button]:bg-transparent ">
-            <Button className="hover:text-white">Manually</Button>{" "}
-            <Button className="hover:text-white">Import CSV</Button>
+            <Button
+              className={`hover:text-white ${
+                selectedMode === "manual" ? "bg-[#720000]" : ""
+              }`}
+              onClick={() => setSelectedMode("manual")}
+            >
+              Manually
+            </Button>
+            <Button
+              className={`hover:text-white ${
+                selectedMode === "csv" ? "bg-gray-200" : ""
+              }`}
+              onClick={() => setSelectedMode("csv")}
+            >
+              Import CSV
+            </Button>
           </div>
         </DialogHeader>
-        {children}
+        {/* Conditional rendering of children */}
+        <div className="mt-5">
+          {selectedMode === "manual" ? (
+            children
+          ) : (
+            <div className="overflow-auto max-h-[60vh]">
+              {/* <UsersForm role={"dean"}  /> */}
+              <QuestionsForm reviewer_id={1} />
+            </div>
+          )}
+        </div>
       </DialogContent>
     </Dialog>
   );
