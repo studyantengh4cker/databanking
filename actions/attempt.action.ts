@@ -122,6 +122,17 @@ export async function viewResult(attempt_id: number) {
   }
 }
 
+export async function getAttemptByID(attempt_id: number){
+  try{
+    const res = await api.get(`/get-attempts?attempt_id=${attempt_id}`)
+    if (res.data.status === "success") {
+      return res.data.data;
+    }
+  }catch(error){
+    console.error("Error in retreiving attempts", error)
+  }
+}
+
 export async function getAttemptHistory(){
   try{
     const res = await api.get(`/get-attempts`)

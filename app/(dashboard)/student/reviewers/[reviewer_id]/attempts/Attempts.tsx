@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { AttemptType } from "../attempt/[attempt_id]/page";
 import {
   Table,
@@ -14,6 +15,7 @@ interface AttemptsProps {
 }
 
 export default function Attempts({ attempts }: AttemptsProps) {
+  const navigate = useRouter();
   return (
     <div className="rounded-md border">
       <Table>
@@ -23,6 +25,7 @@ export default function Attempts({ attempts }: AttemptsProps) {
             <TableCell className="font-semibold">Score</TableCell>
             <TableCell className="font-semibold">Status</TableCell>
             <TableCell className="font-semibold">Time Remaining</TableCell>
+            <TableCell className="font-semibold">Action</TableCell>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -55,6 +58,18 @@ export default function Attempts({ attempts }: AttemptsProps) {
                   </span>
                 </TableCell>
                 <TableCell>{attempt.time_remaining || "0:00"}</TableCell>
+                <TableCell>
+                  <button
+                    onClick={() =>
+                      navigate.push(
+                        `/student/reviewers/${attempt.reviewer_id}/attempts/${attempt.id}`
+                      )
+                    }
+                    className="px-4 py-2 text-white bg-blue-600 hover:bg-blue-700 rounded-md transition duration-200"
+                  >
+                    View Details
+                  </button>
+                </TableCell>
               </TableRow>
             ))
           )}
