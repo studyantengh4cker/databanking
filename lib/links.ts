@@ -32,4 +32,9 @@ export const FacultyLinks = [
     href: "/faculty/dashboard",
     icon: LayoutDashboard,
   },
+  {
+    tag: "Reviewers",
+    href: "/faculty/reviewers",
+    icon: BookAIcon,
+  },
 ];

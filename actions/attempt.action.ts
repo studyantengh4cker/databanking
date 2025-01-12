@@ -143,3 +143,25 @@ export async function getUserAttemptHistory(user_id: number){
     console.error("Error in retreiving attempts", error)
   }
 }
+
+export async function getUserPendingAttempt(user_id: number){
+  try{
+    const res = await api.get(`/get-attempts?status=pending&user_id=${user_id}`)
+    if (res.data.status === "success") {
+      return res.data.data;
+    }
+  }catch(error){
+    console.error("Error in retreiving attempts", error)
+  }
+}
+
+export async function getAttemptByReviewerID(reviewer_id: number){
+  try{
+    const res = await api.get(`/get-attempts?reviewer_id=${reviewer_id}`)
+    if (res.data.status === "success") {
+      return res.data.data;
+    }
+  }catch(error){
+    console.error("Error in retreiving attempts", error)
+  }
+}

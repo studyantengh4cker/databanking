@@ -21,9 +21,7 @@ export default async function TakeAttempt({ params }: any) {
   if (!attempt_id) return <Attempt404 />;
 
   let attempt_questions = await getAttemptQuestions(attempt_id);
-  const attempt:AttemptType = await getAttempt(attempt_id);
-  console.log("Attempt: ", attempt_questions);
-  console.log("Attempt: ", attempt);
+  const attempt: AttemptType = await getAttempt(attempt_id);
   if (attempt_questions.total_questions === 0) return <Attempt404 />;
   attempt_questions = { ...attempt_questions, attempt_id };
   return (

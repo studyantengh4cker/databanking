@@ -1,6 +1,7 @@
 "use server";
 
 import { LoginFormData } from "@/components/forms/LoginForm";
+import api from "@/lib/api";
 import { signIn } from "@/lib/auth";
 
 export async function login(data: LoginFormData) {
@@ -13,4 +14,13 @@ export async function login(data: LoginFormData) {
   }
 }
 
-
+export async function getUserByID(id: number) {
+  try {
+    const res = await api.get(`/user/${id}`);
+    if (res.data.status === "success") {
+      return res.data.data.users;
+    }
+  } catch (error) {
+    console.error("Error in fetching user data, ", error);
+  }
+}

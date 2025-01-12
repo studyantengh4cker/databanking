@@ -34,7 +34,7 @@ export default function UserListTable({ datas }: UserListTable) {
               <TableCell className="font-medium">{data.id}</TableCell>
               <TableCell>{data.email}</TableCell>
               <TableCell>
-                {data.firstName} {data.lastName}
+                {data.first_name} {data.last_name}
               </TableCell>
               <TableCell className="text-right">{data.role}</TableCell>
               <TableCell className="text-right">{data.college_id}</TableCell>

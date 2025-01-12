@@ -22,7 +22,7 @@ const ReviewerPage = async ({ params }: { params: any }) => {
       <ReviewerHeader reviewer={reviewer} />
 
       <ReviewerInfo reviewer={reviewer} />
-      <ReviewerBody user={user as User} reviewer={reviewer} />
+      <ReviewerBody user={user as unknown as User} reviewer={reviewer} />
     </div>
   );
 };
